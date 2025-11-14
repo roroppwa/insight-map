@@ -198,6 +198,41 @@ ul li{
   border-radius: 8px;
   font-weight: 700;
 }
+
+/* detail 버튼 전용 스타일 */
+.btn-primary {
+  background:var(--accent);
+  color:#ffffff;
+  border-color:var(--accent);
+}
+
+/* detail 안내 박스용 */
+.box-link {
+  /* 별도 레이아웃 없이 기본 block 흐름 사용 */
+}
+
+/* detail 버튼 기본(PC 포함 공통) */
+.link-detail{
+  display:inline-block;
+  margin-top:10px;
+  padding:8px 16px;
+  border-radius:999px;      /* PC에선 둥근 pill 버튼 */
+}
+
+/* 모바일에서는 카드 폭 꽉 채우는 형태 */
+@media (max-width: 640px) {
+  .link-detail{
+    display:block;
+    width:100%;
+    max-width:100%;
+    box-sizing:border-box;
+    text-align:center;
+    border-radius:8px;      /* 너무 동그랗지 않게 */
+    white-space:normal;
+    padding:10px 12px;
+  }
+}
+
 </style>
 </head>
 <body>
@@ -205,7 +240,7 @@ ul li{
   <div class="header-inner">
     <h1 class="title">로로뽜 인사이트 대시보드</h1>
     <p class="sub">테마별 가격(상승/하락), 수급(외국인·기관·개인), 시총·거래대금 특성을 한 눈에 요약한 화면입니다.</p>
-    <p class="meta">최근 업데이트: 2025-11-14 (Fri) 12:20 (KST)</p>
+    <p class="meta">최근 업데이트: 2025-11-14 (Fri) 12:37 (KST)</p>
     <p class="notice-rr">※ 이 대시보드는 <strong>로로뽜가 스크립트를 실행할 때만</strong> 갱신되며, <strong>로로뽜 부재 시에는 업데이트가 중단됩니다.</strong></p>
   </div>
 </div>
@@ -233,18 +268,15 @@ ul li{
   </div>
 
   <!-- detail.html 상단 버튼 -->
-  <div class="box" style="display:flex;justify-content:space-between;align-items:center;">
-    <div>
-      <p class="muted">
-        <span class="strong-label">전체 테마 맵(detail.html)</span>에서
-        개별 종목 구성과 상세 데이터를 더 자세히 확인할 수 있습니다.
-      </p>
-    </div>
-    <div>
-      <a class="btn" style="background:var(--accent);color:#ffffff;border-color:var(--accent);" href="detail.html">
-        자세히 보기 (전체 테마 맵)
-      </a>
-    </div>
+  <div class="box box-link">
+    <p class="muted">
+      <span class="strong-label">전체 테마 맵(detail.html)</span>에서
+      개별 종목 구성과 상세 데이터를 더 자세히 확인할 수 있습니다.
+    </p>
+
+    <a class="btn btn-primary link-detail" href="detail.html">
+      자세히 보기 (전체 테마 맵)
+    </a>
   </div>
 
   <div class="box">

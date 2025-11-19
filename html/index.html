@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>로로뽜 인사이트 대시보드</title>
 <style>
 :root{
@@ -100,7 +101,7 @@ body{
   font-weight:700;
 }
 
-/* 메인 카드 (장전/장후 iframe 담는 카드) */
+/* 메인 카드 (장전/장중/장후 iframe 담는 카드) */
 .main-card{
   background:var(--card);
   border-radius:14px;
@@ -109,7 +110,7 @@ body{
   padding:14px 14px 10px 14px;
 }
 
-/* 장전/장후 탭 버튼 */
+/* 장전/장중/장후 탭 버튼 */
 .sub-tabs{
   display:flex;
   justify-content:space-between;
@@ -120,6 +121,7 @@ body{
 .sub-tab-buttons{
   display:flex;
   gap:6px;
+  flex-wrap:wrap;
 }
 .sub-tab{
   padding:7px 14px;
@@ -177,7 +179,7 @@ body{
   <div class="site-header-inner">
     <div class="brand">
       <h1 class="brand-title">로로뽜 인사이트</h1>
-      <p class="brand-sub">장전·장후 테마 스캔 대시보드</p>
+      <p class="brand-sub">장전·장중·장후 테마 스캔 대시보드</p>
     </div>
     <nav class="nav-links">
       <a href="index.html" class="active">대시보드</a>
@@ -187,9 +189,9 @@ body{
 
 <div class="wrap">
   <p class="notice">
-    <b>장전/장후 테마 대시보드</b><br>
-    전일 기준으로 주요 테마·종목의 모멘텀과 수급을 스캔한 결과입니다.
-    상단 탭에서 <b>장전</b> / <b>장후</b> 화면을 선택할 수 있으며,
+    <b>장전·장중·장후 테마 대시보드</b><br>
+    전일 기준과 장중 흐름을 바탕으로 주요 테마·종목의 모멘텀과 수급을 스캔한 결과입니다.
+    상단 탭에서 <b>장전</b> / <b>장중</b> / <b>장후</b> 화면을 선택할 수 있으며,
     기본으로는 현재 시각 기준으로 더 적절한 화면을 자동으로 띄웁니다.
     (<span id="time-info"></span> 기준)
   </p>
@@ -198,6 +200,7 @@ body{
     <div class="sub-tabs">
       <div class="sub-tab-buttons">
         <button class="sub-tab" id="tab-preopen" data-target="preopen">장전 대시보드</button>
+        <button class="sub-tab" id="tab-intraday" data-target="intraday">장중 대시보드</button>
         <button class="sub-tab" id="tab-postclose" data-target="postclose">장후 대시보드</button>
       </div>
       <div class="session-label" id="session-info"></div>
@@ -213,8 +216,14 @@ body{
   function detectSession() {
     const now = new Date();
     const hour = now.getHours();
-    // 09시 전에 접속하면 장전, 그 이후는 장후 기준
-    if (hour < 9) return "preopen";
+    const minute = now.getMinutes();
+    const hm = hour * 100 + minute;
+
+    // 09:00 이전 → 장전
+    if (hm < 900) return "preopen";
+    // 09:00 ~ 15:30 → 장중
+    if (hm <= 1530) return "intraday";
+    // 15:30 이후 → 장후
     return "postclose";
   }
 
@@ -233,6 +242,8 @@ body{
     if (!el) return;
     if (session === "preopen") {
       el.textContent = "지금은 장전(시가 전) 기준 화면을 보고 있습니다.";
+    } else if (session === "intraday") {
+      el.textContent = "지금은 장중(실시간 스냅샷) 기준 화면을 보고 있습니다.";
     } else {
       el.textContent = "지금은 장후(종가 기준) 화면을 보고 있습니다.";
     }
@@ -241,14 +252,19 @@ body{
   function setActiveTab(target) {
     const frame = document.getElementById("dashboard-frame");
     const tabPre = document.getElementById("tab-preopen");
+    const tabIntra = document.getElementById("tab-intraday");
     const tabPost = document.getElementById("tab-postclose");
 
     tabPre.classList.remove("active");
+    tabIntra.classList.remove("active");
     tabPost.classList.remove("active");
 
     if (target === "preopen") {
       tabPre.classList.add("active");
       frame.src = "preopen/preopen.html";
+    } else if (target === "intraday") {
+      tabIntra.classList.add("active");
+      frame.src = "intraday/intraday.html";
     } else {
       tabPost.classList.add("active");
       frame.src = "postclose/postclose.html";
@@ -259,6 +275,8 @@ body{
   function initTabs() {
     document.getElementById("tab-preopen")
       .addEventListener("click", () => setActiveTab("preopen"));
+    document.getElementById("tab-intraday")
+      .addEventListener("click", () => setActiveTab("intraday"));
     document.getElementById("tab-postclose")
       .addEventListener("click", () => setActiveTab("postclose"));
   }
@@ -273,7 +291,7 @@ body{
 
     const params = new URLSearchParams(window.location.search);
     const qTab = params.get("tab");
-    const session = (qTab === "preopen" || qTab === "postclose")
+    const session = (qTab === "preopen" || qTab === "intraday" || qTab === "postclose")
       ? qTab
       : detectSession();
 

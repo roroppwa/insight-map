@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
-<title>장마감 테마 대시보드</title>
+<title>장중 테마 대시보드</title>
 <style>
     * { box-sizing: border-box; }
 
@@ -43,6 +43,7 @@
         color: #64748b;
         text-align: right;
     }
+
     .subtitle-highlight {
         display: inline-block;
         padding: 4px 10px;
@@ -57,6 +58,7 @@
         color: #b91c1c;                   /* 진한 레드 계열 */
         font-weight: 800;
     }
+
     #container {
         padding: 18px;
         max-width: 1200px;
@@ -86,7 +88,7 @@
         width: 6px;
         height: 6px;
         border-radius: 999px;
-        background: linear-gradient(135deg, #38bdf8, #6366f1);
+        background: linear-gradient(135deg, #22c55e, #0ea5e9);
     }
     .section-sub {
         font-size: 12px;
@@ -107,16 +109,16 @@
     .summary-card {
         flex: 1 1 260px;
         min-width: 260px;
-        background: linear-gradient(135deg, #fffbeb, #fefce8);
+        background: linear-gradient(135deg, #ecfdf5, #eff6ff);
         border-radius: 14px;
         padding: 12px 16px;
-        border: 1px solid #facc15;
+        border: 1px solid #a7f3d0;
         box-shadow: 0 2px 8px rgba(15,23,42,0.06);
     }
     .summary-card-title {
         font-size: 13px;
         font-weight: 700;
-        color: #92400e;
+        color: #047857;
         margin-bottom: 4px;
     }
     .summary-card-main {
@@ -150,10 +152,10 @@
         background: #e5e7eb;
     }
     .where-card.momentum::before {
-        background: linear-gradient(to bottom, #f97316, #ef4444);
+        background: linear-gradient(to bottom, #22c55e, #16a34a);
     }
     .where-card.flow::before {
-        background: linear-gradient(to bottom, #22c55e, #15803d);
+        background: linear-gradient(to bottom, #0ea5e9, #2563eb);
     }
     .where-card.low52::before {
         background: linear-gradient(to bottom, #6366f1, #4f46e5);
@@ -204,13 +206,13 @@
         pointer-events: none;
     }
     .theme-top-card.bull::before {
-        border: 2px solid rgba(248, 113, 113, 0.4);
+        border: 2px solid rgba(34, 197, 94, 0.4);
     }
     .theme-top-card.bear::before {
         border: 2px solid rgba(59, 130, 246, 0.35);
     }
     .theme-top-card.bull .theme-name {
-        color: #b91c1c;
+        color: #15803d;
     }
     .theme-top-card.bear .theme-name {
         color: #1d4ed8;
@@ -229,8 +231,8 @@
         padding: 1px 6px;
         border-radius: 999px;
         font-size: 11px;
-        background: #fee2e2;
-        color: #b91c1c;
+        background: #dcfce7;
+        color: #15803d;
     }
     .theme-top-desc {
         font-size: 12px;
@@ -290,10 +292,10 @@
         top: 0;
         bottom: 0;
         width: 4px;
-        background: linear-gradient(to bottom, #f97316, #ef4444);
+        background: linear-gradient(to bottom, #22c55e, #16a34a);
     }
     .top5-card.kind-volume::before {
-        background: linear-gradient(to bottom, #38bdf8, #1d4ed8);
+        background: linear-gradient(to bottom, #0ea5e9, #1d4ed8);
     }
     .top5-card.kind-foreign::before {
         background: linear-gradient(to bottom, #22c55e, #15803d);
@@ -342,9 +344,9 @@
         margin: 0 4px 3px 0;
         border-radius: 999px;
         font-size: 11px;
-        background: #eef2ff;
-        color: #3730a3;
-        border: 1px solid #e0e7ff;
+        background: #e0f2fe;
+        color: #0369a1;
+        border: 1px solid #bae6fd;
         white-space: nowrap;
     }
 
@@ -385,9 +387,9 @@
         background: #e5e7eb;
     }
     .nav-link.active {
-        border-color: #ef4444;
-        color: #b91c1c;
-        background: #fee2e2;
+        border-color: #22c55e;
+        color: #15803d;
+        background: #dcfce7;
         font-weight: 600;
     }
 
@@ -413,176 +415,175 @@
 <body>
 <header>
     <div class="left">
-        <div class="title-main">장마감 테마 스캐너</div>
+        <div class="title-main">장중 테마 스캐너</div>
         <div class="title-sub">
-            <span class="subtitle-highlight">📌 현재 화면은 가장 최근 장마감 데이터(<span class='subtitle-date'>2025-11-18</span>) 기준입니다. 오늘 장마감 데이터는 장 종료 후 업데이트됩니다.</span>
+            <span class="subtitle-highlight">📌 현재 화면은 가장 최근 장중 데이터 스냅샷(<span class='subtitle-date'>2025-11-19</span>) 기준입니다. 수치는 장중 변동에 따라 달라질 수 있으며, 최종 값은 장 마감 후 확정됩니다.</span>
         </div>
         <div class="nav-links">
-            <a href="postclose.html" class="nav-link active">요약 대시보드</a>
-            <a href="postclose_overview.html" class="nav-link">테마 맵 전체 보기</a>
+            <a href="intraday.html" class="nav-link active">요약 대시보드</a>
         </div>
     </div>
     <div class="right-info">
-        <div>생성 시각: 2025-11-19 12:58</div>
-        <div>데이터: theme_postclose_stats.tsv 기준</div>
+        <div>생성 시각: 2025-11-19 13:25</div>
+        <div>데이터: theme_intraday_stats.tsv 기준</div>
     </div>
 </header>
 <div id="container">
 
 <section id="summary-section">
 <div class="section-box">
-<div class="section-title">오늘 장 마감 스냅샷</div>
-<div class="section-sub">당일 종가 기준으로 주요 테마·종목의 가격과 수급 상황을 한 화면에 정리했습니다.</div>
+<div class="section-title">오늘 장중 스냅샷</div>
+<div class="section-sub">실시간(또는 최근 스냅샷) 기준으로 주요 테마·종목의 가격과 수급 상황을 한 화면에 정리했습니다.</div>
 <div class="summary-row">
 <div class="summary-card">
 <div class="summary-card-title">전체 커버리지</div>
 <div class="summary-card-main">430개</div>
-<div class="summary-card-sub">테마 25개 / 종목 430개</div>
+<div class="summary-card-sub">테마 25개 / 종목 430개 (intraday 스냅샷 기준)</div>
 </div>
 <div class="summary-card">
-<div class="summary-card-title">상승 / 하락 종목 비율</div>
-<div class="summary-card-main"><span class="pos">8.4%</span> / <span class="neg">90.7%</span></div>
-<div class="summary-card-sub">상승 36개 / 하락 390개 / 보합 4개</div>
+<div class="summary-card-title">장중 상승 / 하락 종목 비율</div>
+<div class="summary-card-main"><span class="pos">53.0%</span> / <span class="neg">44.0%</span></div>
+<div class="summary-card-sub">상승 228개 / 하락 189개 / 보합 13개</div>
 </div>
 <div class="summary-card">
-<div class="summary-card-title">오늘 전체 거래대금(커버리지 기준)</div>
-<div class="summary-card-main">148,855.68억</div>
-<div class="summary-card-sub">TSV에 포함된 종목들의 거래대금 합계 (단위: 억 원, 10005=백만 기준)</div>
+<div class="summary-card-title">오늘 누적 거래대금(커버리지 기준)</div>
+<div class="summary-card-main">101,612.94억</div>
+<div class="summary-card-sub">TSV에 포함된 종목들의 장중 누적 거래대금 합계 (단위: 억 원, 10005=백만 기준)</div>
 </div>
 </div>
 <div class="section-title">어디부터 볼까?</div>
-<div class="section-sub">가격 모멘텀, 수급, 52주 저점 관점에서 장 마감 이후 체크 포인트를 정리했습니다.</div>
+<div class="section-sub">장중 가격 모멘텀, 수급, 52주 저점 관점에서 우선 체크 포인트를 정리했습니다.</div>
 <div class="summary-row">
 <div class="where-card momentum">
 <div class="where-title">가격 · 등락율</div>
-<div class="where-pill">모멘텀 관점</div>
-<p class="where-text">오늘 기준 <span class="where-em">상승 종목 36개</span>, <span class="where-em">하락 종목 390개</span>입니다.</p>
-<p class="where-text">오늘 강하게 움직인 종목은 아래 <b>등락율 TOP5 / 하락 TOP5</b> 테이블에서 빠르게 확인할 수 있습니다.</p>
+<div class="where-pill">장중 모멘텀</div>
+<p class="where-text">현재 기준 <span class="where-em">상승 종목 228개</span>, <span class="where-em">하락 종목 189개</span>입니다.</p>
+<p class="where-text">오늘 강하게 움직이는 종목은 <b>아래 장중 등락율 TOP5 / 하락 TOP5</b> 테이블에서 빠르게 확인할 수 있습니다.</p>
 </div>
 <div class="where-card flow">
 <div class="where-title">수급(외국인 · 기관 · 개인)</div>
-<div class="where-pill">수급 관점</div>
-<p class="where-text">오늘 기준, <span class="where-em">외국인 순매수 종목 192개</span>, <span class="where-em">기관 순매수 종목 151개</span>, <span class="where-em">개인 순매수 종목 260개</span>입니다.</p>
-<p class="where-text">테마 단위로는 <b>외국인/기관 수급 상위 테마 카드</b>를 먼저 보고, 이후 종목 TOP5로 내려가면 흐름을 잡기 좋습니다.</p>
+<div class="where-pill">실시간 수급</div>
+<p class="where-text">현재까지 <span class="where-em">외국인 순매수 종목 232개</span>, <span class="where-em">기관 순매수 종목 87개</span>, <span class="where-em">개인 순매수 종목 0개</span>가 포착되었습니다.</p>
+<p class="where-text">수급 방향을 먼저 보고 싶다면 <b>장중 외국인·기관·개인 순매수 TOP5</b>를 함께 보시면 좋습니다.</p>
 </div>
 <div class="where-card low52">
 <div class="where-title">52주 저점 근처 종목</div>
 <div class="where-pill">밸류에이션 관점</div>
-<p class="where-text">52주 최저가 대비 ±10% 구간에 있는 종목은 <span class="where-em">32개</span>입니다.</p>
-<p class="where-text">바닥권/리밸런싱 후보를 찾는다면 52주 저점 인근 종목과 외국인·기관 수급을 함께 체크해보는 것이 좋습니다.</p>
+<p class="where-text">현재가 기준 52주 최저가 대비 ±10% 구간에 있는 종목은 <span class="where-em">32개</span>입니다.</p>
+<p class="where-text">저점 매수·리밸런싱 후보를 찾는다면 52주 저점 인근 종목과 장중 수급을 함께 체크해보는 것이 좋습니다.</p>
 </div>
 </div>
 </div>
 <div class="section-box">
-<div class="section-title">테마 온도 &amp; 수급 강도</div>
-<div class="section-sub">테마별 평균 등락율과 수급(외국인·기관·개인) 흐름을 같이 봅니다.</div>
+<div class="section-title">장중 테마 온도 &amp; 수급 강도</div>
+<div class="section-sub">테마별 평균 장중 등락율과 수급(외국인·기관·개인) 흐름을 같이 봅니다.</div>
 <div class="summary-row">
 <div class="theme-top-card bull">
-<div class="theme-top-title">상승 테마 TOP3 <span class="badge">평균 등락율 기준</span></div>
-<div class="theme-top-desc">상승 종목 비율과 평균 등락율이 높은 테마입니다.</div>
+<div class="theme-top-title">장중 상승 테마 TOP3 <span class="badge">평균 등락율 기준</span></div>
+<div class="theme-top-desc">상승 종목 비율과 장중 평균 등락율이 높은 테마입니다.</div>
 <ul class="theme-top-list">
-<li><span class="theme-name">바이오</span><span class="theme-stat-main">· 상승 8/31개 (25.8%)</span><span class="theme-stat-line">평균 등락율: <span class="neg">-1.20%</span></span><span class="theme-stat-line">거래대금 합계: 17,874.99억</span></li>
-<li><span class="theme-name">식음료</span><span class="theme-stat-main">· 상승 0/23개 (0.0%)</span><span class="theme-stat-line">평균 등락율: <span class="neg">-1.51%</span></span><span class="theme-stat-line">거래대금 합계: 1,503.87억</span></li>
-<li><span class="theme-name">의료AI</span><span class="theme-stat-main">· 상승 7/21개 (33.3%)</span><span class="theme-stat-line">평균 등락율: <span class="neg">-1.89%</span></span><span class="theme-stat-line">거래대금 합계: 4,051.67억</span></li>
+<li><span class="theme-name">로봇</span><span class="theme-stat-main">· 상승 19/24개 (79.2%)</span><span class="theme-stat-line">장중 평균 등락율: <span class="pos">3.59%</span></span><span class="theme-stat-line">거래대금 합계: 8,565.26억</span></li>
+<li><span class="theme-name">화장품</span><span class="theme-stat-main">· 상승 20/23개 (87.0%)</span><span class="theme-stat-line">장중 평균 등락율: <span class="pos">2.16%</span></span><span class="theme-stat-line">거래대금 합계: 2,354.26억</span></li>
+<li><span class="theme-name">자동차</span><span class="theme-stat-main">· 상승 16/18개 (88.9%)</span><span class="theme-stat-line">장중 평균 등락율: <span class="pos">1.79%</span></span><span class="theme-stat-line">거래대금 합계: 1,825.26억</span></li>
 </ul></div>
 <div class="theme-top-card bear">
-<div class="theme-top-title">하락 테마 TOP3 <span class="badge">조정 테마</span></div>
-<div class="theme-top-desc">조정이 깊었던 테마로, 내일 반등 후보군을 찾을 때 참고할 수 있습니다.</div>
+<div class="theme-top-title">장중 하락 테마 TOP3 <span class="badge">조정 테마</span></div>
+<div class="theme-top-desc">장중 조정이 깊은 테마로, 이후 반등 후보군을 찾을 때 참고할 수 있습니다.</div>
 <ul class="theme-top-list">
-<li><span class="theme-name">저출산</span><span class="theme-stat-main">· 상승 0/6개 (0.0%)</span><span class="theme-stat-line">평균 등락율: <span class="neg">-5.73%</span></span><span class="theme-stat-line">거래대금 합계: 95.35억</span></li>
-<li><span class="theme-name">증권</span><span class="theme-stat-main">· 상승 0/17개 (0.0%)</span><span class="theme-stat-line">평균 등락율: <span class="neg">-4.80%</span></span><span class="theme-stat-line">거래대금 합계: 2,895.57억</span></li>
-<li><span class="theme-name">로봇</span><span class="theme-stat-main">· 상승 0/24개 (0.0%)</span><span class="theme-stat-line">평균 등락율: <span class="neg">-4.75%</span></span><span class="theme-stat-line">거래대금 합계: 6,297.51억</span></li>
+<li><span class="theme-name">태양광</span><span class="theme-stat-main">· 상승 1/10개 (10.0%)</span><span class="theme-stat-line">장중 평균 등락율: <span class="neg">-1.52%</span></span><span class="theme-stat-line">거래대금 합계: 279.22억</span></li>
+<li><span class="theme-name">저출산</span><span class="theme-stat-main">· 상승 1/6개 (16.7%)</span><span class="theme-stat-line">장중 평균 등락율: <span class="neg">-1.06%</span></span><span class="theme-stat-line">거래대금 합계: 22.72억</span></li>
+<li><span class="theme-name">ESS</span><span class="theme-stat-main">· 상승 5/15개 (33.3%)</span><span class="theme-stat-line">장중 평균 등락율: <span class="neg">-0.98%</span></span><span class="theme-stat-line">거래대금 합계: 3,287.46억</span></li>
 </ul></div>
 </div>
 <div class="summary-row">
 <div class="where-card flow">
 <div class="where-title">외국인 순매수 상위 테마</div>
-<div class="where-pill">수급 · 외국인</div>
-<p class="where-text">오늘 외국인 순매수(수량 기준)가 강한 테마 TOP3입니다.</p>
-<p class="where-text"><span class="theme-pill-inline">로봇</span> <span class="theme-pill-inline">전력인프라</span> <span class="theme-pill-inline">조선/LNG</span></p>
+<div class="where-pill">장중 수급 · 외국인</div>
+<p class="where-text">현재까지 외국인 순매수(수량 기준)가 강한 테마 TOP3입니다.</p>
+<p class="where-text"><span class="theme-pill-inline">조선/LNG</span> <span class="theme-pill-inline">반도체장비</span> <span class="theme-pill-inline">전력인프라</span></p>
 </div>
 <div class="where-card flow">
 <div class="where-title">기관 순매수 상위 테마</div>
-<div class="where-pill">수급 · 기관</div>
-<p class="where-text">오늘 기관(연기금 포함) 순매수(수량 기준)가 강한 테마 TOP3입니다.</p>
-<p class="where-text"><span class="theme-pill-inline">지주사</span> <span class="theme-pill-inline">우주항공</span> <span class="theme-pill-inline">저출산</span></p>
+<div class="where-pill">장중 수급 · 기관</div>
+<p class="where-text">현재까지 기관(연기금 포함) 순매수(수량 기준)가 강한 테마 TOP3입니다.</p>
+<p class="where-text"><span class="theme-pill-inline">반도체</span> <span class="theme-pill-inline">금융</span> <span class="theme-pill-inline">로봇</span></p>
 </div>
 </div>
 </div>
 <div class="section-box">
-<div class="section-title">종목 레벨 TOP5</div>
-<div class="section-sub">오늘 장 마감 기준으로 가격·거래대금·수급이 두드러진 종목들을 정리했습니다.</div>
+<div class="section-title">장중 종목 레벨 TOP5</div>
+<div class="section-sub">현재 장중 기준으로 가격·거래대금·수급이 두드러진 종목들을 정리했습니다.</div>
 <div class="summary-row">
 <div class="top5-card kind-price">
-<div class="top5-title">등락율 TOP5</div>
-<div class="top5-desc">오늘 가장 강하게 상승한 종목입니다.</div>
+<div class="top5-title">장중 등락율 TOP5</div>
+<div class="top5-desc">현재 가장 강하게 상승 중인 종목입니다.</div>
 <table class="top5-table">
 <thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>등락율</th><th>현재가</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">셀바스헬스케어</td><td class="name">의료AI</td><td><span class="pos">8.46%</span></td><td>5,190</td></tr>
-<tr><td>2</td><td class="name">ISC</td><td class="name">유리기판</td><td><span class="pos">5.89%</span></td><td>88,100</td></tr>
-<tr><td>3</td><td class="name">ISC</td><td class="name">반도체소재부품</td><td><span class="pos">5.89%</span></td><td>88,100</td></tr>
-<tr><td>4</td><td class="name">노을</td><td class="name">의료AI</td><td><span class="pos">5.81%</span></td><td>2,730</td></tr>
-<tr><td>5</td><td class="name">티에이치엔</td><td class="name">자동차</td><td><span class="pos">4.75%</span></td><td>7,050</td></tr>
+<tr><td>1</td><td class="name">에스피지</td><td class="name">로봇</td><td><span class="pos">24.96%</span></td><td>37,800</td></tr>
+<tr><td>2</td><td class="name">파로스아이바이오</td><td class="name">의료AI</td><td><span class="pos">24.96%</span></td><td>7,460</td></tr>
+<tr><td>3</td><td class="name">엔젤로보틱스</td><td class="name">로봇</td><td><span class="pos">9.50%</span></td><td>28,250</td></tr>
+<tr><td>4</td><td class="name">HL만도</td><td class="name">자동차</td><td><span class="pos">8.65%</span></td><td>38,950</td></tr>
+<tr><td>5</td><td class="name">펩트론</td><td class="name">바이오</td><td><span class="pos">7.69%</span></td><td>336,000</td></tr>
 </tbody></table></div>
 <div class="top5-card kind-price">
-<div class="top5-title">하락 TOP5</div>
-<div class="top5-desc">오늘 조정 폭이 컸던 종목입니다.</div>
+<div class="top5-title">장중 하락 TOP5</div>
+<div class="top5-desc">현재 조정 폭이 큰 종목입니다.</div>
 <table class="top5-table">
 <thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>등락율</th><th>현재가</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">삼성출판사</td><td class="name">저출산</td><td><span class="neg">-22.07%</span></td><td>14,370</td></tr>
-<tr><td>2</td><td class="name">원익홀딩스</td><td class="name">로봇</td><td><span class="neg">-14.59%</span></td><td>21,950</td></tr>
-<tr><td>3</td><td class="name">원익홀딩스</td><td class="name">지주사</td><td><span class="neg">-14.59%</span></td><td>21,950</td></tr>
-<tr><td>4</td><td class="name">동성화인텍</td><td class="name">조선/LNG</td><td><span class="neg">-14.33%</span></td><td>27,200</td></tr>
-<tr><td>5</td><td class="name">제닉</td><td class="name">화장품</td><td><span class="neg">-8.44%</span></td><td>17,260</td></tr>
+<tr><td>1</td><td class="name">삼성출판사</td><td class="name">저출산</td><td><span class="neg">-7.52%</span></td><td>13,290</td></tr>
+<tr><td>2</td><td class="name">씨어스테크놀로지</td><td class="name">의료AI</td><td><span class="neg">-6.15%</span></td><td>126,600</td></tr>
+<tr><td>3</td><td class="name">삼영엠텍</td><td class="name">조선/LNG</td><td><span class="neg">-5.94%</span></td><td>16,940</td></tr>
+<tr><td>4</td><td class="name">셀바스헬스케어</td><td class="name">의료AI</td><td><span class="neg">-5.88%</span></td><td>4,885</td></tr>
+<tr><td>5</td><td class="name">에스엔시스</td><td class="name">조선/LNG</td><td><span class="neg">-5.34%</span></td><td>31,000</td></tr>
 </tbody></table></div>
 <div class="top5-card kind-volume">
 <div class="top5-title">거래대금 TOP5 (단위: 억 원)</div>
-<div class="top5-desc">오늘 거래대금이 가장 많이 몰린 종목입니다.</div>
+<div class="top5-desc">현재까지 거래대금이 가장 많이 몰린 종목입니다.</div>
 <table class="top5-table">
 <thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>거래대금</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td>20,442.61</td></tr>
-<tr><td>2</td><td class="name">삼성전자</td><td class="name">반도체</td><td>18,441.79</td></tr>
-<tr><td>3</td><td class="name">카카오</td><td class="name">인공지능</td><td>3,385.06</td></tr>
-<tr><td>4</td><td class="name">알테오젠</td><td class="name">바이오</td><td>3,090.52</td></tr>
-<tr><td>5</td><td class="name">에이비엘바이오</td><td class="name">바이오</td><td>2,889.38</td></tr>
+<tr><td>1</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td>16,378.81</td></tr>
+<tr><td>2</td><td class="name">삼성전자</td><td class="name">반도체</td><td>11,126.85</td></tr>
+<tr><td>3</td><td class="name">에이비엘바이오</td><td class="name">바이오</td><td>2,063.88</td></tr>
+<tr><td>4</td><td class="name">에스피지</td><td class="name">로봇</td><td>1,761.52</td></tr>
+<tr><td>5</td><td class="name">한화에어로스페이스</td><td class="name">우주항공</td><td>1,560.36</td></tr>
 </tbody></table></div>
 </div>
 <div class="summary-row">
 <div class="top5-card kind-foreign">
-<div class="top5-title">외국인 순매수 TOP5</div>
-<div class="top5-desc">오늘 외국인 매수세가 가장 강했던 종목입니다. (단위: 주)</div>
+<div class="top5-title">장중 외국인 순매수 TOP5</div>
+<div class="top5-desc">오늘 장 시작 이후 현재까지 외국인 매수세가 가장 강한 종목입니다. (단위: 주)</div>
 <table class="top5-table">
 <thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>순매수</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">삼성전자</td><td class="name">반도체</td><td><span class="pos">819,170</span></td></tr>
-<tr><td>2</td><td class="name">휴림로봇</td><td class="name">로봇</td><td><span class="pos">807,141</span></td></tr>
-<tr><td>3</td><td class="name">대원전선</td><td class="name">전력인프라</td><td><span class="pos">599,339</span></td></tr>
-<tr><td>4</td><td class="name">현대무벡스</td><td class="name">로봇</td><td><span class="pos">526,072</span></td></tr>
-<tr><td>5</td><td class="name">대한전선</td><td class="name">전력인프라</td><td><span class="pos">476,350</span></td></tr>
+<tr><td>1</td><td class="name">삼성중공업</td><td class="name">조선/LNG</td><td><span class="pos">397,000</span></td></tr>
+<tr><td>2</td><td class="name">HL만도</td><td class="name">자동차</td><td><span class="pos">138,000</span></td></tr>
+<tr><td>3</td><td class="name">휴림로봇</td><td class="name">로봇</td><td><span class="pos">137,000</span></td></tr>
+<tr><td>4</td><td class="name">대한전선</td><td class="name">전력인프라</td><td><span class="pos">130,000</span></td></tr>
+<tr><td>5</td><td class="name">한미반도체</td><td class="name">반도체장비</td><td><span class="pos">130,000</span></td></tr>
 </tbody></table></div>
 <div class="top5-card kind-inst">
-<div class="top5-title">기관 순매수 TOP5</div>
-<div class="top5-desc">오늘 기관(연기금 포함) 매수세가 강했던 종목입니다. (단위: 주)</div>
+<div class="top5-title">장중 기관 순매수 TOP5</div>
+<div class="top5-desc">오늘 장 시작 이후 현재까지 기관(연기금 포함) 매수세가 강한 종목입니다. (단위: 주)</div>
 <table class="top5-table">
 <thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>순매수</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">스피어</td><td class="name">우주항공</td><td><span class="pos">248,313</span></td></tr>
-<tr><td>2</td><td class="name">한국항공우주</td><td class="name">우주항공</td><td><span class="pos">188,602</span></td></tr>
-<tr><td>3</td><td class="name">티에이치엔</td><td class="name">자동차</td><td><span class="pos">173,687</span></td></tr>
-<tr><td>4</td><td class="name">디아이</td><td class="name">반도체</td><td><span class="pos">168,961</span></td></tr>
-<tr><td>5</td><td class="name">디아이</td><td class="name">반도체장비</td><td><span class="pos">168,961</span></td></tr>
+<tr><td>1</td><td class="name">삼성전자</td><td class="name">반도체</td><td><span class="pos">394,000</span></td></tr>
+<tr><td>2</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td><span class="pos">104,000</span></td></tr>
+<tr><td>3</td><td class="name">에스피지</td><td class="name">로봇</td><td><span class="pos">63,000</span></td></tr>
+<tr><td>4</td><td class="name">삼성중공업</td><td class="name">조선/LNG</td><td><span class="pos">48,000</span></td></tr>
+<tr><td>5</td><td class="name">KB금융</td><td class="name">금융</td><td><span class="pos">47,000</span></td></tr>
 </tbody></table></div>
 <div class="top5-card kind-ind">
-<div class="top5-title">개인 순매수 TOP5</div>
-<div class="top5-desc">오늘 개인 매수세가 강했던 종목입니다. (단위: 주)</div>
+<div class="top5-title">장중 개인 순매수 TOP5</div>
+<div class="top5-desc">오늘 장 시작 이후 현재까지 개인 매수세가 강한 종목입니다. (단위: 주)</div>
 <table class="top5-table">
 <thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>순매수</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">카카오</td><td class="name">인공지능</td><td><span class="pos">2,151,504</span></td></tr>
-<tr><td>2</td><td class="name">드림시큐리티</td><td class="name">양자</td><td><span class="pos">1,104,097</span></td></tr>
-<tr><td>3</td><td class="name">SK증권</td><td class="name">증권</td><td><span class="pos">1,058,892</span></td></tr>
-<tr><td>4</td><td class="name">삼성전자</td><td class="name">반도체</td><td><span class="pos">956,454</span></td></tr>
-<tr><td>5</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td><span class="pos">909,114</span></td></tr>
+<tr><td>1</td><td class="name">NAVER</td><td class="name">인공지능</td><td><span class="zero">0</span></td></tr>
+<tr><td>2</td><td class="name">카카오</td><td class="name">인공지능</td><td><span class="zero">0</span></td></tr>
+<tr><td>3</td><td class="name">코난테크놀로지</td><td class="name">인공지능</td><td><span class="zero">0</span></td></tr>
+<tr><td>4</td><td class="name">솔트룩스</td><td class="name">인공지능</td><td><span class="zero">0</span></td></tr>
+<tr><td>5</td><td class="name">알체라</td><td class="name">인공지능</td><td><span class="zero">0</span></td></tr>
 </tbody></table></div>
 </div>
-<p class="detail-note">※ 거래대금은 Kiwoom TR10005 기준 <b>백만 원 단위</b>이며, 합계·순위 카드에서는 <b>억 원</b> 단위로 환산해 표시했습니다. 수급(개인·외국인·기관)은 TR10059 기준이며, 금액이 아닌 <b>수량(주)</b> 기준입니다.</p>
+<p class="detail-note">※ 거래대금은 TR10005 기준 <b>백만 원</b> 단위이며, 수급(개인·외국인·기관)은 TR10059 기준 <b>수량(주)</b> 기준입니다. 장중 수치는 시점별 스냅샷이므로, 장 종료 시점 값과는 다를 수 있습니다.</p>
 </div>
 </section>
 

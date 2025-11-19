@@ -1,0 +1,576 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>장전 테마 대시보드</title>
+<style>
+    * { box-sizing: border-box; }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: #f3f4f8;
+        margin: 0;
+        color: #0f172a;
+    }
+
+    header {
+        background: #ffffff;
+        color: #0f172a;
+        padding: 14px 20px;
+        font-size: 18px;
+        font-weight: 700;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid #e5e7eb;
+        box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+    }
+    header .left {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+    header .title-main {
+        font-size: 18px;
+        font-weight: 800;
+    }
+    header .title-sub {
+        font-size: 12px;
+        color: #64748b;
+    }
+    header .right-info {
+        font-size: 12px;
+        color: #64748b;
+        text-align: right;
+    }
+
+    #container {
+        padding: 18px;
+        max-width: 1200px;
+        margin: 0 auto 32px auto;
+    }
+
+    .section-box {
+        background: #ffffff;
+        border-radius: 18px;
+        padding: 14px 18px 16px 18px;
+        margin-bottom: 18px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 4px 12px rgba(15,23,42,0.06);
+    }
+
+    .section-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 4px 2px 4px 2px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .section-title::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #fb923c, #ef4444);
+    }
+    .section-sub {
+        font-size: 12px;
+        color: #6b7280;
+        margin: 0 2px 10px 2px;
+    }
+
+    #summary-section {
+        margin-bottom: 24px;
+    }
+    .summary-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        margin-bottom: 12px;
+    }
+
+    .summary-card {
+        flex: 1 1 260px;
+        min-width: 260px;
+        background: linear-gradient(135deg, #fffbeb, #fefce8);
+        border-radius: 14px;
+        padding: 12px 16px;
+        border: 1px solid #facc15;
+        box-shadow: 0 2px 8px rgba(15,23,42,0.06);
+    }
+    .summary-card-title {
+        font-size: 13px;
+        font-weight: 700;
+        color: #92400e;
+        margin-bottom: 4px;
+    }
+    .summary-card-main {
+        font-size: 22px;
+        font-weight: 800;
+        margin-bottom: 2px;
+    }
+    .summary-card-sub {
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    .where-card {
+        flex: 1 1 260px;
+        min-width: 260px;
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 10px 14px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 6px rgba(15,23,42,0.04);
+        position: relative;
+        overflow: hidden;
+    }
+    .where-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 4px;
+        bottom: 0;
+        background: #e5e7eb;
+    }
+    .where-card.momentum::before {
+        background: linear-gradient(to bottom, #fdba74, #f97316);
+    }
+    .where-card.flow::before {
+        background: linear-gradient(to bottom, #38bdf8, #2563eb);
+    }
+    .where-card.low52::before {
+        background: linear-gradient(to bottom, #a855f7, #6366f1);
+    }
+    .where-card .where-title {
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 4px;
+    }
+    .where-card .where-pill {
+        display: inline-block;
+        padding: 2px 8px;
+        border-radius: 999px;
+        font-size: 11px;
+        margin-bottom: 4px;
+        border: 1px solid #e5e7eb;
+        color: #4b5563;
+        background: #f9fafb;
+    }
+    .where-text {
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 4px;
+    }
+    .where-em {
+        font-size: 12px;
+        color: #0f172a;
+        font-weight: 600;
+    }
+
+    .theme-top-card {
+        flex: 1 1 360px;
+        min-width: 360px;
+        background: linear-gradient(135deg, #f9fafb, #ffffff);
+        border-radius: 14px;
+        padding: 10px 14px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(15,23,42,0.05);
+        position: relative;
+        overflow: hidden;
+    }
+    .theme-top-card.bull::before,
+    .theme-top-card.bear::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 14px;
+        pointer-events: none;
+    }
+    .theme-top-card.bull::before {
+        border: 2px solid rgba(248, 113, 113, 0.4);
+    }
+    .theme-top-card.bear::before {
+        border: 2px solid rgba(59, 130, 246, 0.35);
+    }
+    .theme-top-card.bull .theme-name {
+        color: #b91c1c;
+    }
+    .theme-top-card.bear .theme-name {
+        color: #1d4ed8;
+    }
+
+    .theme-top-title {
+        font-size: 13px;
+        font-weight: 700;
+        margin: 0 0 4px 0;
+        position: relative;
+        z-index: 1;
+    }
+    .theme-top-title span.badge {
+        display: inline-block;
+        margin-left: 6px;
+        padding: 1px 6px;
+        border-radius: 999px;
+        font-size: 11px;
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+    .theme-top-desc {
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 6px;
+        position: relative;
+        z-index: 1;
+    }
+    .theme-top-list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        font-size: 12px;
+        position: relative;
+        z-index: 1;
+    }
+    .theme-top-list li {
+        padding: 4px 0;
+        border-bottom: 1px dashed #e5e7eb;
+    }
+    .theme-top-list li:last-child {
+        border-bottom: none;
+    }
+    .theme-name {
+        font-weight: 600;
+    }
+    .theme-stat {
+        color: #6b7280;
+        margin-left: 4px;
+    }
+    /* 테마 온도 체크에서 줄 나누기용 */
+    .theme-stat-main {
+        display: block;
+        margin-top: 2px;
+    }
+    .theme-stat-line {
+        display: block;
+        margin-left: 12px;
+        font-size: 11px;
+        color: #6b7280;
+    }
+
+    .top5-card {
+        flex: 1 1 280px;
+        min-width: 280px;
+        background: linear-gradient(135deg, #ffffff, #f9fafb);
+        border-radius: 14px;
+        padding: 10px 14px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 2px 8px rgba(15,23,42,0.05);
+        position: relative;
+        overflow: hidden;
+    }
+    .top5-card::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(to bottom, #f97316, #ef4444);
+    }
+    .top5-card.kind-volume::before {
+        background: linear-gradient(to bottom, #38bdf8, #1d4ed8);
+    }
+    .top5-card.kind-foreign::before {
+        background: linear-gradient(to bottom, #22c55e, #15803d);
+    }
+    .top5-card.kind-inst::before {
+        background: linear-gradient(to bottom, #a855f7, #6d28d9);
+    }
+    .top5-card.kind-ind::before {
+        background: linear-gradient(to bottom, #f97316, #ec4899);
+    }
+
+    .top5-title {
+        font-size: 13px;
+        font-weight: 700;
+        margin: 0 0 2px 0;
+    }
+    .top5-desc {
+        font-size: 12px;
+        color: #6b7280;
+        margin-bottom: 6px;
+    }
+    table.top5-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 12px;
+    }
+    table.top5-table th {
+        background: #f3f4f6;
+        padding: 4px;
+        text-align: center;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    table.top5-table td {
+        padding: 3px 4px;
+        border-bottom: 1px solid #f3f4f6;
+        text-align: right;
+    }
+    table.top5-table td.name {
+        text-align: left;
+        white-space: nowrap;
+    }
+
+    /* 수익률 기준 상위/52주 회복 상위 카드의 테마 배지 */
+    .theme-pill-inline {
+        display: inline-block;
+        padding: 2px 8px;
+        margin: 0 4px 3px 0;
+        border-radius: 999px;
+        font-size: 11px;
+        background: #fee2e2;
+        color: #b91c1c;
+        border: 1px solid #fecaca;
+        white-space: nowrap;
+    }
+    .theme-pill-inline.low52-pill {
+        background: #ede9fe;
+        color: #4c1d95;
+        border-color: #ddd6fe;
+    }
+
+    .pos {
+        color: #b91c1c;
+        font-weight: 600;
+    }
+    .neg {
+        color: #1d4ed8;
+        font-weight: 600;
+    }
+    .zero {
+        color: #6b7280;
+    }
+
+    .detail-note {
+        margin-top: 16px;
+        font-size: 12px;
+        color: #6b7280;
+    }
+
+    /* 🔹 여기부터 추가: 탭 네비게이션 스타일 */
+    .nav-links {
+        display: flex;
+        gap: 8px;
+        margin-top: 4px;
+        flex-wrap: wrap;
+    }
+    .nav-link {
+        font-size: 12px;
+        padding: 3px 10px;
+        border-radius: 999px;
+        border: 1px solid #e5e7eb;
+        text-decoration: none;
+        color: #4b5563;
+        background: #f9fafb;
+    }
+    .nav-link:hover {
+        background: #e5e7eb;
+    }
+    .nav-link.active {
+        border-color: #ef4444;
+        color: #b91c1c;
+        background: #fee2e2;
+        font-weight: 600;
+    }
+    /* 🔹 추가 끝 */
+
+    @media (max-width: 900px) {
+        body {
+            font-size: 12px;
+        }
+        table {
+            font-size: 11px;
+        }
+        header {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 4px;
+        }
+        .theme-top-card {
+            min-width: 260px;
+        }
+    }
+
+</style>
+</head>
+<body>
+<header>
+    <div class="left">
+        <div class="title-main">장전 테마 스캐너</div>
+        <div class="title-sub">데이터 기준: 2025-11-19 07:51 (파일 수정 시각 기준)</div>
+        <!-- 🔹 여기부터 추가: 탭 링크 -->
+        <div class="nav-links">
+            <a href="preopen.html" class="nav-link active">요약 대시보드</a>
+            <a href="preopen_overview.html" class="nav-link">테마 맵 전체 보기</a>
+        </div>
+        <!-- 🔹 추가 끝 -->
+    </div>
+    <div class="right-info">
+        <div>생성 시각: 2025-11-19 07:55</div>
+        <div>데이터: theme_preopen_stats.tsv 기준</div>
+    </div>
+</header>
+<div id="container">
+
+<section id="summary-section">
+<div class="section-box">
+<div class="section-title">오늘 장전 스냅샷</div>
+<div class="section-sub">전일 종가 기준으로 주요 테마·종목의 분위기를 한 번에 정리했습니다.</div>
+<div class="summary-row">
+<div class="summary-card">
+<div class="summary-card-title">전체 커버리지</div>
+<div class="summary-card-main">430개</div>
+<div class="summary-card-sub">전체 테마 종목 수 · 테마 수 25개 기준</div>
+</div>
+<div class="summary-card">
+<div class="summary-card-title">1일 기준 상승 / 하락 비율</div>
+<div class="summary-card-main"><span class="pos">8.4%</span> / <span class="neg">90.7%</span></div>
+<div class="summary-card-sub">상승 36개 / 하락 390개 (전일 종가 기준)</div>
+</div>
+</div>
+<div class="section-title">어디부터 볼까?</div>
+<div class="section-sub">가격 모멘텀 · 수급 · 52주 저점 관점에서 첫 화면을 안내합니다.</div>
+<div class="summary-row">
+<div class="where-card momentum">
+<div class="where-title">가격 · 상승/하락</div>
+<div class="where-pill">모멘텀 관점</div>
+<p class="where-text">최근 5일 기준 <span class="where-em">상승 추세 종목 109개</span>가 포착되었습니다.</p>
+<p class="where-text">단기 방향성을 먼저 보고 싶다면 <b>아래 단기 방향성 &amp; 52주 위치 카드</b>에서 <b>1일·3일·5일 수익률 상위 테마</b>를 먼저 확인해보세요.</p>
+</div>
+<div class="where-card flow">
+<div class="where-title">수급(외국인 · 기관 · 개인)</div>
+<div class="where-pill">수급 관점</div>
+<p class="where-text">최근 5일 순매수 기준, <span class="where-em">외국인 189개</span> · <span class="where-em">기관 207개</span> · <span class="where-em">개인 251개</span> 종목에서 매수 우위가 나타났습니다.</p>
+<p class="where-text">매매 주체 흐름이 궁금하다면 <b>외국인·기관·개인 5일 순매수 TOP5</b> 섹션을 함께 보세요.</p>
+</div>
+<div class="where-card low52">
+<div class="where-title">52주 저점·바닥 다지기</div>
+<div class="where-pill">밸류에이션 관점</div>
+<p class="where-text">52주 최저가 대비 <span class="where-em">-20% 이내 구간</span>에 있는 종목은 총 <span class="where-em">2개</span>입니다.</p>
+<p class="where-text">바닥권 리바운드를 노린다면 <b>아래 52주 저점대비 회복 상위 테마</b>도 같이 참고하세요.</p>
+</div>
+</div>
+<div class="section-title">단기 방향성 &amp; 52주 위치</div>
+<div class="section-sub">테마별 평균 수익률(1일·3일·5일)과 52주 저점대비 위치를 간단히 정리했습니다.</div>
+<div class="summary-row">
+<div class="where-card momentum">
+<div class="where-title">수익률 기준 상위 테마</div>
+<div class="where-pill">1일 · 3일 · 5일</div>
+<p class="where-text"><span class="where-em">1일 수익률 상위</span> <span class="theme-pill-inline">바이오</span> <span class="theme-pill-inline">식음료</span> <span class="theme-pill-inline">의료AI</span></p>
+<p class="where-text"><span class="where-em">3일 수익률 상위</span> <span class="theme-pill-inline">바이오</span> <span class="theme-pill-inline">의료AI</span> <span class="theme-pill-inline">우주항공</span></p>
+<p class="where-text"><span class="where-em">5일 수익률 상위</span> <span class="theme-pill-inline">바이오</span> <span class="theme-pill-inline">의료AI</span> <span class="theme-pill-inline">우주항공</span></p>
+<p class="where-text">단기 스윙·트레이딩 관점이라면 위 테마들의 <b>종목·수급 흐름을 먼저 체크</b>해보는 것을 추천합니다.</p>
+</div>
+<div class="where-card low52">
+<div class="where-title">52주 저점대비 회복 상위 테마</div>
+<div class="where-pill">52주 최저 기준</div>
+<p class="where-text">52주 최저가 대비 <span class="where-em">상승폭이 큰 테마 TOP3</span>:</p>
+<p class="where-text"><span class="theme-pill-inline low52-pill">로봇</span> <span class="theme-pill-inline low52-pill">반도체</span> <span class="theme-pill-inline low52-pill">바이오</span></p>
+<p class="where-text">이미 많이 올라온 구간인지, 아직 추세 초입인지 확인할 때 참고용으로 볼 수 있습니다.</p>
+</div>
+</div>
+</div>
+<div class="section-box">
+<div class="section-title">테마 온도 체크</div>
+<div class="section-sub">전일 기준 상승 비율과 1일·3일·5일 수익률, 52주 저점대비 위치를 한 번에 봅니다. ※ 52주 저점대비 = (전일 종가 − 52주 최저가) ÷ 52주 최저가 × 100</div>
+<div class="summary-row">
+<div class="theme-top-card bull">
+<div class="theme-top-title">상승 테마 TOP3 <span class="badge">상승 비율 기준</span></div>
+<div class="theme-top-desc">상승 종목 비율이 높고, 단기(1·3·5일) 수익률이 강한 테마입니다.</div>
+<ul class="theme-top-list">
+<li><span class="theme-name">바이오</span><span class="theme-stat-main">· 상승 8/31개 (25.8%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="neg">-1.2%</span> · 3일 <span class="pos">1.4%</span> · 5일 <span class="pos">11.7%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">181.6%</span></span></li>
+<li><span class="theme-name">식음료</span><span class="theme-stat-main">· 상승 0/23개 (0.0%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="neg">-1.5%</span> · 3일 <span class="neg">-2.7%</span> · 5일 <span class="neg">-0.7%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">34.9%</span></span></li>
+<li><span class="theme-name">의료AI</span><span class="theme-stat-main">· 상승 7/21개 (33.3%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="neg">-1.9%</span> · 3일 <span class="pos">0.6%</span> · 5일 <span class="pos">6.7%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">170.5%</span></span></li>
+</ul></div>
+<div class="theme-top-card bear">
+<div class="theme-top-title">하락 테마 TOP3 <span class="badge">조정 비율 기준</span></div>
+<div class="theme-top-desc">단기 조정이 깊었던 테마로, 1·3·5일 수익률과 52주 위치를 함께 확인합니다.</div>
+<ul class="theme-top-list">
+<li><span class="theme-name">저출산</span><span class="theme-stat-main">· 상승 0/6개 (0.0%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="neg">-5.7%</span> · 3일 <span class="neg">-7.3%</span> · 5일 <span class="neg">-6.5%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">8.9%</span></span></li>
+<li><span class="theme-name">증권</span><span class="theme-stat-main">· 상승 0/17개 (0.0%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="neg">-4.8%</span> · 3일 <span class="neg">-8.3%</span> · 5일 <span class="neg">-4.4%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">92.4%</span></span></li>
+<li><span class="theme-name">로봇</span><span class="theme-stat-main">· 상승 0/24개 (0.0%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="neg">-4.8%</span> · 3일 <span class="neg">-9.7%</span> · 5일 <span class="neg">-8.2%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">229.2%</span></span></li>
+</ul></div>
+</div>
+</div>
+<div class="section-box">
+<div class="section-title">종목 레벨 TOP5</div>
+<div class="section-sub">오늘 장전, 눈여겨볼 만한 종목들을 가격·수급 관점에서 정리했습니다.</div>
+<div class="summary-row">
+<div class="top5-card kind-price">
+<div class="top5-title">단기 수익률 TOP5</div>
+<div class="top5-desc">전일 기준 단기 모멘텀이 가장 강했던 종목입니다. 1일·3일·5일 수익률을 함께 비교해보세요.</div>
+<table class="top5-table">
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>1일 수익률</th><th>3일 수익률</th><th>5일 수익률</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">셀바스헬스케어</td><td class="name">의료AI</td><td><span class="pos">8.5%</span></td><td><span class="pos">29.6%</span></td><td><span class="pos">26.0%</span></td></tr>
+<tr><td>2</td><td class="name">ISC</td><td class="name">유리기판</td><td><span class="pos">5.9%</span></td><td><span class="pos">14.0%</span></td><td><span class="pos">11.4%</span></td></tr>
+<tr><td>3</td><td class="name">ISC</td><td class="name">반도체소재부품</td><td><span class="pos">5.9%</span></td><td><span class="pos">14.0%</span></td><td><span class="pos">11.4%</span></td></tr>
+<tr><td>4</td><td class="name">노을</td><td class="name">의료AI</td><td><span class="pos">5.8%</span></td><td><span class="neg">-1.3%</span></td><td><span class="pos">11.4%</span></td></tr>
+<tr><td>5</td><td class="name">티에이치엔</td><td class="name">자동차</td><td><span class="pos">4.8%</span></td><td><span class="pos">9.1%</span></td><td><span class="pos">15.4%</span></td></tr>
+</tbody></table></div>
+<div class="top5-card kind-volume">
+<div class="top5-title">거래대금 배수 TOP5</div>
+<div class="top5-desc">20일 평균 대비 전일 거래대금이 많이 몰린 종목입니다.</div>
+<table class="top5-table">
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>배수</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">삼성출판사</td><td class="name">저출산</td><td>6.93배</td></tr>
+<tr><td>2</td><td class="name">동성화인텍</td><td class="name">조선/LNG</td><td>6.79배</td></tr>
+<tr><td>3</td><td class="name">티에이치엔</td><td class="name">자동차</td><td>5.22배</td></tr>
+<tr><td>4</td><td class="name">셀바스헬스케어</td><td class="name">의료AI</td><td>4.04배</td></tr>
+<tr><td>5</td><td class="name">ISC</td><td class="name">유리기판</td><td>4.04배</td></tr>
+</tbody></table></div>
+</div>
+<div class="summary-row">
+<div class="top5-card kind-foreign">
+<div class="top5-title">외국인 5일 순매수 TOP5</div>
+<div class="top5-desc">최근 5일 동안 외국인 수급이 가장 강하게 들어온 종목입니다.</div>
+<table class="top5-table">
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>5일 순매수</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">셀트리온</td><td class="name">바이오</td><td><span class="pos">1,865,320</span></td></tr>
+<tr><td>2</td><td class="name">한화엔진</td><td class="name">조선/LNG</td><td><span class="pos">1,594,725</span></td></tr>
+<tr><td>3</td><td class="name">기업은행</td><td class="name">금융</td><td><span class="pos">1,580,754</span></td></tr>
+<tr><td>4</td><td class="name">대원전선</td><td class="name">전력인프라</td><td><span class="pos">1,580,595</span></td></tr>
+<tr><td>5</td><td class="name">다날</td><td class="name">스테이블코인</td><td><span class="pos">1,427,370</span></td></tr>
+</tbody></table></div>
+<div class="top5-card kind-inst">
+<div class="top5-title">기관 5일 순매수 TOP5</div>
+<div class="top5-desc">최근 5일 동안 기관 수급이 집중된 종목입니다.</div>
+<table class="top5-table">
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>5일 순매수</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">삼성중공업</td><td class="name">조선/LNG</td><td><span class="pos">1,171,566</span></td></tr>
+<tr><td>2</td><td class="name">오스코텍</td><td class="name">바이오</td><td><span class="pos">940,607</span></td></tr>
+<tr><td>3</td><td class="name">한국항공우주</td><td class="name">우주항공</td><td><span class="pos">847,908</span></td></tr>
+<tr><td>4</td><td class="name">KB금융</td><td class="name">금융</td><td><span class="pos">699,676</span></td></tr>
+<tr><td>5</td><td class="name">SK증권</td><td class="name">증권</td><td><span class="pos">676,438</span></td></tr>
+</tbody></table></div>
+<div class="top5-card kind-ind">
+<div class="top5-title">개인 5일 순매수 TOP5</div>
+<div class="top5-desc">최근 5일 동안 개인 매수세가 강했던 종목입니다.</div>
+<table class="top5-table">
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>5일 순매수</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">삼성전자</td><td class="name">반도체</td><td><span class="pos">11,087,811</span></td></tr>
+<tr><td>2</td><td class="name">카카오</td><td class="name">인공지능</td><td><span class="pos">4,762,144</span></td></tr>
+<tr><td>3</td><td class="name">신성이엔지</td><td class="name">태양광</td><td><span class="pos">4,340,025</span></td></tr>
+<tr><td>4</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td><span class="pos">3,664,686</span></td></tr>
+<tr><td>5</td><td class="name">HB테크놀러지</td><td class="name">유리기판</td><td><span class="pos">1,828,835</span></td></tr>
+</tbody></table></div>
+</div>
+<p class="detail-note">※ 52주 저점대비 값은 종목 단위 (전일 종가와 52주 최저가 기준) 수치를 테마별로 평균낸 값입니다.</p>
+</div>
+</section>
+
+</div>
+</body>
+</html>

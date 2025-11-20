@@ -4,17 +4,35 @@
 <meta charset="UTF-8">
 <title>장마감 테마 대시보드</title>
 <style>
-    * { box-sizing: border-box; }
+    :root {
+        --bg:#f8fafc;
+        --card:#ffffff;
+        --border:#e5e7eb;
+        --muted:#64748b;
+        --muted2:#94a3b8;
+        --up:#b91c1c;
+        --up-bg:#fee2e2;
+        --down:#1d4ed8;
+        --down-bg:#dbeafe;
+        --accent:#f97316;
+        --accent2:#22c55e;
+        --shadow-soft:0 10px 30px rgba(15,23,42,0.08);
+        --shadow-sub:0 6px 18px rgba(15,23,42,0.06);
+    }
+
+    * {
+        box-sizing: border-box;
+    }
 
     body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background: #f3f4f8;
+        background: radial-gradient(circle at top,#e0f2fe,#f8fafc,#fefce8);
         margin: 0;
         color: #0f172a;
     }
 
     header {
-        background: #ffffff;
+        background: linear-gradient(to bottom,rgba(248,250,252,0.96),rgba(248,250,252,0.99));
         color: #0f172a;
         padding: 14px 20px;
         font-size: 18px;
@@ -22,8 +40,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #e5e7eb;
-        box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+        border-bottom: 1px solid rgba(148,163,184,0.25);
+        box-shadow: 0 6px 18px rgba(148,163,184,0.28);
     }
     header .left {
         display: flex;
@@ -33,30 +51,33 @@
     header .title-main {
         font-size: 18px;
         font-weight: 800;
+        letter-spacing: -0.03em;
     }
     header .title-sub {
         font-size: 12px;
-        color: #64748b;
+        color: var(--muted);
     }
     header .right-info {
-        font-size: 12px;
-        color: #64748b;
+        font-size: 11px;
+        color: var(--muted2);
         text-align: right;
     }
+
     .subtitle-highlight {
         display: inline-block;
         padding: 4px 10px;
         border-radius: 999px;
-        background: #fef9c3;          /* 옅은 노랑 배경 */
-        border: 1px solid #facc15;    /* 노랑 테두리 */
-        color: #854d0e;               /* 진한 갈색 글자 */
+        background: #fef9c3;
+        border: 1px solid #facc15;
+        color: #854d0e;
         font-weight: 700;
         box-shadow: 0 1px 3px rgba(15,23,42,0.12);
     }
-    .subtitle-date {                     /* 날짜 강조용 스타일 */
-        color: #b91c1c;                   /* 진한 레드 계열 */
+    .subtitle-date {
+        color: var(--up);
         font-weight: 800;
     }
+
     #container {
         padding: 18px;
         max-width: 1200px;
@@ -64,12 +85,29 @@
     }
 
     .section-box {
-        background: #ffffff;
+        background: var(--card);
         border-radius: 18px;
         padding: 14px 18px 16px 18px;
         margin-bottom: 18px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 12px rgba(15,23,42,0.06);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sub);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .section-box::before {
+        content: "";
+        position: absolute;
+        inset: -40%;
+        background:
+          radial-gradient(circle at 0 0,rgba(251,191,36,0.12),transparent 55%),
+          radial-gradient(circle at 100% 20%,rgba(248,113,113,0.12),transparent 55%);
+        opacity: 0.75;
+        pointer-events: none;
+    }
+    .section-box > * {
+        position: relative;
+        z-index: 1;
     }
 
     .section-title {
@@ -86,11 +124,11 @@
         width: 6px;
         height: 6px;
         border-radius: 999px;
-        background: linear-gradient(135deg, #38bdf8, #6366f1);
+        background: linear-gradient(135deg,#38bdf8,#6366f1);
     }
     .section-sub {
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted);
         margin: 0 2px 10px 2px;
     }
 
@@ -107,11 +145,11 @@
     .summary-card {
         flex: 1 1 260px;
         min-width: 260px;
-        background: linear-gradient(135deg, #fffbeb, #fefce8);
+        background: linear-gradient(135deg,rgba(248,250,252,0.98),rgba(255,251,235,0.98));
         border-radius: 14px;
         padding: 12px 16px;
-        border: 1px solid #facc15;
-        box-shadow: 0 2px 8px rgba(15,23,42,0.06);
+        border: 1px solid rgba(250,204,21,0.85);
+        box-shadow: 0 2px 10px rgba(248,191,36,0.35);
     }
     .summary-card-title {
         font-size: 13px;
@@ -126,17 +164,17 @@
     }
     .summary-card-sub {
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted2);
     }
 
     .where-card {
         flex: 1 1 260px;
         min-width: 260px;
-        background: #ffffff;
+        background: rgba(248,250,252,0.98);
         border-radius: 14px;
         padding: 10px 14px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 2px 6px rgba(15,23,42,0.04);
+        border: 1px solid var(--border);
+        box-shadow: 0 2px 6px rgba(15,23,42,0.06);
         position: relative;
         overflow: hidden;
     }
@@ -150,13 +188,13 @@
         background: #e5e7eb;
     }
     .where-card.momentum::before {
-        background: linear-gradient(to bottom, #f97316, #ef4444);
+        background: linear-gradient(to bottom,#fdba74,#f97316);
     }
     .where-card.flow::before {
-        background: linear-gradient(to bottom, #22c55e, #15803d);
+        background: linear-gradient(to bottom,#38bdf8,#2563eb);
     }
     .where-card.low52::before {
-        background: linear-gradient(to bottom, #6366f1, #4f46e5);
+        background: linear-gradient(to bottom,#a855f7,#6366f1);
     }
     .where-card .where-title {
         font-size: 13px;
@@ -169,13 +207,14 @@
         border-radius: 999px;
         font-size: 11px;
         margin-bottom: 4px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border);
         color: #4b5563;
-        background: #f9fafb;
+        background: rgba(248,250,252,0.96);
+        box-shadow: 0 1px 3px rgba(15,23,42,0.04);
     }
     .where-text {
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted);
         margin-bottom: 4px;
     }
     .where-em {
@@ -187,11 +226,11 @@
     .theme-top-card {
         flex: 1 1 360px;
         min-width: 360px;
-        background: linear-gradient(135deg, #f9fafb, #ffffff);
+        background: linear-gradient(135deg,rgba(248,250,252,0.98),rgba(239,246,255,0.98));
         border-radius: 14px;
         padding: 10px 14px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 2px 8px rgba(15,23,42,0.05);
+        border: 1px solid var(--border);
+        box-shadow: 0 2px 8px rgba(15,23,42,0.06);
         position: relative;
         overflow: hidden;
     }
@@ -204,16 +243,16 @@
         pointer-events: none;
     }
     .theme-top-card.bull::before {
-        border: 2px solid rgba(248, 113, 113, 0.4);
+        border: 2px solid rgba(248,113,113,0.45);
     }
     .theme-top-card.bear::before {
-        border: 2px solid rgba(59, 130, 246, 0.35);
+        border: 2px solid rgba(59,130,246,0.4);
     }
     .theme-top-card.bull .theme-name {
-        color: #b91c1c;
+        color: var(--up);
     }
     .theme-top-card.bear .theme-name {
-        color: #1d4ed8;
+        color: var(--down);
     }
 
     .theme-top-title {
@@ -229,12 +268,12 @@
         padding: 1px 6px;
         border-radius: 999px;
         font-size: 11px;
-        background: #fee2e2;
-        color: #b91c1c;
+        background: var(--up-bg);
+        color: var(--up);
     }
     .theme-top-desc {
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted);
         margin-bottom: 6px;
         position: relative;
         z-index: 1;
@@ -258,7 +297,7 @@
         font-weight: 600;
     }
     .theme-stat {
-        color: #6b7280;
+        color: var(--muted);
         margin-left: 4px;
     }
     .theme-stat-main {
@@ -269,16 +308,16 @@
         display: block;
         margin-left: 12px;
         font-size: 11px;
-        color: #6b7280;
+        color: var(--muted);
     }
 
     .top5-card {
         flex: 1 1 280px;
         min-width: 280px;
-        background: linear-gradient(135deg, #ffffff, #f9fafb);
+        background: linear-gradient(135deg,rgba(248,250,252,0.99),rgba(249,250,251,0.99));
         border-radius: 14px;
         padding: 10px 14px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border);
         box-shadow: 0 2px 8px rgba(15,23,42,0.05);
         position: relative;
         overflow: hidden;
@@ -290,19 +329,19 @@
         top: 0;
         bottom: 0;
         width: 4px;
-        background: linear-gradient(to bottom, #f97316, #ef4444);
+        background: linear-gradient(to bottom,#f97316,#ef4444);
     }
     .top5-card.kind-volume::before {
-        background: linear-gradient(to bottom, #38bdf8, #1d4ed8);
+        background: linear-gradient(to bottom,#38bdf8,#1d4ed8);
     }
     .top5-card.kind-foreign::before {
-        background: linear-gradient(to bottom, #22c55e, #15803d);
+        background: linear-gradient(to bottom,#22c55e,#15803d);
     }
     .top5-card.kind-inst::before {
-        background: linear-gradient(to bottom, #a855f7, #6d28d9);
+        background: linear-gradient(to bottom,#a855f7,#6d28d9);
     }
     .top5-card.kind-ind::before {
-        background: linear-gradient(to bottom, #f97316, #ec4899);
+        background: linear-gradient(to bottom,#f97316,#ec4899);
     }
 
     .top5-title {
@@ -312,7 +351,7 @@
     }
     .top5-desc {
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted);
         margin-bottom: 6px;
     }
     table.top5-table {
@@ -342,28 +381,28 @@
         margin: 0 4px 3px 0;
         border-radius: 999px;
         font-size: 11px;
-        background: #eef2ff;
-        color: #3730a3;
-        border: 1px solid #e0e7ff;
+        background: #e0f2fe;
+        color: #0369a1;
+        border: 1px solid #bae6fd;
         white-space: nowrap;
     }
 
     .pos {
-        color: #b91c1c;
+        color: var(--up);
         font-weight: 600;
     }
     .neg {
-        color: #1d4ed8;
+        color: var(--down);
         font-weight: 600;
     }
     .zero {
-        color: #6b7280;
+        color: var(--muted);
     }
 
     .detail-note {
         margin-top: 16px;
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted2);
     }
 
     .nav-links {
@@ -376,10 +415,11 @@
         font-size: 12px;
         padding: 3px 10px;
         border-radius: 999px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border);
         text-decoration: none;
         color: #4b5563;
-        background: #f9fafb;
+        background: rgba(248,250,252,0.95);
+        box-shadow: 0 2px 4px rgba(15,23,42,0.04);
     }
     .nav-link:hover {
         background: #e5e7eb;
@@ -418,12 +458,12 @@
             <span class="subtitle-highlight">📌 현재 화면은 가장 최근 장마감 데이터(<span class='subtitle-date'>2025-11-19</span>) 기준입니다. 오늘 장마감 데이터는 장 종료 후 업데이트됩니다.</span>
         </div>
         <div class="nav-links">
-            <a href="postclose.html" class="nav-link active">요약 대시보드</a>
-            <a href="postclose_overview.html" class="nav-link">테마 맵 전체 보기</a>
+            <a href="postclose.html?v=20251120121134" class="nav-link active">요약 대시보드</a>
+            <a href="postclose_overview.html?v=20251120121134" class="nav-link">테마 맵 전체 보기</a>
         </div>
     </div>
     <div class="right-info">
-        <div>생성 시각: 2025-11-19 17:02</div>
+        <div>생성 시각: 2025-11-20 12:11</div>
         <div>데이터: theme_postclose_stats.tsv 기준</div>
     </div>
 </header>

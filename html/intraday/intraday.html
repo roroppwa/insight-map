@@ -4,17 +4,35 @@
 <meta charset="UTF-8">
 <title>장중 테마 대시보드</title>
 <style>
-    * { box-sizing: border-box; }
+    :root {
+        --bg:#f8fafc;
+        --card:#ffffff;
+        --border:#e5e7eb;
+        --muted:#64748b;
+        --muted2:#94a3b8;
+        --up:#b91c1c;
+        --up-bg:#fee2e2;
+        --down:#1d4ed8;
+        --down-bg:#dbeafe;
+        --accent:#f97316;
+        --accent2:#22c55e;
+        --shadow-soft:0 10px 30px rgba(15,23,42,0.08);
+        --shadow-sub:0 6px 18px rgba(15,23,42,0.06);
+    }
+
+    * {
+        box-sizing: border-box;
+    }
 
     body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background: #f3f4f8;
         margin: 0;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: radial-gradient(circle at top,#e0f2fe,#f8fafc,#fefce8);
         color: #0f172a;
     }
 
     header {
-        background: #ffffff;
+        background: linear-gradient(to bottom,rgba(248,250,252,0.96),rgba(248,250,252,0.99));
         color: #0f172a;
         padding: 14px 20px;
         font-size: 18px;
@@ -22,8 +40,8 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid #e5e7eb;
-        box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+        border-bottom: 1px solid rgba(148,163,184,0.25);
+        box-shadow: 0 6px 18px rgba(148,163,184,0.28);
     }
     header .left {
         display: flex;
@@ -33,14 +51,15 @@
     header .title-main {
         font-size: 18px;
         font-weight: 800;
+        letter-spacing: -0.03em;
     }
     header .title-sub {
         font-size: 12px;
-        color: #64748b;
+        color: var(--muted);
     }
     header .right-info {
-        font-size: 12px;
-        color: #64748b;
+        font-size: 11px;
+        color: var(--muted2);
         text-align: right;
     }
 
@@ -55,7 +74,7 @@
         box-shadow: 0 1px 3px rgba(15,23,42,0.12);
     }
     .subtitle-date {
-        color: #b91c1c;
+        color: var(--up);
         font-weight: 800;
     }
 
@@ -66,12 +85,29 @@
     }
 
     .section-box {
-        background: #ffffff;
+        background: var(--card);
         border-radius: 18px;
         padding: 14px 18px 16px 18px;
         margin-bottom: 18px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 4px 12px rgba(15,23,42,0.06);
+        border: 1px solid var(--border);
+        box-shadow: var(--shadow-sub);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .section-box::before {
+        content: "";
+        position: absolute;
+        inset: -40%;
+        background:
+          radial-gradient(circle at 0 0,rgba(251,191,36,0.12),transparent 55%),
+          radial-gradient(circle at 100% 20%,rgba(248,113,113,0.12),transparent 55%);
+        opacity: 0.75;
+        pointer-events: none;
+    }
+    .section-box > * {
+        position: relative;
+        z-index: 1;
     }
 
     .section-title {
@@ -88,11 +124,11 @@
         width: 6px;
         height: 6px;
         border-radius: 999px;
-        background: linear-gradient(135deg, #22c55e, #0ea5e9);
+        background: linear-gradient(135deg,#f97316,#ef4444);
     }
     .section-sub {
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted);
         margin: 0 2px 10px 2px;
     }
 
@@ -109,16 +145,16 @@
     .summary-card {
         flex: 1 1 260px;
         min-width: 260px;
-        background: linear-gradient(135deg, #ecfdf5, #eff6ff);
+        background: linear-gradient(135deg,rgba(248,250,252,0.98),rgba(255,251,235,0.98));
         border-radius: 14px;
         padding: 12px 16px;
-        border: 1px solid #a7f3d0;
-        box-shadow: 0 2px 8px rgba(15,23,42,0.06);
+        border: 1px solid rgba(250,204,21,0.85);
+        box-shadow: 0 2px 10px rgba(248,191,36,0.35);
     }
     .summary-card-title {
         font-size: 13px;
         font-weight: 700;
-        color: #047857;
+        color: #92400e;
         margin-bottom: 4px;
     }
     .summary-card-main {
@@ -128,17 +164,17 @@
     }
     .summary-card-sub {
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted2);
     }
 
     .where-card {
         flex: 1 1 260px;
         min-width: 260px;
-        background: #ffffff;
+        background: rgba(248,250,252,0.98);
         border-radius: 14px;
         padding: 10px 14px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 2px 6px rgba(15,23,42,0.04);
+        border: 1px solid var(--border);
+        box-shadow: 0 2px 6px rgba(15,23,42,0.06);
         position: relative;
         overflow: hidden;
     }
@@ -152,13 +188,13 @@
         background: #e5e7eb;
     }
     .where-card.momentum::before {
-        background: linear-gradient(to bottom, #22c55e, #16a34a);
+        background: linear-gradient(to bottom,#fdba74,#f97316);
     }
     .where-card.flow::before {
-        background: linear-gradient(to bottom, #0ea5e9, #2563eb);
+        background: linear-gradient(to bottom,#38bdf8,#2563eb);
     }
     .where-card.low52::before {
-        background: linear-gradient(to bottom, #6366f1, #4f46e5);
+        background: linear-gradient(to bottom,#a855f7,#6366f1);
     }
     .where-card .where-title {
         font-size: 13px;
@@ -171,13 +207,14 @@
         border-radius: 999px;
         font-size: 11px;
         margin-bottom: 4px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border);
         color: #4b5563;
-        background: #f9fafb;
+        background: rgba(248,250,252,0.96);
+        box-shadow: 0 1px 3px rgba(15,23,42,0.04);
     }
     .where-text {
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted);
         margin-bottom: 4px;
     }
     .where-em {
@@ -189,11 +226,11 @@
     .theme-top-card {
         flex: 1 1 360px;
         min-width: 360px;
-        background: linear-gradient(135deg, #f9fafb, #ffffff);
+        background: linear-gradient(135deg,rgba(248,250,252,0.98),rgba(239,246,255,0.98));
         border-radius: 14px;
         padding: 10px 14px;
-        border: 1px solid #e5e7eb;
-        box-shadow: 0 2px 8px rgba(15,23,42,0.05);
+        border: 1px solid var(--border);
+        box-shadow: 0 2px 8px rgba(15,23,42,0.06);
         position: relative;
         overflow: hidden;
     }
@@ -206,16 +243,16 @@
         pointer-events: none;
     }
     .theme-top-card.bull::before {
-        border: 2px solid rgba(34, 197, 94, 0.4);
+        border: 2px solid rgba(248,113,113,0.45);
     }
     .theme-top-card.bear::before {
-        border: 2px solid rgba(59, 130, 246, 0.35);
+        border: 2px solid rgba(59,130,246,0.4);
     }
     .theme-top-card.bull .theme-name {
-        color: #15803d;
+        color: var(--up);
     }
     .theme-top-card.bear .theme-name {
-        color: #1d4ed8;
+        color: var(--down);
     }
 
     .theme-top-title {
@@ -231,12 +268,13 @@
         padding: 1px 6px;
         border-radius: 999px;
         font-size: 11px;
-        background: #dcfce7;
-        color: #15803d;
+        background: var(--up-bg);
+        color: var(--up);
+        border: 1px solid rgba(254,202,202,0.9);
     }
     .theme-top-desc {
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted);
         margin-bottom: 6px;
         position: relative;
         z-index: 1;
@@ -260,7 +298,7 @@
         font-weight: 600;
     }
     .theme-stat {
-        color: #6b7280;
+        color: var(--muted);
         margin-left: 4px;
     }
     .theme-stat-main {
@@ -271,16 +309,16 @@
         display: block;
         margin-left: 12px;
         font-size: 11px;
-        color: #6b7280;
+        color: var(--muted);
     }
 
     .top5-card {
         flex: 1 1 280px;
         min-width: 280px;
-        background: linear-gradient(135deg, #ffffff, #f9fafb);
+        background: linear-gradient(135deg,rgba(248,250,252,0.99),rgba(249,250,251,0.99));
         border-radius: 14px;
         padding: 10px 14px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border);
         box-shadow: 0 2px 8px rgba(15,23,42,0.05);
         position: relative;
         overflow: hidden;
@@ -292,16 +330,16 @@
         top: 0;
         bottom: 0;
         width: 4px;
-        background: linear-gradient(to bottom, #22c55e, #16a34a);
+        background: linear-gradient(to bottom,#f97316,#ef4444);
     }
     .top5-card.kind-volume::before {
-        background: linear-gradient(to bottom, #0ea5e9, #1d4ed8);
+        background: linear-gradient(to bottom,#38bdf8,#1d4ed8);
     }
     .top5-card.kind-foreign::before {
-        background: linear-gradient(to bottom, #22c55e, #15803d);
+        background: linear-gradient(to bottom,#22c55e,#15803d);
     }
     .top5-card.kind-inst::before {
-        background: linear-gradient(to bottom, #a855f7, #6d28d9);
+        background: linear-gradient(to bottom,#a855f7,#6d28d9);
     }
 
     .top5-title {
@@ -311,7 +349,7 @@
     }
     .top5-desc {
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted);
         margin-bottom: 6px;
     }
     table.top5-table {
@@ -348,21 +386,21 @@
     }
 
     .pos {
-        color: #b91c1c;
+        color: var(--up);
         font-weight: 600;
     }
     .neg {
-        color: #1d4ed8;
+        color: var(--down);
         font-weight: 600;
     }
     .zero {
-        color: #6b7280;
+        color: var(--muted);
     }
 
     .detail-note {
         margin-top: 16px;
         font-size: 12px;
-        color: #6b7280;
+        color: var(--muted2);
     }
 
     .nav-links {
@@ -375,18 +413,19 @@
         font-size: 12px;
         padding: 3px 10px;
         border-radius: 999px;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border);
         text-decoration: none;
         color: #4b5563;
-        background: #f9fafb;
+        background: rgba(248,250,252,0.95);
+        box-shadow: 0 2px 4px rgba(15,23,42,0.04);
     }
     .nav-link:hover {
         background: #e5e7eb;
     }
     .nav-link.active {
-        border-color: #22c55e;
-        color: #15803d;
-        background: #dcfce7;
+        border-color: #ef4444;
+        color: #b91c1c;
+        background: #fee2e2;
         font-weight: 600;
     }
 
@@ -406,7 +445,6 @@
             min-width: 260px;
         }
     }
-
 </style>
 </head>
 <body>
@@ -418,7 +456,7 @@
         </div>
     </div>
     <div class="right-info">
-        <div>생성 시각: 2025-11-19 15:57</div>
+        <div>생성 시각: 2025-11-20 12:07</div>
         <div>데이터: theme_intraday_stats.tsv 기준</div>
     </div>
 </header>
@@ -436,7 +474,7 @@
 </div>
 <div class="summary-card">
 <div class="summary-card-title">장중 상승 / 하락 종목 비율</div>
-<div class="summary-card-main"><span class="pos">45.6%</span> / <span class="neg">51.6%</span></div>
+<div class="summary-card-main><span class="pos">45.6%</span> / <span class="neg">51.6%</span></div>
 <div class="summary-card-sub">상승 196개 / 하락 222개 / 보합 12개</div>
 </div>
 <div class="summary-card">
@@ -514,104 +552,69 @@
 <div class="top5-title">장중 등락율 TOP5</div>
 <div class="top5-desc">현재 가장 강하게 상승 중인 종목입니다.</div>
 <table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>등락율</th><th>현재가</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">에스피지</td><td class="name">로봇</td><td><span class="pos">25.29%</span></td><td>37,900</td></tr>
-<tr><td>2</td><td class="name">파로스아이바이오</td><td class="name">의료AI</td><td><span class="pos">13.74%</span></td><td>6,790</td></tr>
-<tr><td>3</td><td class="name">아모레퍼시픽홀딩스</td><td class="name">지주사</td><td><span class="pos">8.91%</span></td><td>29,350</td></tr>
-<tr><td>4</td><td class="name">토모큐브</td><td class="name">바이오, 의료AI</td><td><span class="pos">7.77%</span></td><td>41,600</td></tr>
-<tr><td>5</td><td class="name">엔젤로보틱스</td><td class="name">로봇</td><td><span class="pos">7.75%</span></td><td>27,800</td></tr>
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>등락율</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">에스피지</td><td class="name">로봇</td><td>25.29%</td></tr>
+<tr><td>2</td><td class="name">파로스아이바이오</td><td class="name">의료AI</td><td>13.74%</td></tr>
+<tr><td>3</td><td class="name">아모레퍼시픽홀딩스</td><td class="name">지주사</td><td>8.91%</td></tr>
+<tr><td>4</td><td class="name">토모큐브</td><td class="name">바이오, 의료AI</td><td>7.77%</td></tr>
+<tr><td>5</td><td class="name">엔젤로보틱스</td><td class="name">로봇</td><td>7.75%</td></tr>
 </tbody></table></div>
 <div class="top5-card">
-<div class="top5-title">장중 하락 TOP5</div>
-<div class="top5-desc">현재 조정 폭이 큰 종목입니다.</div>
+<div class="top5-title">장중 하락율 TOP5</div>
+<div class="top5-desc">장중 조정이 깊은 종목입니다.</div>
 <table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>등락율</th><th>현재가</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">삼성출판사</td><td class="name">저출산</td><td><span class="neg">-7.65%</span></td><td>13,270</td></tr>
-<tr><td>2</td><td class="name">삼영엠텍</td><td class="name">조선/LNG</td><td><span class="neg">-7.05%</span></td><td>16,740</td></tr>
-<tr><td>3</td><td class="name">유일에너테크</td><td class="name">ESS</td><td><span class="neg">-6.96%</span></td><td>2,205</td></tr>
-<tr><td>4</td><td class="name">씨어스테크놀로지</td><td class="name">의료AI</td><td><span class="neg">-6.67%</span></td><td>125,900</td></tr>
-<tr><td>5</td><td class="name">셀바스헬스케어</td><td class="name">의료AI</td><td><span class="neg">-6.55%</span></td><td>4,850</td></tr>
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>등락율</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">삼성출판사</td><td class="name">저출산</td><td>-7.65%</td></tr>
+<tr><td>2</td><td class="name">삼영엠텍</td><td class="name">조선/LNG</td><td>-7.05%</td></tr>
+<tr><td>3</td><td class="name">유일에너테크</td><td class="name">ESS</td><td>-6.96%</td></tr>
+<tr><td>4</td><td class="name">씨어스테크놀로지</td><td class="name">의료AI</td><td>-6.67%</td></tr>
+<tr><td>5</td><td class="name">셀바스헬스케어</td><td class="name">의료AI</td><td>-6.55%</td></tr>
 </tbody></table></div>
-<div class="top5-card kind-volume">
-<div class="top5-title">거래대금 TOP5 (단위: 억 원)</div>
-<div class="top5-desc">현재까지 거래대금이 가장 많이 몰린 종목입니다.</div>
+<div class="top5-card">
+<div class="top5-title">장중 거래대금 TOP5</div>
+<div class="top5-desc">장중 기준 거래대금이 집중된 종목입니다.</div>
 <table class="top5-table">
 <thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>거래대금</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td>18,618.88</td></tr>
-<tr><td>2</td><td class="name">삼성전자</td><td class="name">반도체</td><td>13,607.44</td></tr>
-<tr><td>3</td><td class="name">에이비엘바이오</td><td class="name">바이오</td><td>2,271.31</td></tr>
-<tr><td>4</td><td class="name">에스피지</td><td class="name">로봇</td><td>2,167.23</td></tr>
-<tr><td>5</td><td class="name">한화에어로스페이스</td><td class="name">우주항공</td><td>2,133.59</td></tr>
+<tr><td>1</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td>1,861,888</td></tr>
+<tr><td>2</td><td class="name">삼성전자</td><td class="name">반도체</td><td>1,360,744</td></tr>
+<tr><td>3</td><td class="name">에이비엘바이오</td><td class="name">바이오</td><td>227,131</td></tr>
+<tr><td>4</td><td class="name">에스피지</td><td class="name">로봇</td><td>216,723</td></tr>
+<tr><td>5</td><td class="name">한화에어로스페이스</td><td class="name">우주항공</td><td>213,359</td></tr>
 </tbody></table></div>
 </div>
 <div class="summary-row">
-<div class="top5-card kind-foreign">
-<div class="top5-title">장중 외국인 순매수 TOP5</div>
-<div class="top5-desc">오늘 장 시작 이후 현재까지 외국인 매수세가 가장 강한 종목입니다. (단위: 주)</div>
+<div class="top5-card">
+<div class="top5-title">장중 수급(외+기+연+사모) TOP5</div>
+<div class="top5-desc">외국인+기관+연기금+사모펀드 순매수가 강한 종목입니다.</div>
 <table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>순매수</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">삼성중공업</td><td class="name">조선/LNG</td><td><span class="pos">196,000</span></td></tr>
-<tr><td>2</td><td class="name">HL만도</td><td class="name">자동차</td><td><span class="pos">164,000</span></td></tr>
-<tr><td>3</td><td class="name">심텍</td><td class="name">반도체</td><td><span class="pos">128,000</span></td></tr>
-<tr><td>4</td><td class="name">한화비전</td><td class="name">반도체장비</td><td><span class="pos">117,000</span></td></tr>
-<tr><td>5</td><td class="name">보성파워텍</td><td class="name">전력인프라</td><td><span class="pos">98,000</span></td></tr>
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>합산 순매수(주)</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">삼성전자</td><td class="name">반도체</td><td>-217,000</td></tr>
+<tr><td>2</td><td class="name">삼성중공업</td><td class="name">조선/LNG</td><td>196,000</td></tr>
+<tr><td>3</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td>29,000</td></tr>
+<tr><td>4</td><td class="name">HL만도</td><td class="name">자동차</td><td>164,000</td></tr>
+<tr><td>5</td><td class="name">에스피지</td><td class="name">로봇</td><td>71,000</td></tr>
 </tbody></table></div>
-<div class="top5-card kind-inst">
-<div class="top5-title">장중 기관 순매수 TOP5</div>
-<div class="top5-desc">오늘 장 시작 이후 현재까지 기관(연기금 포함) 매수세가 강한 종목입니다. (단위: 주)</div>
+<div class="top5-card">
+<div class="top5-title">시가 대비 강세 TOP5</div>
+<div class="top5-desc">시가 대비 장중 등락율이 큰 종목입니다.</div>
 <table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>순매수</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">삼성전자</td><td class="name">반도체</td><td><span class="pos">676,000</span></td></tr>
-<tr><td>2</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td><span class="pos">183,000</span></td></tr>
-<tr><td>3</td><td class="name">원익홀딩스</td><td class="name">로봇, 지주사</td><td><span class="pos">118,000</span></td></tr>
-<tr><td>4</td><td class="name">하나금융지주</td><td class="name">금융</td><td><span class="pos">93,000</span></td></tr>
-<tr><td>5</td><td class="name">에스피지</td><td class="name">로봇</td><td><span class="pos">74,000</span></td></tr>
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>시가 대비 등락율</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">에스피지</td><td class="name">로봇</td><td>25.29%</td></tr>
+<tr><td>2</td><td class="name">파로스아이바이오</td><td class="name">의료AI</td><td>13.74%</td></tr>
+<tr><td>3</td><td class="name">HL만도</td><td class="name">자동차</td><td>7.53%</td></tr>
+<tr><td>4</td><td class="name">아모레퍼시픽홀딩스</td><td class="name">지주사</td><td>8.91%</td></tr>
+<tr><td>5</td><td class="name">솔트룩스</td><td class="name">인공지능</td><td>5.38%</td></tr>
 </tbody></table></div>
 <div class="top5-card kind-volume">
-<div class="top5-title">장중 거래량 TOP5</div>
-<div class="top5-desc">오늘 장 시작 이후 현재까지 거래량이 가장 많이 몰린 종목입니다. (단위: 주)</div>
+<div class="top5-title">52주 저점 ±10% + 거래대금 상위</div>
+<div class="top5-desc">52주 저점 인근 구간에 있으면서 거래대금이 유입된 종목입니다.</div>
 <table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>거래량</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">삼성전자</td><td class="name">반도체</td><td>14,139,916</td></tr>
-<tr><td>2</td><td class="name">휴림로봇</td><td class="name">로봇</td><td>9,560,434</td></tr>
-<tr><td>3</td><td class="name">온코닉테라퓨틱스</td><td class="name">바이오</td><td>7,305,032</td></tr>
-<tr><td>4</td><td class="name">원익홀딩스</td><td class="name">지주사, 로봇</td><td>6,571,157</td></tr>
-<tr><td>5</td><td class="name">에스피지</td><td class="name">로봇</td><td>5,984,361</td></tr>
-</tbody></table></div>
-</div>
-<div class="summary-row">
-<div class="top5-card">
-<div class="top5-title">시가 대비 상승률 TOP5</div>
-<div class="top5-desc">시가 대비 현재가 기준으로 장중 상승 압력이 가장 강한 종목입니다.</div>
-<table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>시가대비등락율</th><th>현재가</th><th>전일대비등락율</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">에스피지</td><td class="name">로봇</td><td><span class="pos">16.98%</span></td><td>37,900</td><td><span class="pos">25.29%</span></td></tr>
-<tr><td>2</td><td class="name">파로스아이바이오</td><td class="name">의료AI</td><td><span class="pos">11.31%</span></td><td>6,790</td><td><span class="pos">13.74%</span></td></tr>
-<tr><td>3</td><td class="name">HL만도</td><td class="name">자동차</td><td><span class="pos">6.20%</span></td><td>38,550</td><td><span class="pos">7.53%</span></td></tr>
-<tr><td>4</td><td class="name">아모레퍼시픽홀딩스</td><td class="name">지주사</td><td><span class="pos">6.15%</span></td><td>29,350</td><td><span class="pos">8.91%</span></td></tr>
-<tr><td>5</td><td class="name">솔트룩스</td><td class="name">인공지능</td><td><span class="pos">5.38%</span></td><td>28,400</td><td><span class="pos">5.38%</span></td></tr>
-</tbody></table></div>
-<div class="top5-card">
-<div class="top5-title">52주 저점 인근 + 거래대금 TOP5</div>
-<div class="top5-desc">52주 최저가 대비 ±10% 구간에 있으면서 거래대금이 큰 종목입니다. (단위: 억 원)</div>
-<table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>저점대비%</th><th>거래대금</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">CJ제일제당</td><td class="name">식음료</td><td><span class="pos">0.45%</span></td><td>110.76</td></tr>
-<tr><td>2</td><td class="name">카카오뱅크</td><td class="name">금융</td><td><span class="pos">7.83%</span></td><td>96.82</td></tr>
-<tr><td>3</td><td class="name">에스엔시스</td><td class="name">조선/LNG</td><td><span class="pos">5.92%</span></td><td>87.92</td></tr>
-<tr><td>4</td><td class="name">LG생활건강</td><td class="name">화장품</td><td><span class="pos">2.51%</span></td><td>85.68</td></tr>
-<tr><td>5</td><td class="name">브이티</td><td class="name">화장품</td><td><span class="pos">0.75%</span></td><td>82.79</td></tr>
-</tbody></table></div>
-<div class="top5-card">
-<div class="top5-title">장중 수급 합산 TOP5</div>
-<div class="top5-desc">외국인·기관·연기금·사모펀드 순매수(주)를 합산했을 때 장중 수급이 가장 강한 종목입니다. (단위: 주)</div>
-<table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>수급합산(주)</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">삼성전자</td><td class="name">반도체</td><td><span class="pos">503,000</span></td></tr>
-<tr><td>2</td><td class="name">삼성중공업</td><td class="name">조선/LNG</td><td><span class="pos">275,000</span></td></tr>
-<tr><td>3</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td><span class="pos">234,000</span></td></tr>
-<tr><td>4</td><td class="name">HL만도</td><td class="name">자동차</td><td><span class="pos">172,000</span></td></tr>
-<tr><td>5</td><td class="name">에스피지</td><td class="name">로봇</td><td><span class="pos">145,000</span></td></tr>
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>저점대비</th><th>거래대금</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">CJ제일제당</td><td class="name">식음료</td><td>+0.5%</td><td>11,076</td></tr>
+<tr><td>2</td><td class="name">카카오뱅크</td><td class="name">금융</td><td>+7.8%</td><td>9,682</td></tr>
+<tr><td>3</td><td class="name">에스엔시스</td><td class="name">조선/LNG</td><td>+5.9%</td><td>8,792</td></tr>
+<tr><td>4</td><td class="name">LG생활건강</td><td class="name">화장품</td><td>+2.5%</td><td>8,568</td></tr>
+<tr><td>5</td><td class="name">브이티</td><td class="name">화장품</td><td>+0.7%</td><td>8,279</td></tr>
 </tbody></table></div>
 </div>
 <p class="detail-note">※ 거래대금은 TR10005 기준 <b>백만 원</b> 단위이며, 수급(개인·외국인·기관·연기금·사모펀드)은 TR10059 기준 <b>수량(주)</b> 기준입니다. 장중 수치는 시점별 스냅샷이므로, 장 종료 시점 값과는 다를 수 있습니다.</p>

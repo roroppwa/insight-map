@@ -2,7 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8">
-<title>로로뽜 장전 테마 맵 - 2025-11-20 08:08</title>
+<title>로로뽜 장전 테마 맵 - 2025-11-20 09:30</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <style>
 :root{
@@ -19,6 +19,8 @@
   --accent-soft:#fee2e2;
   --accent-soft2:#fffbeb;
   --key-soft:#eef2ff;
+  --shadow-soft:0 10px 30px rgba(15,23,42,0.08);
+  --shadow-sub:0 6px 18px rgba(15,23,42,0.06);
 }
 
 /* 전역 */
@@ -26,18 +28,18 @@
 body{
   margin:0;
   font-family:-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-  background:var(--bg);
+  background:radial-gradient(circle at top,#e0f2fe,#f8fafc,#fefce8);
   color:#111827;
 }
 
 /* 상단 헤더 */
 .site-header{
-  background:linear-gradient(to right,#ffffff,#fef2f2);
-  border-bottom:1px solid var(--border);
+  background:linear-gradient(to bottom,rgba(248,250,252,0.96),rgba(248,250,252,0.99));
+  border-bottom:1px solid rgba(148,163,184,0.25);
   position:sticky;
   top:0;
   z-index:40;
-  box-shadow:0 2px 6px rgba(15,23,42,0.06);
+  box-shadow:0 6px 18px rgba(148,163,184,0.28);
 }
 .site-header-inner{
   max-width:1200px;
@@ -64,14 +66,6 @@ body{
   font-size:12px;
   color:var(--muted2);
 }
-.brand-badge{
-  display:inline-block;
-  padding:2px 8px;
-  border-radius:999px;
-  font-size:11px;
-  background:var(--accent-soft);
-  color:#b91c1c;
-}
 
 .wrap{
   max-width:1200px;
@@ -79,6 +73,7 @@ body{
   padding:12px 16px 16px 16px;
 }
 
+/* 상단 네비 */
 .nav-links{
   display:flex;
   gap:8px;
@@ -92,7 +87,8 @@ body{
   border:1px solid var(--border);
   text-decoration:none;
   color:#4b5563;
-  background:#f9fafb;
+  background:rgba(248,250,252,0.95);
+  box-shadow:0 2px 4px rgba(15,23,42,0.04);
 }
 .nav-link:hover{
   background:#e5e7eb;
@@ -105,15 +101,21 @@ body{
 }
 
 /* 상단 안내 박스 + 툴바 */
+.meta-top{
+  font-size:12px;
+  color:var(--muted2);
+  margin-bottom:6px;
+}
+
 .notice{
   margin:0 0 10px 0;
   padding:8px 12px 7px 12px;
   border:1px solid var(--border);
-  border-radius:12px;
+  border-radius:14px;
   background:linear-gradient(to right,#f9fafb,#fff7ed);
   font-size:13px;
   line-height:1.5;
-  box-shadow:0 2px 4px rgba(15,23,42,0.03);
+  box-shadow:0 2px 6px rgba(15,23,42,0.06);
 }
 .notice b{
   color:#111827;
@@ -121,17 +123,18 @@ body{
 
 .toolbar{
   position:sticky;
-  top:95px;
+  top:82px;
   z-index:30;
-  background:#ffffff;
+  background:rgba(248,250,252,0.96);
   border:1px solid var(--border);
-  border-radius:12px;
+  border-radius:14px;
   padding:8px 10px;
   margin:6px 0 12px 0;
   display:flex;
   gap:8px;
   flex-wrap:wrap;
-  box-shadow:0 2px 6px rgba(15,23,42,0.04);
+  box-shadow:0 4px 10px rgba(15,23,42,0.08);
+  backdrop-filter:blur(6px);
 }
 
 .toolbar input{
@@ -141,6 +144,7 @@ body{
   border:1px solid var(--border);
   border-radius:999px;
   font-size:13px;
+  background:#ffffff;
 }
 .btn{
   padding:7px 10px;
@@ -161,13 +165,6 @@ body{
   background:var(--accent-soft);
 }
 
-/* 메타 */
-.meta-top{
-  font-size:12px;
-  color:var(--muted2);
-  margin-bottom:6px;
-}
-
 /* 전체 레이아웃 */
 .grid{
   display:grid;
@@ -179,7 +176,7 @@ body{
 /* 왼쪽 사이드(테마 목록) */
 .side{
   position:sticky;
-  top:140px;
+  top:144px;
   max-height:calc(100vh - 150px);
   overflow:auto;
   padding-right:4px;
@@ -227,7 +224,9 @@ body{
   font-size:13px;
   table-layout:auto;
   background:var(--card);
-  box-shadow:0 1px 3px rgba(15,23,42,0.05);
+  box-shadow:0 1px 4px rgba(15,23,42,0.08);
+  border-radius:12px;
+  overflow:hidden;
 }
 .theme-table th,
 .theme-table td{
@@ -306,19 +305,19 @@ td.num{ text-align:right; }
 
 /* 히트맵 */
 td.heat{
-  transition:background-color .15s ease-in-out;
+  transition:background-color .15s ease-in-out,color .15s ease-in-out;
 }
 .heat-pos-1{ background:#fee2e2; }
 .heat-pos-2{ background:#fecaca; }
 .heat-pos-3{ background:#fca5a5; }
-.heat-pos-4{ background:#f87171; color:#7f1d1d; }
-.heat-pos-5{ background:#ef4444; color:#fff; }
+.heat-pos-4{ background:#f87171; }
+.heat-pos-5{ background:#ef4444; }
 
 .heat-neg-1{ background:#dbeafe; }
 .heat-neg-2{ background:#bfdbfe; }
 .heat-neg-3{ background:#93c5fd; }
-.heat-neg-4{ background:#60a5fa; color:#0b1120; }
-.heat-neg-5{ background:#1d4ed8; color:#e5f2ff; }
+.heat-neg-4{ background:#60a5fa; }
+.heat-neg-5{ background:#1d4ed8; }
 
 /* 핵심 컬럼 강조 */
 th.key-main{
@@ -365,15 +364,15 @@ body[data-view="full"] .col-extra{
       <h1 class="brand-title">로로뽜 장전 테마 맵</h1>
       <p class="brand-sub">장전 기준 테마별 편입 종목 리스트</p>
       <div class="nav-links">
-        <a href="preopen.html?v=20251120080814" class="nav-link">요약 대시보드</a>
-        <a href="preopen_overview.html?v=20251120080814" class="nav-link active">테마 맵 전체 보기</a>
+        <a href="preopen.html?v=20251120093004" class="nav-link">요약 대시보드</a>
+        <a href="preopen_overview.html?v=20251120093004" class="nav-link active">테마 맵 전체 보기</a>
       </div>
     </div>
   </div>
 </header>
 
 <div class="wrap">
-  <div class="meta-top">생성 시각: 2025-11-20 08:08 (KST)</div>
+  <div class="meta-top">생성 시각: 2025-11-20 09:30 (KST)</div>
 
   <div class="notice">
     <b>로로뽜 장전 테마 맵</b><br>
@@ -1105,5 +1104,5 @@ body[data-view="full"] .col-extra{
 <tr><td><a href="https://finance.naver.com/item/main.naver?code=451250" target="_blank">451250</a></td><td>삐아</td><td class="num">926</td><td class="num">9,060</td><td class="num">9,060</td><td class="num key-main chg-up heat" data-hcol="chg1d">+1.00</td><td class="num key-sub txt-down heat" data-hcol="ret3d">-4.53</td><td class="num key-sub txt-down heat" data-hcol="ret5d">-5.82</td><td class="num key-sub txt-down heat" data-hcol="ret20d">-16.11</td><td class="num">415</td><td class="num key-sub heat" data-hcol="trade_ratio">0.39</td><td class="num ">633</td><td class="num txt-down">-457</td><td class="num ">0</td><td class="num col-extra ">2,873</td><td class="num col-extra txt-down">-2,516</td><td class="num col-extra ">0</td><td class="num col-extra">2</td><td class="num col-extra">0</td><td class="num col-extra">150.35</td><td class="num col-extra">2.11</td><td class="num col-extra key-sub txt-up heat" data-hcol="roe">+1.80</td><td class="num col-extra">13,500</td><td class="num col-extra key-sub txt-down heat" data-hcol="hi52r">-32.89</td><td class="num col-extra">8,010</td><td class="num col-extra key-sub txt-up heat" data-hcol="lo52r">+13.11</td></tr>
 </tbody></table></div></details></section>
 </div></div>
-<div style="text-align:center;color:var(--muted2);margin:20px 0">생성 시각: 2025-11-20 08:08 (KST)</div>
+<div style="text-align:center;color:var(--muted2);margin:20px 0">생성 시각: 2025-11-20 09:30 (KST)</div>
 </body></html>

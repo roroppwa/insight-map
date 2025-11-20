@@ -15,93 +15,299 @@
   --up-bg:#fee2e2;
   --down:#1d4ed8;
   --down-bg:#dbeafe;
-  --accent:#ef4444;
+  --accent:#f97316;
+  --accent2:#22c55e;
+  --shadow-soft:0 10px 30px rgba(15,23,42,0.08);
+  --shadow-sub:0 6px 18px rgba(15,23,42,0.06);
 }
-/* 전역 */
-*{box-sizing:border-box;}
+
+*{
+  box-sizing:border-box;
+}
+
 body{
   margin:0;
-  font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  background:var(--bg);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:radial-gradient(circle at top,#e0f2fe,#f8fafc,#fefce8);
   color:#0f172a;
 }
 
-/* 상단 헤더 + 네비게이션 */
-.site-header{
-  background:#ffffff;
-  border-bottom:1px solid var(--border);
-  box-shadow:0 2px 4px rgba(15,23,42,0.04);
+/* 상단 헤더 */
+header{
+  padding:16px 20px 10px 20px;
+  border-bottom:1px solid rgba(148,163,184,0.25);
+  backdrop-filter:blur(18px);
+  position:sticky;
+  top:0;
+  z-index:10;
+  background:linear-gradient(to bottom,rgba(248,250,252,0.92),rgba(248,250,252,0.98));
 }
-.site-header-inner{
-  max-width:1200px;
-  margin:0 auto;
-  padding:10px 16px;
+header .top-row{
   display:flex;
-  align-items:center;
+  align-items:flex-start;
   justify-content:space-between;
-  gap:12px;
+  gap:10px;
 }
-.brand{
+header .title-block{
   display:flex;
   flex-direction:column;
-  gap:2px;
+  gap:4px;
 }
-.brand-title{
+header h1{
   margin:0;
-  font-size:18px;
+  font-size:20px;
   font-weight:800;
-  letter-spacing:-0.02em;
+  letter-spacing:-0.03em;
+  display:flex;
+  align-items:center;
+  gap:7px;
 }
-.brand-sub{
-  margin:0;
+header h1 .emoji{
+  font-size:22px;
+}
+header .subtitle{
   font-size:12px;
+  color:var(--muted);
+}
+header .badge-row{
+  display:flex;
+  flex-wrap:wrap;
+  gap:6px;
+  margin-top:4px;
+}
+.badge{
+  font-size:11px;
+  padding:2px 7px;
+  border-radius:999px;
+  border:1px solid rgba(148,163,184,0.6);
+  background:rgba(248,250,252,0.85);
+  color:#334155;
+}
+.badge.highlight{
+  background:linear-gradient(135deg,#fee2e2,#fef9c3);
+  border-color:#fecaca;
+  color:#7f1d1d;
+  font-weight:600;
+}
+header .right-info{
+  text-align:right;
+  font-size:11px;
   color:var(--muted2);
 }
-.nav-links{
+header .right-info .line{
+  margin-bottom:2px;
+}
+header .session-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:3px 8px;
+  border-radius:999px;
+  background:rgba(15,23,42,0.06);
+  color:#0f172a;
+  font-size:11px;
+  border:1px solid rgba(148,163,184,0.35);
+}
+header .session-chip-dot{
+  width:7px;
+  height:7px;
+  border-radius:999px;
+  background:radial-gradient(circle at 30% 30%,#22c55e,#15803d);
+  box-shadow:0 0 0 4px rgba(34,197,94,0.25);
+}
+header .date-line{
+  margin-top:4px;
+}
+
+/* 상단 메인 탭 (장전 / 장중 / 장후) */
+.main-tabs{
+  margin-top:12px;
   display:flex;
   gap:6px;
-  flex-wrap:wrap;
-}
-.nav-links a{
-  padding:6px 10px;
-  font-size:13px;
   border-radius:999px;
-  border:1px solid transparent;
-  text-decoration:none;
-  color:#4b5563;
+  padding:4px;
+  background:rgba(248,250,252,0.9);
+  border:1px solid rgba(226,232,240,0.9);
+  box-shadow:0 6px 18px rgba(148,163,184,0.25);
+}
+.main-tab-btn{
+  flex:1;
+  font-size:13px;
+  padding:6px 8px;
+  border-radius:999px;
+  border:none;
   background:transparent;
+  color:#475569;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+  transition:all 0.18s ease-out;
 }
-.nav-links a.active{
-  background:var(--accent);
-  color:#ffffff;
-  border-color:var(--accent);
-}
-.nav-links a:hover:not(.active){
+.main-tab-btn .pill{
+  font-size:11px;
+  padding:1px 6px;
+  border-radius:999px;
   background:#e5e7eb;
+  color:#4b5563;
+}
+.main-tab-btn.active{
+  background:linear-gradient(135deg,#f97316,#ef4444);
+  color:#f9fafb;
+  font-weight:700;
+  box-shadow:0 8px 22px rgba(248,113,113,0.65);
+}
+.main-tab-btn.active .pill{
+  background:rgba(248,250,252,0.2);
+  color:#fefce8;
 }
 
-/* 레이아웃 래퍼 */
-.wrap{
+/* 레이아웃 컨테이너 */
+#page-container{
   max-width:1200px;
   margin:0 auto;
-  padding:16px;
+  padding:12px 18px 50px 18px;
 }
 
-/* 안내 상자 */
-.notice{
-  margin:0 0 12px 0;
-  padding:12px 14px;
-  border:1px solid var(--border);
-  border-radius:10px;
-  background:#fefce8;
-  font-size:13px;
-  color:#374151;
+/* 안내 카드 (왼쪽 요약 + 오른쪽 설명) */
+.info-grid{
+  margin-top:14px;
+  display:grid;
+  grid-template-columns:2.1fr 1.2fr;
+  gap:14px;
 }
-.notice b{
+.info-card{
+  background:linear-gradient(135deg,rgba(248,250,252,0.98),rgba(239,246,255,0.98));
+  border-radius:18px;
+  padding:12px 14px 12px 14px;
+  border:1px solid rgba(209,213,219,0.9);
+  box-shadow:var(--shadow-sub);
+  position:relative;
+  overflow:hidden;
+}
+.info-card::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:radial-gradient(circle at 0 0,rgba(251,191,36,0.18),transparent 55%),
+             radial-gradient(circle at 100% 20%,rgba(248,113,113,0.18),transparent 55%);
+  opacity:0.8;
+  pointer-events:none;
+}
+
+/* 좌측: 오늘 요약 */
+.info-main-title{
+  font-size:14px;
+  font-weight:800;
+  margin-bottom:4px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.info-main-title span.small{
+  font-size:12px;
+  font-weight:600;
+  color:#f97316;
+}
+.info-main-text{
+  font-size:12px;
+  color:#475569;
+  margin-bottom:8px;
+}
+.info-summary-grid{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:4px;
+}
+.info-summary-pill{
+  flex:1 1 90px;
+  min-width:90px;
+  font-size:11px;
+  padding:6px 8px;
+  border-radius:12px;
+  background:rgba(248,250,252,0.95);
+  border:1px solid rgba(226,232,240,0.9);
+  display:flex;
+  flex-direction:column;
+  gap:3px;
+}
+.info-summary-pill-label{
+  color:#6b7280;
+}
+.info-summary-pill-value{
   font-weight:700;
+  color:#111827;
+}
+.info-summary-pill-sub{
+  font-size:11px;
+  color:#9ca3af;
 }
 
-/* 메인 카드 (장전/장중/장후 iframe 담는 카드) */
+/* 우측: 사용 방법 / 링크 영역 */
+.info-side-card{
+  background:linear-gradient(135deg,rgba(15,23,42,0.96),rgba(30,64,175,0.96));
+  border-radius:18px;
+  padding:12px 14px;
+  color:#e5e7eb;
+  box-shadow:0 10px 30px rgba(15,23,42,0.5);
+  border:1px solid rgba(148,163,184,0.8);
+  position:relative;
+  overflow:hidden;
+}
+.info-side-card::before{
+  content:"";
+  position:absolute;
+  inset:-40%;
+  background:radial-gradient(circle at 10% 0,rgba(56,189,248,0.35),transparent 55%),
+             radial-gradient(circle at 100% 100%,rgba(248,113,113,0.32),transparent 55%);
+  opacity:0.85;
+  pointer-events:none;
+}
+.info-side-inner{
+  position:relative;
+  z-index:1;
+}
+.info-side-title{
+  font-size:13px;
+  font-weight:700;
+  margin-bottom:4px;
+  display:flex;
+  align-items:center;
+  gap:6px;
+}
+.info-side-title span.badge{
+  background:rgba(248,250,252,0.12);
+  border-color:rgba(148,163,184,0.7);
+  color:#e5e7eb;
+}
+.info-side-text{
+  font-size:11px;
+  color:#e5e7eb;
+  opacity:0.95;
+  margin-bottom:6px;
+}
+.info-side-list{
+  font-size:11px;
+  margin:0;
+  padding-left:16px;
+  color:#e5e7eb;
+}
+.info-side-list li{
+  margin-bottom:2px;
+}
+.info-side-link{
+  margin-top:8px;
+  font-size:11px;
+}
+.info-side-link a{
+  color:#fef9c3;
+  text-decoration:none;
+  border-bottom:1px dashed rgba(250,250,210,0.7);
+}
+
+/* 메인 카드 (iframe 담는 카드) */
 .main-card{
   background:var(--card);
   border-radius:14px;
@@ -110,121 +316,211 @@ body{
   padding:14px 14px 10px 14px;
 }
 
-/* 장전/장중/장후 탭 버튼 */
+/* 가운데 라벨 영역 (정렬: 왼쪽) */
 .sub-tabs{
   display:flex;
-  justify-content:space-between;
-  align-items:center;
-  gap:8px;
+  justify-content:flex-start;
   margin-bottom:8px;
 }
-.sub-tab-buttons{
-  display:flex;
-  gap:6px;
-  flex-wrap:wrap;
+.sub-tabs-single{
 }
-.sub-tab{
-  padding:7px 14px;
+.sub-tab-label{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:4px 10px;
   border-radius:999px;
-  border:1px solid transparent;
-  font-size:13px;
-  background:#f3f4f6;
-  color:#4b5563;
-  cursor:pointer;
+  background:rgba(248,250,252,0.95);
+  border:1px solid #e5e7eb;
+  box-shadow:0 2px 4px rgba(15,23,42,0.04);
+  font-size:11px;
+  color:#6b7280;
 }
-.sub-tab.active{
-  background:#fee2e2;
-  color:#b91c1c;
-  border-color:#fecaca;
+.sub-tab-label .label{
   font-weight:600;
+  color:#f97316;
 }
-.sub-tab:hover{
-  background:#e5e7eb;
+.sub-tab-label .divider{
+  color:#cbd5f5;
 }
-.session-label{
-  font-size:12px;
-  color:var(--muted);
+.sub-tab-label .desc{
+  font-size:11px;
+  color:#6b7280;
 }
 
-/* iframe 영역 */
-.frame-wrap{
-  border-radius:10px;
+/* iframe */
+.iframe-wrap{
+  border-radius:12px;
   overflow:hidden;
-  border:1px solid var(--border);
-  margin-top:6px;
+  border:1px solid #e5e7eb;
+  background:#f1f5f9;
 }
-#dashboard-frame{
+iframe{
   width:100%;
-  height:calc(100vh - 210px);
+  height:700px;
   border:none;
-  display:block;
-  background:var(--card);
+  background:#f8fafc;
+}
+
+/* 하단 주석/안내 */
+.footer-note{
+  margin-top:12px;
+  font-size:11px;
+  color:#94a3b8;
+}
+.footer-note strong{
+  color:#64748b;
 }
 
 /* 반응형 */
-@media (max-width:768px){
-  .site-header-inner{
+@media (max-width:900px){
+  #page-container{
+    padding:10px 12px 40px 12px;
+  }
+  header{
+    padding:12px 12px 8px 12px;
+  }
+  header .top-row{
     flex-direction:column;
     align-items:flex-start;
+    gap:6px;
   }
-  #dashboard-frame{
-    height:calc(100vh - 230px);
+  iframe{
+    height:620px;
+  }
+  .info-grid{
+    grid-template-columns:1fr;
   }
 }
 </style>
 </head>
 <body>
+<header>
+  <div class="top-row">
+    <div class="title-block">
+      <h1>
+        <span class="emoji">📊</span>
+        <span>로로뽜 인사이트 대시보드</span>
+      </h1>
+      <div class="subtitle">국내 테마·종목 흐름을 장전 · 장중 · 장후 시점으로 나눠 보는 대시보드입니다.</div>
+      <div class="badge-row">
+        <span class="badge highlight">장전/장중/장후 데이터 자동 업데이트</span>
+        <span class="badge">장전: 전일 종가 기준 테마 스냅샷</span>
+        <span class="badge">장중: 실시간 변동·수급</span>
+        <span class="badge">장후: 마감 기준 테마 맵 정리</span>
+      </div>
 
-<header class="site-header">
-  <div class="site-header-inner">
-    <div class="brand">
-      <h1 class="brand-title">로로뽜 인사이트</h1>
-      <p class="brand-sub">장전·장중·장후 테마 스캔 대시보드</p>
+      <!-- 상단 메인 탭: 장전 / 장중 / 장후 -->
+      <div class="main-tabs">
+        <button type="button" class="main-tab-btn active" id="main-tab-preopen">
+          <span>장전 기준</span>
+          <span class="pill">전일 종가 데이터</span>
+        </button>
+        <button type="button" class="main-tab-btn" id="main-tab-intraday">
+          <span>장중 기준</span>
+          <span class="pill">실시간 데이터</span>
+        </button>
+        <button type="button" class="main-tab-btn" id="main-tab-postclose">
+          <span>장후 기준</span>
+          <span class="pill">마감 데이터</span>
+        </button>
+      </div>
     </div>
-    <nav class="nav-links">
-      <a href="index.html" class="active">대시보드</a>
-    </nav>
+    <div class="right-info">
+      <div class="line">
+        <span class="session-chip">
+          <span class="session-chip-dot"></span>
+          <span id="session-info">세션 정보를 계산 중...</span>
+        </span>
+      </div>
+      <div class="line date-line" id="now-info">-</div>
+      <div class="line">※ 참고용 대시보드 (데이터·레이아웃 수시 수정 예정)</div>
+    </div>
   </div>
 </header>
 
-<div class="wrap">
-  <p class="notice">
-    <b>장전·장중·장후 테마 대시보드</b><br>
-    전일 기준과 장중 흐름을 바탕으로 주요 테마·종목의 모멘텀과 수급을 스캔한 결과입니다.
-    상단 탭에서 <b>장전</b> / <b>장중</b> / <b>장후</b> 화면을 선택할 수 있으며,
-    기본으로는 현재 시각 기준으로 더 적절한 화면을 자동으로 띄웁니다.
-    (<span id="time-info"></span> 기준)
-  </p>
-
-  <div class="main-card">
-    <div class="sub-tabs">
-      <div class="sub-tab-buttons">
-        <button class="sub-tab" id="tab-preopen" data-target="preopen">장전 대시보드</button>
-        <button class="sub-tab" id="tab-intraday" data-target="intraday">장중 대시보드</button>
-        <button class="sub-tab" id="tab-postclose" data-target="postclose">장후 대시보드</button>
+<div id="page-container">
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-main-title">
+        오늘 시장을 한 번에
+        <span class="small">장전 · 장중 · 장후 · 수급까지</span>
       </div>
-      <div class="session-label" id="session-info"></div>
+      <div class="info-main-text">
+        장전에는 전일 종가 기준 테마 스냅샷을, 장중에는 실시간 변동과 수급, 장후에는 마감 데이터를 기반으로 한 테마 맵을 확인할 수 있도록 구성했습니다.
+      </div>
+      <div class="info-summary-grid">
+        <div class="info-summary-pill">
+          <div class="info-summary-pill-label">장전</div>
+          <div class="info-summary-pill-value">전일 종가 기준 테마 요약</div>
+          <div class="info-summary-pill-sub">수익률/수급/52주 위치로 첫 화면 가이드</div>
+        </div>
+        <div class="info-summary-pill">
+          <div class="info-summary-pill-label">장중</div>
+          <div class="info-summary-pill-value">실시간 흐름</div>
+          <div class="info-summary-pill-sub">테마·종목 변동성 / 체결 강도 등</div>
+        </div>
+        <div class="info-summary-pill">
+          <div class="info-summary-pill-label">장후</div>
+          <div class="info-summary-pill-value">마감 기준 테마 맵</div>
+          <div class="info-summary-pill-sub">테마/종목 전체 열지도 및 상위 리스트</div>
+        </div>
+      </div>
+    </div>
+    <div class="info-side-card">
+      <div class="info-side-inner">
+        <div class="info-side-title">
+          대시보드 사용 가이드
+          <span class="badge">안내</span>
+        </div>
+        <div class="info-side-text">
+          상단 탭에서 장전/장중/장후 기준을 선택하면, 아래 카드에서 해당 시점에 맞는 테마·종목 대시보드를 불러옵니다.
+        </div>
+        <ul class="info-side-list">
+          <li>장전: 전일 종가 기준으로 테마/종목 스냅샷 확인</li>
+          <li>장중: 실시간 기준 변동·수급 지표 확인</li>
+          <li>장후: 마감 데이터 기반 테마 맵과 상위 테마/종목 정리</li>
+        </ul>
+        <div class="info-side-link">
+          GitHub Pages 버전:
+          <a href="https://roroppwa.github.io/insight-map/" target="_blank" rel="noopener">roroppwa.github.io/insight-map</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-card" style="margin-top:16px;">
+    <!-- 가운데 작은 라벨 (카드 왼쪽 정렬) -->
+    <div class="sub-tabs sub-tabs-single">
+      <div class="sub-tab-label" id="view-label">
+        <span class="label">장전 기준</span>
+        <span class="divider">·</span>
+        <span class="desc">전일 종가 기준 테마 스냅샷</span>
+      </div>
     </div>
 
-    <div class="frame-wrap">
-      <iframe id="dashboard-frame" src=""></iframe>
+    <div class="iframe-wrap">
+      <iframe id="dashboard-frame" src="about:blank"></iframe>
+    </div>
+    <div class="footer-note">
+      <strong>주의:</strong> 본 대시보드는 참고용으로 구성된 데이터 화면입니다. 데이터 지연, 집계 로직 변경, 시세·수급 지표 차이 등이 발생할 수 있으며,
+      투자 판단의 책임은 전적으로 사용자에게 있습니다.
     </div>
   </div>
 </div>
 
 <script>
+  const VER = Date.now();
+
   function detectSession() {
     const now = new Date();
     const hour = now.getHours();
     const minute = now.getMinutes();
     const hm = hour * 100 + minute;
 
-    // 09:00 이전 → 장전
-    if (hm < 900) return "preopen";
-    // 09:00 ~ 15:30 → 장중
-    if (hm <= 1530) return "intraday";
-    // 15:30 이후 → 장후
-    return "postclose";
+    if (hm < 900) return "preopen";   // 09:00 이전 → 장전
+    if (hm <= 1530) return "intraday"; // 09:00 ~ 15:30 → 장중
+    return "postclose";                // 15:30 이후 → 장후
   }
 
   function formatNow() {
@@ -241,53 +537,90 @@ body{
     const el = document.getElementById("session-info");
     if (!el) return;
     if (session === "preopen") {
-      el.textContent = "지금은 장전(시가 전) 기준 화면을 보고 있습니다.";
+      el.textContent = "현재 장전 기준 화면을 보고 있습니다.";
     } else if (session === "intraday") {
-      el.textContent = "지금은 장중(실시간 스냅샷) 기준 화면을 보고 있습니다.";
+      el.textContent = "현재 장중 기준(실시간 기준) 화면을 보고 있습니다.";
     } else {
-      el.textContent = "지금은 장후(종가 기준) 화면을 보고 있습니다.";
+      el.textContent = "현재 장후(마감 기준) 화면을 보고 있습니다.";
     }
   }
 
+  // iframe + 라벨 업데이트
   function setActiveTab(target) {
     const frame = document.getElementById("dashboard-frame");
-    const tabPre = document.getElementById("tab-preopen");
-    const tabIntra = document.getElementById("tab-intraday");
-    const tabPost = document.getElementById("tab-postclose");
-
-    tabPre.classList.remove("active");
-    tabIntra.classList.remove("active");
-    tabPost.classList.remove("active");
+    const label = document.getElementById("view-label");
 
     if (target === "preopen") {
-      tabPre.classList.add("active");
-      frame.src = "preopen/preopen.html";
+      frame.src = "preopen/preopen.html?v=" + VER;
+      if (label) {
+        label.innerHTML =
+          '<span class="label">장전 기준</span>' +
+          '<span class="divider">·</span>' +
+          '<span class="desc">전일 종가 기준 테마 스냅샷</span>';
+      }
     } else if (target === "intraday") {
-      tabIntra.classList.add("active");
-      frame.src = "intraday/intraday.html";
+      frame.src = "intraday/intraday.html?v=" + VER;
+      if (label) {
+        label.innerHTML =
+          '<span class="label">장중 기준</span>' +
+          '<span class="divider">·</span>' +
+          '<span class="desc">실시간 변동/수급</span>';
+      }
     } else {
-      tabPost.classList.add("active");
-      frame.src = "postclose/postclose.html";
+      frame.src = "postclose/postclose.html?v=" + VER;
+      if (label) {
+        label.innerHTML =
+          '<span class="label">장후 기준</span>' +
+          '<span class="divider">·</span>' +
+          '<span class="desc">마감 기준 테마 맵</span>';
+      }
     }
     setSessionText(target);
   }
 
-  function initTabs() {
-    document.getElementById("tab-preopen")
-      .addEventListener("click", () => setActiveTab("preopen"));
-    document.getElementById("tab-intraday")
-      .addEventListener("click", () => setActiveTab("intraday"));
-    document.getElementById("tab-postclose")
-      .addEventListener("click", () => setActiveTab("postclose"));
+  // 상단 메인 탭 초기화
+  function initMainTabs(initial) {
+    const mainPre   = document.getElementById("main-tab-preopen");
+    const mainIntra = document.getElementById("main-tab-intraday");
+    const mainPost  = document.getElementById("main-tab-postclose");
+
+    function setMainActive(key) {
+      mainPre.classList.remove("active");
+      mainIntra.classList.remove("active");
+      mainPost.classList.remove("active");
+
+      if (key === "preopen") {
+        mainPre.classList.add("active");
+      } else if (key === "intraday") {
+        mainIntra.classList.add("active");
+      } else {
+        mainPost.classList.add("active");
+      }
+    }
+
+    if (initial) {
+      setMainActive(initial);
+    }
+
+    mainPre.addEventListener("click", () => {
+      setMainActive("preopen");
+      setActiveTab("preopen");
+    });
+    mainIntra.addEventListener("click", () => {
+      setMainActive("intraday");
+      setActiveTab("intraday");
+    });
+    mainPost.addEventListener("click", () => {
+      setMainActive("postclose");
+      setActiveTab("postclose");
+    });
   }
 
   function init() {
-    const timeInfo = document.getElementById("time-info");
-    if (timeInfo) {
-      timeInfo.textContent = formatNow() + " (로컬 PC 기준)";
+    const nowInfo = document.getElementById("now-info");
+    if (nowInfo) {
+      nowInfo.textContent = `페이지 기준 시각: ${formatNow()}`;
     }
-
-    initTabs();
 
     const params = new URLSearchParams(window.location.search);
     const qTab = params.get("tab");
@@ -295,6 +628,7 @@ body{
       ? qTab
       : detectSession();
 
+    initMainTabs(session);
     setActiveTab(session);
   }
 

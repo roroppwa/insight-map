@@ -1,6 +1,7 @@
 # 로컬 전용 데이터, 스크립트
 data/
 script/
+static/
 
 # 혹시 루트에 py, tsv 생겨도 올리지 않으려면 (선택)
 *.py

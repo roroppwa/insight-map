@@ -2,6 +2,7 @@
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>장전 테마 대시보드</title>
 <style>
     :root {
@@ -20,14 +21,12 @@
         --shadow-sub:0 6px 18px rgba(15,23,42,0.06);
     }
 
-    * {
-        box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
-        margin: 0;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
         background: radial-gradient(circle at top,#e0f2fe,#f8fafc,#fefce8);
+        margin: 0;
         color: #0f172a;
     }
 
@@ -35,37 +34,40 @@
         background: linear-gradient(to bottom,rgba(248,250,252,0.96),rgba(248,250,252,0.99));
         color: #0f172a;
         padding: 14px 20px;
-        font-size: 18px;
-        font-weight: 700;
+        border-bottom: 1px solid rgba(148,163,184,0.25);
+        box-shadow: 0 6px 18px rgba(148,163,184,0.28);
         display: flex;
         justify-content: space-between;
         align-items: center;
-        border-bottom: 1px solid rgba(148,163,184,0.25);
-        box-shadow: 0 6px 18px rgba(148,163,184,0.28);
+        gap: 12px;
     }
-    header .left {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-    }
-    header .title-main {
-        font-size: 18px;
-        font-weight: 800;
-        letter-spacing: -0.03em;
-    }
-    header .title-sub {
+    header .left { display: flex; flex-direction: column; gap: 3px; }
+    header .title-main { font-size: 18px; font-weight: 800; letter-spacing: -0.03em; }
+    header .title-sub { font-size: 12px; color: var(--muted); }
+    header .right-info { font-size: 11px; color: var(--muted2); text-align: right; }
+
+    .nav-links { display: flex; gap: 8px; margin-top: 4px; flex-wrap: wrap; }
+    .nav-link {
         font-size: 12px;
-        color: var(--muted);
+        padding: 3px 10px;
+        border-radius: 999px;
+        border: 1px solid var(--border);
+        text-decoration: none;
+        color: #4b5563;
+        background: rgba(248,250,252,0.95);
+        box-shadow: 0 2px 4px rgba(15,23,42,0.04);
     }
-    header .right-info {
-        font-size: 11px;
-        color: var(--muted2);
-        text-align: right;
+    .nav-link:hover { background: #e5e7eb; }
+    .nav-link.active {
+        border-color: #ef4444;
+        color: #b91c1c;
+        background: #fee2e2;
+        font-weight: 600;
     }
 
     #container {
         padding: 18px;
-        max-width: 1200px;
+        max-width: 1220px;
         margin: 0 auto 32px auto;
     }
 
@@ -79,7 +81,6 @@
         position: relative;
         overflow: hidden;
     }
-
     .section-box::before {
         content: "";
         position: absolute;
@@ -90,15 +91,11 @@
         opacity: 0.75;
         pointer-events: none;
     }
-    .section-box > * {
-        position: relative;
-        z-index: 1;
-    }
+    .section-box > * { position: relative; z-index: 1; }
 
     .section-title {
         font-size: 14px;
-        font-weight: 700;
-        color: #0f172a;
+        font-weight: 800;
         margin: 4px 2px 4px 2px;
         display: flex;
         align-items: center;
@@ -117,15 +114,7 @@
         margin: 0 2px 10px 2px;
     }
 
-    #summary-section {
-        margin-bottom: 24px;
-    }
-    .summary-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 14px;
-        margin-bottom: 12px;
-    }
+    .summary-row { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 12px; }
 
     .summary-card {
         flex: 1 1 260px;
@@ -136,170 +125,40 @@
         border: 1px solid rgba(250,204,21,0.85);
         box-shadow: 0 2px 10px rgba(248,191,36,0.35);
     }
-    .summary-card-title {
-        font-size: 13px;
-        font-weight: 700;
-        color: #92400e;
-        margin-bottom: 4px;
-    }
-    .summary-card-main {
-        font-size: 22px;
-        font-weight: 800;
-        margin-bottom: 2px;
-    }
-    .summary-card-sub {
-        font-size: 12px;
-        color: var(--muted2);
+    .summary-card-title { font-size: 13px; font-weight: 800; color: #92400e; margin-bottom: 4px; }
+    .summary-card-main { font-size: 22px; font-weight: 900; margin-bottom: 2px; }
+    .summary-card-sub { font-size: 12px; color: var(--muted2); }
+
+    .pos { color: var(--up); font-weight: 700; }
+    .neg { color: var(--down); font-weight: 700; }
+    .zero { color: var(--muted); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+    @media (max-width: 980px) { .grid-3 { grid-template-columns: 1fr; } .grid-2 { grid-template-columns: 1fr; } }
+    @media (max-width: 520px) {
+        header { padding: 12px 14px; }
+        .summary-card { min-width: 0; }
+        .chart { height: clamp(220px, 34vh, 320px); }
+        #treemap { height: clamp(420px, 60vh, 760px); }
+        table.top5-table { font-size: 11px; }
     }
 
-    .where-card {
-        flex: 1 1 260px;
-        min-width: 260px;
+
+    .chart-card {
         background: rgba(248,250,252,0.98);
         border-radius: 14px;
-        padding: 10px 14px;
-        border: 1px solid var(--border);
-        box-shadow: 0 2px 6px rgba(15,23,42,0.06);
-        position: relative;
-        overflow: hidden;
-    }
-    .where-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        bottom: 0;
-        background: #e5e7eb;
-    }
-    .where-card.momentum::before {
-        background: linear-gradient(to bottom,#fdba74,#f97316);
-    }
-    .where-card.flow::before {
-        background: linear-gradient(to bottom,#38bdf8,#2563eb);
-    }
-    .where-card.low52::before {
-        background: linear-gradient(to bottom,#a855f7,#6366f1);
-    }
-    .where-card .where-title {
-        font-size: 13px;
-        font-weight: 700;
-        margin-bottom: 4px;
-    }
-    .where-card .where-pill {
-        display: inline-block;
-        padding: 2px 8px;
-        border-radius: 999px;
-        font-size: 11px;
-        margin-bottom: 4px;
-        border: 1px solid var(--border);
-        color: #4b5563;
-        background: rgba(248,250,252,0.96);
-        box-shadow: 0 1px 3px rgba(15,23,42,0.04);
-    }
-    .where-text {
-        font-size: 12px;
-        color: var(--muted);
-        margin-bottom: 4px;
-    }
-    .where-em {
-        font-size: 12px;
-        color: #0f172a;
-        font-weight: 600;
-    }
-
-    .theme-top-card {
-        flex: 1 1 360px;
-        min-width: 360px;
-        background: linear-gradient(135deg,rgba(248,250,252,0.98),rgba(239,246,255,0.98));
-        border-radius: 14px;
-        padding: 10px 14px;
+        padding: 10px 12px;
         border: 1px solid var(--border);
         box-shadow: 0 2px 8px rgba(15,23,42,0.06);
-        position: relative;
         overflow: hidden;
     }
-    .theme-top-card.bull::before,
-    .theme-top-card.bear::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: 14px;
-        pointer-events: none;
-    }
-    .theme-top-card.bull::before {
-        border: 2px solid rgba(248,113,113,0.45);
-    }
-    .theme-top-card.bear::before {
-        border: 2px solid rgba(59,130,246,0.4);
-    }
-    .theme-top-card.bull .theme-name {
-        color: var(--up);
-    }
-    .theme-top-card.bear .theme-name {
-        color: var(--down);
-    }
-
-    .theme-top-title {
-        font-size: 13px;
-        font-weight: 700;
-        margin: 0 0 4px 0;
-        position: relative;
-        z-index: 1;
-    }
-    .theme-top-title span.badge {
-        display: inline-block;
-        margin-left: 6px;
-        padding: 1px 6px;
-        border-radius: 999px;
-        font-size: 11px;
-        background: var(--up-bg);
-        color: var(--up);
-        border: 1px solid rgba(254,202,202,0.9);
-    }
-    .theme-top-desc {
-        font-size: 12px;
-        color: var(--muted);
-        margin-bottom: 6px;
-        position: relative;
-        z-index: 1;
-    }
-    .theme-top-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        font-size: 12px;
-        position: relative;
-        z-index: 1;
-    }
-    .theme-top-list li {
-        padding: 4px 0;
-        border-bottom: 1px dashed #e5e7eb;
-    }
-    .theme-top-list li:last-child {
-        border-bottom: none;
-    }
-    .theme-name {
-        font-weight: 600;
-    }
-    .theme-stat {
-        color: var(--muted);
-        margin-left: 4px;
-    }
-    .theme-stat-main {
-        display: block;
-        margin-top: 2px;
-    }
-    .theme-stat-line {
-        display: block;
-        margin-left: 12px;
-        font-size: 11px;
-        color: var(--muted);
-    }
+    .chart-title { font-size: 13px; font-weight: 800; margin: 0 0 2px 0; }
+    .chart-desc { font-size: 12px; color: var(--muted); margin: 0 0 8px 0; }
+    .chart { width: 100%; height: clamp(240px, 38vh, 360px); }
+    #treemap { height: clamp(420px, 55vh, 720px); }
 
     .top5-card {
-        flex: 1 1 280px;
-        min-width: 280px;
         background: linear-gradient(135deg,rgba(248,250,252,0.99),rgba(249,250,251,0.99));
         border-radius: 14px;
         padding: 10px 14px;
@@ -311,40 +170,19 @@
     .top5-card::before {
         content: "";
         position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
+        left: 0; top: 0; bottom: 0;
         width: 4px;
         background: linear-gradient(to bottom,#f97316,#ef4444);
     }
-    .top5-card.kind-volume::before {
-        background: linear-gradient(to bottom,#38bdf8,#1d4ed8);
-    }
-    .top5-card.kind-foreign::before {
-        background: linear-gradient(to bottom,#22c55e,#15803d);
-    }
-    .top5-card.kind-inst::before {
-        background: linear-gradient(to bottom,#a855f7,#6d28d9);
-    }
-    .top5-card.kind-ind::before {
-        background: linear-gradient(to bottom,#f97316,#ec4899);
-    }
+    .top5-card.kind-volume::before { background: linear-gradient(to bottom,#38bdf8,#1d4ed8); }
+    .top5-card.kind-foreign::before { background: linear-gradient(to bottom,#22c55e,#15803d); }
+    .top5-card.kind-inst::before { background: linear-gradient(to bottom,#a855f7,#6d28d9); }
+    .top5-card.kind-ind::before { background: linear-gradient(to bottom,#f97316,#ec4899); }
 
-    .top5-title {
-        font-size: 13px;
-        font-weight: 700;
-        margin: 0 0 2px 0;
-    }
-    .top5-desc {
-        font-size: 12px;
-        color: var(--muted);
-        margin-bottom: 6px;
-    }
-    table.top5-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12px;
-    }
+    .top5-title { font-size: 13px; font-weight: 800; margin: 0 0 2px 0; }
+    .top5-desc { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+
+    table.top5-table { width: 100%; border-collapse: collapse; font-size: 12px; }
     table.top5-table th {
         background: #f3f4f6;
         padding: 4px;
@@ -356,103 +194,91 @@
         border-bottom: 1px solid #f3f4f6;
         text-align: right;
     }
-    table.top5-table td.name {
-        text-align: left;
-        white-space: nowrap;
-    }
+    table.top5-table td.name { text-align: left; white-space: nowrap; }
 
-    .theme-pill-inline {
-        display: inline-block;
+    .table-wrap { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .table-wrap::-webkit-scrollbar { height: 8px; }
+    .table-wrap::-webkit-scrollbar-thumb { background: rgba(148,163,184,0.5); border-radius: 999px; }
+
+
+    .three-lines { margin: 0; padding-left: 16px; color: #0f172a; font-size: 12px; }
+    .three-lines li { margin: 6px 0; color: var(--muted); }
+    .detail-note { margin-top: 12px; font-size: 12px; color: var(--muted2); }
+
+    details.accordion {
+        margin-top: 10px;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        background: rgba(248,250,252,0.95);
+        box-shadow: 0 2px 8px rgba(15,23,42,0.05);
+        overflow: hidden;
+    }
+    details.accordion > summary {
+        list-style: none;
+        cursor: pointer;
+        padding: 10px 12px;
+        font-size: 13px;
+        font-weight: 800;
+        color: #0f172a;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        background: linear-gradient(135deg,rgba(255,251,235,0.95),rgba(248,250,252,0.95));
+    }
+    details.accordion > summary::-webkit-details-marker { display: none; }
+    .summary-hint { font-size: 12px; color: var(--muted); font-weight: 600; }
+
+    .tag {
+        display: inline-flex;
+        align-items: center;
         padding: 2px 8px;
-        margin: 0 4px 3px 0;
         border-radius: 999px;
         font-size: 11px;
-        background: var(--up-bg);
-        color: var(--up);
-        border: 1px solid rgba(254,202,202,0.9);
+        border: 1px solid rgba(226,232,240,0.95);
+        background: rgba(248,250,252,0.92);
+        color: #334155;
         white-space: nowrap;
     }
-    .theme-pill-inline.low52-pill {
-        background: #ede9fe;
-        color: #4c1d95;
-        border-color: #ddd6fe;
-    }
+    .tag.pos { background: rgba(254,226,226,0.85); border-color: rgba(248,113,113,0.55); color: var(--up); }
+    .tag.neg { background: rgba(219,234,254,0.85); border-color: rgba(59,130,246,0.55); color: var(--down); }
+    .tag.neutral { background: rgba(241,245,249,0.95); border-color: rgba(148,163,184,0.55); color: #475569; }
 
-    .pos {
-        color: var(--up);
-        font-weight: 600;
-    }
-    .neg {
-        color: var(--down);
-        font-weight: 600;
-    }
-    .zero {
-        color: var(--muted);
-    }
-
-    .detail-note {
-        margin-top: 16px;
-        font-size: 12px;
-        color: var(--muted2);
-    }
-
-    .nav-links {
-        display: flex;
-        gap: 8px;
-        margin-top: 4px;
-        flex-wrap: wrap;
-    }
-    .nav-link {
-        font-size: 12px;
-        padding: 3px 10px;
-        border-radius: 999px;
+    .kpi-mini-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px; }
+    .kpi-mini {
+        flex: 1 1 240px;
+        min-width: 240px;
+        border-radius: 14px;
+        padding: 10px 12px;
         border: 1px solid var(--border);
-        text-decoration: none;
-        color: #4b5563;
         background: rgba(248,250,252,0.95);
-        box-shadow: 0 2px 4px rgba(15,23,42,0.04);
+        box-shadow: 0 2px 8px rgba(15,23,42,0.05);
     }
-    .nav-link:hover {
-        background: #e5e7eb;
-    }
-    .nav-link.active {
-        border-color: #ef4444;
-        color: #b91c1c;
-        background: #fee2e2;
-        font-weight: 600;
-    }
+    .kpi-mini .t { font-size: 12px; font-weight: 800; color: var(--muted); }
+    .kpi-mini .v { font-size: 18px; font-weight: 900; margin-top: 2px; }
+    .kpi-mini .s { font-size: 12px; color: var(--muted2); margin-top: 2px; }
 
-    @media (max-width: 900px) {
-        body {
-            font-size: 12px;
-        }
-        table {
-            font-size: 11px;
-        }
-        header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 4px;
-        }
-        .theme-top-card {
-            min-width: 260px;
-        }
+    @media (max-width: 520px) {
+        details.accordion > summary { font-size: 12px; }
+        .kpi-mini { min-width: 0; }
     }
 
 </style>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
 </head>
 <body>
 <header>
     <div class="left">
         <div class="title-main">장전 테마 스캐너</div>
-        <div class="title-sub">데이터 기준: 2025-12-15 08:16 (파일 수정 시각 기준)</div>
+        <div class="title-sub"><span class="subtitle-highlight">📌 데이터 기준: 2025-12-16 08:22 (파일 수정 시각 기준)</span></div>
         <div class="nav-links">
-            <a href="preopen.html?v=20251215081655" class="nav-link active">요약 대시보드</a>
-            <a href="preopen_overview.html?v=20251215081655" class="nav-link">테마 맵 전체 보기</a>
+            <a href="preopen.html?v=20251216082226" class="nav-link active">요약 대시보드</a>
+            <a href="preopen_overview.html?v=20251216082226" class="nav-link">테마 맵 전체 보기</a>
         </div>
     </div>
     <div class="right-info">
-        <div>생성 시각: 2025-12-15 08:16</div>
+        <div>생성 시각: 2025-12-16 08:22</div>
         <div>데이터: theme_preopen_stats.tsv 기준</div>
     </div>
 </header>
@@ -461,146 +287,353 @@
 <section id="summary-section">
 <div class="section-box">
 <div class="section-title">오늘 장전 스냅샷</div>
-<div class="section-sub">전일 종가 기준으로 주요 테마·종목의 분위기를 한 번에 정리했습니다.</div>
+<div class="section-sub">전일 종가/전일까지의 수급을 바탕으로, 장 시작 전에 빠르게 보는 요약입니다.</div>
 <div class="summary-row">
 <div class="summary-card">
 <div class="summary-card-title">전체 커버리지</div>
 <div class="summary-card-main">508개</div>
-<div class="summary-card-sub">전체 테마 종목 수 · 테마 수 31개 기준</div>
+<div class="summary-card-sub">커버리지 내 테마 31개</div>
 </div>
 <div class="summary-card">
-<div class="summary-card-title">1일 기준 상승 / 하락 비율</div>
-<div class="summary-card-main"><span class="pos">72.2%</span> / <span class="neg">25.4%</span></div>
-<div class="summary-card-sub">상승 367개 / 하락 129개 (전일 종가 기준)</div>
+<div class="summary-card-title">Breadth (1일 기준)</div>
+<div class="summary-card-main"><span class="pos">33.5%</span> / <span class="neg">64.2%</span> / <span class="zero">2.4%</span></div>
+<div class="summary-card-sub">상승 170 · 하락 326 · 보합 12 (종목 unique)</div>
 </div>
 </div>
-<div class="section-title">어디부터 볼까?</div>
-<div class="section-sub">가격 모멘텀 · 수급 · 52주 저점 관점에서 첫 화면을 안내합니다.</div>
-<div class="summary-row">
-<div class="where-card momentum">
-<div class="where-title">가격 · 상승/하락</div>
-<div class="where-pill">모멘텀 관점</div>
-<p class="where-text">최근 5일 기준 <span class="where-em">상승 추세 종목 294개</span>가 포착되었습니다.</p>
-<p class="where-text">단기 방향성을 먼저 보고 싶다면 <b>아래 단기 방향성 &amp; 52주 위치 카드</b>에서 <b>1일·3일·5일 수익률 상위 테마</b>를 먼저 확인해보세요.</p>
+<div class="kpi-mini-row">
+<div class="kpi-mini">
+<div class="t">스마트머니 동행(5D)</div>
+<div class="v">126개 <span style="font-size:12px;color:#64748b;font-weight:800;">(24.8%)</span></div>
+<div class="s">외국인·기관 모두 순매수(종목 unique) · 예: 대원전선, 다날, HD현대인프라코어 · 아래에서 자세히</div>
 </div>
-<div class="where-card flow">
-<div class="where-title">수급(외국인 · 기관 · 개인)</div>
-<div class="where-pill">수급 관점</div>
-<p class="where-text">최근 5일 순매수 기준, <span class="where-em">외국인 319개</span> · <span class="where-em">기관 231개</span> · <span class="where-em">개인 210개</span> 종목에서 매수 우위가 나타났습니다.</p>
-<p class="where-text">매매 주체 흐름이 궁금하다면 <b>외국인·기관·개인 5일 순매수 TOP5</b> 섹션을 함께 보세요.</p>
-</div>
-<div class="where-card low52">
-<div class="where-title">52주 저점·바닥 다지기</div>
-<div class="where-pill">밸류에이션 관점</div>
-<p class="where-text">52주 최저가 대비 <span class="where-em">-20% 이내 구간</span>에 있는 종목은 총 <span class="where-em">0개</span>입니다.</p>
-<p class="where-text">바닥권 리바운드를 노린다면 <b>아래 52주 저점대비 회복 상위 테마</b>도 같이 참고하세요.</p>
+<div class="kpi-mini">
+<div class="t">저점 근접(52주)</div>
+<div class="v">0개 <span style="font-size:12px;color:#64748b;font-weight:800;">(0.0%)</span></div>
+<div class="s">52주 최저 대비 -20% 이내 · 아래에서 자세히</div>
 </div>
 </div>
-<div class="section-title">단기 방향성 &amp; 52주 위치</div>
-<div class="section-sub">테마별 평균 수익률(1일·3일·5일)과 52주 저점대비 위치를 간단히 정리했습니다.</div>
-<div class="summary-row">
-<div class="where-card momentum">
-<div class="where-title">수익률 기준 상위 테마</div>
-<div class="where-pill">1일 · 3일 · 5일</div>
-<p class="where-text"><span class="where-em">1일 수익률 상위</span> <span class="theme-pill-inline">스페이스X</span> <span class="theme-pill-inline">우주항공</span> <span class="theme-pill-inline">풍력</span></p>
-<p class="where-text"><span class="where-em">3일 수익률 상위</span> <span class="theme-pill-inline">스페이스X</span> <span class="theme-pill-inline">우주항공</span> <span class="theme-pill-inline">의료AI</span></p>
-<p class="where-text"><span class="where-em">5일 수익률 상위</span> <span class="theme-pill-inline">스페이스X</span> <span class="theme-pill-inline">우주항공</span> <span class="theme-pill-inline">로봇</span></p>
-<p class="where-text">단기 스윙·트레이딩 관점이라면 위 테마들의 <b>종목·수급 흐름을 먼저 체크</b>해보는 것을 추천합니다.</p>
-</div>
-<div class="where-card low52">
-<div class="where-title">52주 저점대비 회복 상위 테마</div>
-<div class="where-pill">52주 최저 기준</div>
-<p class="where-text">52주 최저가 대비 <span class="where-em">상승폭이 큰 테마 TOP3</span>:</p>
-<p class="where-text"><span class="theme-pill-inline low52-pill">로봇</span> <span class="theme-pill-inline low52-pill">바이오</span> <span class="theme-pill-inline low52-pill">의료AI</span></p>
-<p class="where-text">이미 많이 올라온 구간인지, 아직 추세 초입인지 확인할 때 참고용으로 볼 수 있습니다.</p>
-</div>
-</div>
-</div>
-<div class="section-box">
-<div class="section-title">테마 온도 체크</div>
-<div class="section-sub">전일 기준 상승 비율과 1일·3일·5일 수익률, 52주 저점대비 위치를 한 번에 봅니다. ※ 52주 저점대비 = (전일 종가 − 52주 최저가) ÷ 52주 최저가 × 100</div>
-<div class="summary-row">
-<div class="theme-top-card bull">
-<div class="theme-top-title">상승 테마 TOP3 <span class="badge">상승 비율 기준</span></div>
-<div class="theme-top-desc">상승 종목 비율이 높고, 단기(1·3·5일) 수익률이 강한 테마입니다.</div>
-<ul class="theme-top-list">
-<li><span class="theme-name">스페이스X</span><span class="theme-stat-main">· 상승 10/10개 (100.0%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="pos">12.2%</span> · 3일 <span class="pos">18.5%</span> · 5일 <span class="pos">26.4%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">92.9%</span></span></li>
-<li><span class="theme-name">우주항공</span><span class="theme-stat-main">· 상승 18/18개 (100.0%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="pos">9.3%</span> · 3일 <span class="pos">12.1%</span> · 5일 <span class="pos">16.3%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">95.3%</span></span></li>
-<li><span class="theme-name">풍력</span><span class="theme-stat-main">· 상승 10/10개 (100.0%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="pos">8.3%</span> · 3일 <span class="pos">6.9%</span> · 5일 <span class="pos">7.5%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">90.2%</span></span></li>
-</ul></div>
-<div class="theme-top-card bear">
-<div class="theme-top-title">하락 테마 TOP3 <span class="badge">조정 비율 기준</span></div>
-<div class="theme-top-desc">단기 조정이 깊었던 테마로, 1·3·5일 수익률과 52주 위치를 함께 확인합니다.</div>
-<ul class="theme-top-list">
-<li><span class="theme-name">유리기판</span><span class="theme-stat-main">· 상승 4/18개 (22.2%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="neg">-1.0%</span> · 3일 <span class="neg">-1.0%</span> · 5일 <span class="neg">-0.7%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">87.0%</span></span></li>
-<li><span class="theme-name">바이오</span><span class="theme-stat-main">· 상승 12/31개 (38.7%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="neg">-0.6%</span> · 3일 <span class="pos">3.2%</span> · 5일 <span class="pos">2.3%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">200.4%</span></span></li>
-<li><span class="theme-name">반도체소재부품</span><span class="theme-stat-main">· 상승 5/15개 (33.3%)</span><span class="theme-stat-line">단기 수익률: 1일 <span class="neg">-0.3%</span> · 3일 <span class="neg">-2.0%</span> · 5일 <span class="neg">-1.0%</span></span><span class="theme-stat-line">52주 저점대비: <span class="pos">101.2%</span></span></li>
-</ul></div>
-</div>
-</div>
-<div class="section-box">
-<div class="section-title">종목 레벨 TOP5</div>
-<div class="section-sub">오늘 장전, 눈여겨볼 만한 종목들을 가격·수급 관점에서 정리했습니다.</div>
-<div class="summary-row">
-<div class="top5-card kind-price">
-<div class="top5-title">단기 수익률 TOP5</div>
-<div class="top5-desc">전일 기준 단기 모멘텀이 가장 강했던 종목입니다. 1일·3일·5일 수익률을 함께 비교해보세요.</div>
+<details class="accordion">
+<summary>스마트머니 동행(5D) 자세히 <span class="summary-hint">외국인+기관 5D 합산 상위 20</span></summary>
+<div style="padding:12px;">
+<div class="table-wrap">
 <table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>1일 수익률</th><th>3일 수익률</th><th>5일 수익률</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">세아베스틸지주</td><td class="name">우주항공, 지주사, 스페이스X</td><td><span class="pos">29.9%</span></td><td><span class="pos">46.0%</span></td><td><span class="pos">59.3%</span></td></tr>
-<tr><td>2</td><td class="name">클로봇</td><td class="name">로봇</td><td><span class="pos">26.8%</span></td><td><span class="pos">34.0%</span></td><td><span class="pos">53.8%</span></td></tr>
-<tr><td>3</td><td class="name">제이엘케이</td><td class="name">의료AI</td><td><span class="pos">26.7%</span></td><td><span class="pos">46.7%</span></td><td><span class="pos">44.6%</span></td></tr>
-<tr><td>4</td><td class="name">LS마린솔루션</td><td class="name">전력인프라, 풍력</td><td><span class="pos">24.1%</span></td><td><span class="pos">18.9%</span></td><td><span class="pos">22.1%</span></td></tr>
-<tr><td>5</td><td class="name">비에이치아이</td><td class="name">원전</td><td><span class="pos">21.8%</span></td><td><span class="pos">25.1%</span></td><td><span class="pos">7.7%</span></td></tr>
-</tbody></table></div>
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>1D</th><th>배수</th><th>외+기관5D</th><th>외국인5D</th><th>기관5D</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">대원전선</td><td class="name">전력인프라</td><td><span class="neg">-2.0%</span></td><td><span class="pos">1.36</span></td><td><span class="pos">3,721,157</span></td><td><span class="pos">1,382,255</span></td><td><span class="pos">2,338,902</span></td></tr>
+<tr><td>2</td><td class="name">다날</td><td class="name">스테이블코인</td><td><span class="neg">-2.9%</span></td><td><span class="pos">0.46</span></td><td><span class="pos">2,413,704</span></td><td><span class="pos">2,357,017</span></td><td><span class="pos">56,687</span></td></tr>
+<tr><td>3</td><td class="name">HD현대인프라코어</td><td class="name">우크라이나/재건</td><td><span class="pos">0.5%</span></td><td><span class="pos">1.46</span></td><td><span class="pos">2,283,801</span></td><td><span class="pos">1,734,348</span></td><td><span class="pos">549,453</span></td></tr>
+<tr><td>4</td><td class="name">일동제약</td><td class="name">바이오</td><td><span class="neg">-7.8%</span></td><td><span class="pos">1.42</span></td><td><span class="pos">2,161,458</span></td><td><span class="pos">1,442,217</span></td><td><span class="pos">719,241</span></td></tr>
+<tr><td>5</td><td class="name">유니슨</td><td class="name">풍력</td><td><span class="pos">3.8%</span></td><td><span class="pos">3.23</span></td><td><span class="pos">1,755,917</span></td><td><span class="pos">1,670,026</span></td><td><span class="pos">85,891</span></td></tr>
+<tr><td>6</td><td class="name">스피어</td><td class="name">우주항공</td><td><span class="pos">6.0%</span></td><td><span class="pos">6.88</span></td><td><span class="pos">1,449,533</span></td><td><span class="pos">292,899</span></td><td><span class="pos">1,156,634</span></td></tr>
+<tr><td>7</td><td class="name">클로봇</td><td class="name">로봇</td><td><span class="pos">0.9%</span></td><td><span class="pos">1.98</span></td><td><span class="pos">1,432,503</span></td><td><span class="pos">680,227</span></td><td><span class="pos">752,276</span></td></tr>
+<tr><td>8</td><td class="name">비츠로테크</td><td class="name">우주항공</td><td><span class="pos">7.1%</span></td><td><span class="pos">6.93</span></td><td><span class="pos">1,426,997</span></td><td><span class="pos">1,331,971</span></td><td><span class="pos">95,026</span></td></tr>
+<tr><td>9</td><td class="name">한화시스템</td><td class="name">우주항공</td><td><span class="neg">-0.8%</span></td><td><span class="pos">4.66</span></td><td><span class="pos">1,269,186</span></td><td><span class="pos">190,681</span></td><td><span class="pos">1,078,505</span></td></tr>
+<tr><td>10</td><td class="name">MDS테크</td><td class="name">AI</td><td><span class="pos">0.7%</span></td><td><span class="pos">2.17</span></td><td><span class="pos">1,198,177</span></td><td><span class="pos">1,198,171</span></td><td><span class="pos">6</span></td></tr>
+<tr><td>11</td><td class="name">비에이치아이</td><td class="name">원전</td><td><span class="neg">-9.2%</span></td><td><span class="pos">1.49</span></td><td><span class="pos">1,058,539</span></td><td><span class="pos">495,735</span></td><td><span class="pos">562,804</span></td></tr>
+<tr><td>12</td><td class="name">레이크머티리얼즈</td><td class="name">태양광</td><td><span class="pos">0.8%</span></td><td><span class="pos">1.00</span></td><td><span class="pos">1,029,793</span></td><td><span class="pos">590,418</span></td><td><span class="pos">439,375</span></td></tr>
+<tr><td>13</td><td class="name">LS마린솔루션</td><td class="name">전력인프라</td><td><span class="neg">-7.0%</span></td><td><span class="pos">2.17</span></td><td><span class="pos">926,255</span></td><td><span class="pos">333,842</span></td><td><span class="pos">592,413</span></td></tr>
+<tr><td>14</td><td class="name">BNK금융지주</td><td class="name">금융</td><td><span class="pos">0.9%</span></td><td><span class="pos">1.63</span></td><td><span class="pos">907,228</span></td><td><span class="pos">565,325</span></td><td><span class="pos">341,903</span></td></tr>
+<tr><td>15</td><td class="name">올릭스</td><td class="name">바이오</td><td><span class="pos">7.7%</span></td><td><span class="pos">1.37</span></td><td><span class="pos">813,572</span></td><td><span class="pos">207,880</span></td><td><span class="pos">605,692</span></td></tr>
+<tr><td>16</td><td class="name">씨에스윈드</td><td class="name">풍력</td><td><span class="neg">-1.1%</span></td><td><span class="pos">0.70</span></td><td><span class="pos">809,176</span></td><td><span class="pos">460,475</span></td><td><span class="pos">348,701</span></td></tr>
+<tr><td>17</td><td class="name">유진로봇</td><td class="name">로봇</td><td><span class="neg">-7.2%</span></td><td><span class="pos">1.74</span></td><td><span class="pos">806,949</span></td><td><span class="pos">363,890</span></td><td><span class="pos">443,059</span></td></tr>
+<tr><td>18</td><td class="name">온코닉테라퓨틱스</td><td class="name">바이오</td><td><span class="pos">6.6%</span></td><td><span class="pos">1.24</span></td><td><span class="pos">749,110</span></td><td><span class="pos">630,037</span></td><td><span class="pos">119,073</span></td></tr>
+<tr><td>19</td><td class="name">오르비텍</td><td class="name">원전</td><td><span class="neg">-4.6%</span></td><td><span class="pos">1.91</span></td><td><span class="pos">719,412</span></td><td><span class="pos">664,202</span></td><td><span class="pos">55,210</span></td></tr>
+<tr><td>20</td><td class="name">SK이터닉스</td><td class="name">ESS</td><td><span class="neg">-0.5%</span></td><td><span class="pos">1.17</span></td><td><span class="pos">699,083</span></td><td><span class="pos">161,120</span></td><td><span class="pos">537,963</span></td></tr>
+</tbody></table>
+</div>
+<p class="detail-note">※ 외+기관 동행 여부는 방향성 힌트입니다. 장중 뉴스/갭/이벤트는 별도 확인이 필요합니다.</p>
+</div>
+</details>
+<details class="accordion">
+<summary>저점 근접(52주) 자세히 <span class="summary-hint">저점(-20~0%) + 수급 강한 20</span></summary>
+<div style="padding:12px;">
+<div class="table-wrap">
+<table class="top5-table">
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>52주저점대비</th><th>1D</th><th>배수</th><th>외+기관5D</th></tr></thead><tbody>
+<tr><td colspan="7" style="text-align:center;color:#64748b;padding:10px;">데이터가 없습니다.</td></tr>
+</tbody></table>
+</div>
+<p class="detail-note">※ 저점 근접은 “리스크 구간”이기도 합니다. 추세 전환/거래 증가/수급이 동반되는지 확인하세요.</p>
+</div>
+</details>
+<div class="section-title">테마 빠른 체크</div>
+<div class="section-sub">장전에서 먼저 볼 테마 6개만 추렸습니다.</div>
+<div class="pill-row">
+<span class="pill"><span class="tag pos">상승</span><b>스페이스X</b> +5.6%</span>
+<span class="pill"><span class="tag pos">상승</span><b>우주항공</b> +3.5%</span>
+<span class="pill"><span class="tag pos">상승</span><b>로봇</b> +2.1%</span>
+<span class="pill"><span class="tag neg">하락</span><b>반도체</b> -3.1%</span>
+<span class="pill"><span class="tag neg">하락</span><b>원전</b> -3.0%</span>
+<span class="pill"><span class="tag neg">하락</span><b>AI</b> -2.4%</span>
+</div>
+<div class="section-title">오늘 3줄</div>
+<div class="section-sub">장전용으로 요약한 체크 포인트(자동 생성)입니다.</div>
+<ul class="three-lines">
+<li>모멘텀: 스페이스X 중심 1일 평균 +5.6% · 상승비중 100%</li>
+<li>수급: 우크라이나/재건 외+기관 5일 순매수 +5,439,736</li>
+<li>주의: 반도체 1일 평균 -3.1% · 하락 확산 체크</li>
+</ul>
+<p class="detail-note">※ 테마별 합계(수급)는 종목이 여러 테마에 속하면 중복 집계될 수 있습니다.</p>
+</div>
+<div class="section-box">
+<div class="section-title">그래프로 한 번에 보기</div>
+<div class="section-sub">테마는 트리맵(크게), 시장은 Breadth, 수급은 외+기관 중심으로 훑습니다.</div>
+<div class="chart-card">
+<div class="chart-title">테마 트리맵</div>
+<div class="chart-desc">크기=종목수 · 색=평균 1일 등락률 (줌/이동 가능)</div>
+<div id="treemap" class="chart"></div>
+</div>
+<div class="grid-2">
+<div class="chart-card">
+<div class="chart-title">시장 Breadth 도넛</div>
+<div class="chart-desc">종목(유니크) 기준 1일 상승/하락/보합</div>
+<div id="donut" class="chart"></div>
+</div>
+<div class="chart-card">
+<div class="chart-title">외+기관 5일 순매수 TOP</div>
+<div class="chart-desc">테마별 합산(중복 편입 종목 있으면 중복)</div>
+<div id="flowbar" class="chart"></div>
+</div>
+</div>
+<script>
+const PRE_DONUT = [{"name":"\uc0c1\uc2b9","value":170},{"name":"\ud558\ub77d","value":326},{"name":"\ubcf4\ud569","value":12}];
+const PRE_TREEMAP = [{"name":"AI","value":[33,-2.419492964740192],"chg":-2.419492964740192,"stocks":33,"up_ratio":12.121212121212121,"fi5":-769385.0},{"name":"\ubc18\ub3c4\uccb4","value":[17,-3.138851224880579],"chg":-3.138851224880579,"stocks":17,"up_ratio":0.0,"fi5":-12626971.0},{"name":"\uc790\ub3d9\ucc28","value":[25,0.2851727353748453],"chg":0.2851727353748453,"stocks":25,"up_ratio":32.0,"fi5":264754.0},{"name":"\uc591\uc790","value":[16,-1.2125339354623352],"chg":-1.2125339354623352,"stocks":16,"up_ratio":18.75,"fi5":428589.0},{"name":"\ud654\uc7a5\ud488","value":[23,0.9049219263307341],"chg":0.9049219263307341,"stocks":23,"up_ratio":60.86956521739131,"fi5":-379523.0},{"name":"\uc2dd\uc74c\ub8cc","value":[23,-0.33893785251642805],"chg":-0.33893785251642805,"stocks":23,"up_ratio":34.78260869565217,"fi5":-113506.0},{"name":"\ub85c\ubd07","value":[24,2.0976812638081537],"chg":2.0976812638081537,"stocks":24,"up_ratio":58.333333333333336,"fi5":5115661.0},{"name":"2\ucc28\uc804\uc9c0","value":[6,0.12294246204652137],"chg":0.12294246204652137,"stocks":6,"up_ratio":33.33333333333333,"fi5":-63201.0},{"name":"\uc6b0\uc8fc\ud56d\uacf5","value":[18,3.545937594083204],"chg":3.545937594083204,"stocks":18,"up_ratio":83.33333333333334,"fi5":3627514.0},{"name":"\ubc14\uc774\uc624","value":[31,1.3865370405284572],"chg":1.3865370405284572,"stocks":31,"up_ratio":74.19354838709677,"fi5":4092561.0},{"name":"\ud1b5\uc2e0","value":[7,1.486526458287575],"chg":1.486526458287575,"stocks":7,"up_ratio":85.71428571428571,"fi5":472604.0},{"name":"\uc800\ucd9c\uc0b0","value":[6,0.026090383991113814],"chg":0.026090383991113814,"stocks":6,"up_ratio":50.0,"fi5":40862.0},{"name":"ESS","value":[15,-1.2889471062641775],"chg":-1.2889471062641775,"stocks":15,"up_ratio":20.0,"fi5":-51996.0},{"name":"\uc870\uc120/LNG","value":[28,-1.3747169338444127],"chg":-1.3747169338444127,"stocks":28,"up_ratio":17.857142857142858,"fi5":1109167.0},{"name":"\uc804\ub825\uc778\ud504\ub77c","value":[20,-2.3534150269495466],"chg":-2.3534150269495466,"stocks":20,"up_ratio":20.0,"fi5":5193687.0},{"name":"\ud0dc\uc591\uad11","value":[10,-0.38567128877255885],"chg":-0.38567128877255885,"stocks":10,"up_ratio":30.0,"fi5":1810257.0},{"name":"\ud48d\ub825","value":[10,-0.07019835493082258],"chg":-0.07019835493082258,"stocks":10,"up_ratio":40.0,"fi5":4682340.0},{"name":"\uc720\ub9ac\uae30\ud310","value":[18,-0.49232128038306855],"chg":-0.49232128038306855,"stocks":18,"up_ratio":44.44444444444444,"fi5":-1139126.0},{"name":"\uc9c0\uc8fc\uc0ac","value":[28,-0.05861259067023445],"chg":-0.05861259067023445,"stocks":28,"up_ratio":28.57142857142857,"fi5":-1848923.0},{"name":"\uae08\uc735","value":[11,-0.9841315895098532],"chg":-0.9841315895098532,"stocks":11,"up_ratio":27.27272727272727,"fi5":-17099.0},{"name":"\uc99d\uad8c","value":[17,-1.7461808605221638],"chg":-1.7461808605221638,"stocks":17,"up_ratio":5.88235294117647,"fi5":316782.0},{"name":"\uc2a4\ud14c\uc774\ube14\ucf54\uc778","value":[20,-2.0987530029676797],"chg":-2.0987530029676797,"stocks":20,"up_ratio":5.0,"fi5":2730382.0},{"name":"\ubc18\ub3c4\uccb4\uc7a5\ube44","value":[19,-2.3583517656373503],"chg":-2.3583517656373503,"stocks":19,"up_ratio":5.263157894736842,"fi5":-1739831.0},{"name":"\ubc18\ub3c4\uccb4\uc18c\uc7ac\ubd80\ud488","value":[15,-2.1322228201810276],"chg":-2.1322228201810276,"stocks":15,"up_ratio":13.333333333333334,"fi5":704471.0},{"name":"\uc758\ub8ccAI","value":[21,1.2353699667380202],"chg":1.2353699667380202,"stocks":21,"up_ratio":52.38095238095239,"fi5":-605060.0},{"name":"\ubc29\uc0b0","value":[14,-0.40810904993722363],"chg":-0.40810904993722363,"stocks":14,"up_ratio":42.857142857142854,"fi5":1172879.0},{"name":"\uc6b0\ud06c\ub77c\uc774\ub098/\uc7ac\uac74","value":[20,-0.4770994583555022],"chg":-0.4770994583555022,"stocks":20,"up_ratio":35.0,"fi5":5439736.0},{"name":"\uc790\uc728\uc8fc\ud589","value":[17,-0.9018392414487367],"chg":-0.9018392414487367,"stocks":17,"up_ratio":23.52941176470588,"fi5":-960043.0},{"name":"\uc2a4\ud398\uc774\uc2a4X","value":[10,5.639047362507297],"chg":5.639047362507297,"stocks":10,"up_ratio":100.0,"fi5":-1332609.0},{"name":"\uac74\uc124","value":[24,-1.8515307013447002],"chg":-1.8515307013447002,"stocks":24,"up_ratio":8.333333333333332,"fi5":1379463.0},{"name":"\uc6d0\uc804","value":[20,-3.0386552810290057],"chg":-3.0386552810290057,"stocks":20,"up_ratio":15.0,"fi5":1529974.0}];
+const PRE_FLOW = {"labels":["\uc6b0\ud06c\ub77c\uc774\ub098/\uc7ac\uac74","\uc804\ub825\uc778\ud504\ub77c","\ub85c\ubd07","\ud48d\ub825","\ubc14\uc774\uc624","\uc6b0\uc8fc\ud56d\uacf5","\uc2a4\ud14c\uc774\ube14\ucf54\uc778","\ud0dc\uc591\uad11","\uc6d0\uc804","\uac74\uc124","\ubc29\uc0b0","\uc870\uc120/LNG","\ubc18\ub3c4\uccb4\uc18c\uc7ac\ubd80\ud488","\ud1b5\uc2e0","\uc591\uc790"],"values":[5439736.0,5193687.0,5115661.0,4682340.0,4092561.0,3627514.0,2730382.0,1810257.0,1529974.0,1379463.0,1172879.0,1109167.0,704471.0,472604.0,428589.0]};
+
+(function(){
+  const el = document.getElementById("donut");
+  if(!el || !window.echarts) return;
+  const chart = echarts.init(el);
+  chart.setOption({
+    tooltip: { trigger: "item" },
+    legend: { bottom: 0, left: "center" },
+    series: [{
+      type: "pie",
+      radius: ["55%","78%"],
+      label: { formatter: "{b}\n{d}%" },
+      data: PRE_DONUT
+    }]
+  });
+  window.addEventListener("resize", ()=>chart.resize());
+})();
+
+
+(function(){
+  const el = document.getElementById("treemap");
+  if(!el || !window.echarts) return;
+  const chart = echarts.init(el);
+
+  const data = (PRE_TREEMAP || []).map(x => ({
+    name: x.name,
+    value: x.value,  // [size, chg]
+    chg: x.chg,
+    stocks: x.stocks,
+    up_ratio: x.up_ratio,
+    fi5: x.fi5
+  }));
+
+  chart.setOption({
+    tooltip: {
+      formatter: function(p){
+        const d = p.data || {};
+        const chg = (d.chg ?? 0);
+        const s = (d.stocks ?? 0);
+        const up = (d.up_ratio ?? 0);
+        const fi5 = (d.fi5 ?? 0);
+        return [
+          "<b>" + (d.name || "-") + "</b>",
+          "종목수: " + s,
+          "평균 1D: " + (chg>=0? "+" : "") + chg.toFixed(2) + "%",
+          "상승비중: " + up.toFixed(0) + "%",
+          "외+기관 5D: " + (fi5>=0? "+" : "") + Math.round(fi5).toLocaleString()
+        ].join("<br/>");
+      }
+    },
+    visualMap: {
+      min: -5,
+      max: 5,
+      dimension: 1,
+      orient: "horizontal",
+      left: "center",
+      bottom: 0,
+      inRange: { color: ["#2563eb","#f8fafc","#ef4444"] }
+    },
+    series: [{
+      type: "treemap",
+      roam: (window.innerWidth < 520),
+      scaleLimit: (window.innerWidth < 520) ? { min: 1, max: 4 } : { min: 1, max: 1 },
+      nodeClick: false,
+      breadcrumb: { show: false },
+      labelLayout: { hideOverlap: true },
+      label: {
+        show: true,
+        position: "inside",
+        align: "center",
+        verticalAlign: "middle",
+        overflow: "truncate",
+        formatter: function(p){
+          const d = p && p.data ? p.data : {};
+          const name = d.name || "";
+          const chg = (d.chg ?? 0);
+          const useWhite = Math.abs(chg) >= 2.0;
+          const cls = useWhite ? "w" : "b";
+          return `{${cls}|${name}}`;
+        },
+        rich: {
+          w: { color: "#ffffff", fontWeight: 900, fontSize: 14, lineHeight: 18, textBorderColor: "rgba(15,23,42,0.55)", textBorderWidth: 3 },
+          b: { color: "#0f172a", fontWeight: 900, fontSize: 14, lineHeight: 18, textBorderColor: "rgba(248,250,252,0.95)", textBorderWidth: 3 }
+        }
+      },
+      emphasis: {
+        label: { show: true, fontSize: 18 },
+        itemStyle: { borderWidth: 3, borderColor: "rgba(15,23,42,0.35)" }
+      },
+      itemStyle: { borderColor: "#ffffff", borderWidth: 2, gapWidth: 2 },
+      data: data
+    }]
+  });
+
+  window.addEventListener("resize", ()=>chart.resize());
+})();
+
+
+(function(){
+  const el = document.getElementById("flowbar");
+  if(!el || !window.echarts) return;
+  const chart = echarts.init(el);
+
+  const labels = (PRE_FLOW && PRE_FLOW.labels) ? PRE_FLOW.labels.slice().reverse() : [];
+  const values = (PRE_FLOW && PRE_FLOW.values) ? PRE_FLOW.values.slice().reverse() : [];
+
+  chart.setOption({
+    grid: { left: (window.innerWidth<520? 90:110), right: 16, top: 10, bottom: 26 },
+    tooltip: {
+      trigger: "axis",
+      axisPointer: { type: "shadow" },
+      formatter: function(params){
+        const p = params && params[0] ? params[0] : null;
+        if(!p) return "";
+        const v = p.value || 0;
+        return "<b>" + (p.name||"-") + "</b><br/>외+기관 5D: " + (v>=0? "+" : "") + Math.round(v).toLocaleString();
+      }
+    },
+    xAxis: { type: "value", axisLabel: { formatter: (v)=>v.toLocaleString() } },
+    yAxis: { type: "category", data: labels, axisLabel: { width: 100, overflow: "truncate" } },
+    series: [{ type: "bar", data: values, barWidth: 12, itemStyle: { borderRadius: [6,6,6,6] } }]
+  });
+
+  window.addEventListener("resize", ()=>chart.resize());
+})();
+
+</script>
+</div>
+<div class="section-box">
+<div class="section-title">오늘 볼 후보 10개</div>
+<div class="section-sub">장전에서 “오늘 볼 것”만 빠르게 고르기 위해 교집합(모멘텀·거래증가·외+기관 수급)으로 자동 선별했습니다.</div>
+<div class="table-wrap">
+<table class="top5-table">
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>체크</th><th>1D</th><th>배수</th><th>외+기관5D</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">에이블씨엔씨</td><td class="name">화장품</td><td class="name"><span class="tag pos">1D+</span> <span class="tag pos">거래증가</span> <span class="tag pos">외+기관+</span></td><td><span class="pos">22.7%</span></td><td><span class="pos">7.18</span></td><td><span class="pos">259,016</span></td></tr>
+<tr><td>2</td><td class="name">원익홀딩스</td><td class="name">로봇, 지주사</td><td class="name"><span class="tag pos">1D+</span> <span class="tag pos">거래증가</span> <span class="tag pos">외+기관+</span></td><td><span class="pos">22.7%</span></td><td><span class="pos">4.10</span></td><td><span class="pos">2,208,530</span></td></tr>
+<tr><td>3</td><td class="name">에이치브이엠</td><td class="name">스페이스X, 우주항공</td><td class="name"><span class="tag pos">1D+</span> <span class="tag pos">거래증가</span> <span class="tag pos">외+기관+</span></td><td><span class="pos">10.2%</span></td><td><span class="pos">7.59</span></td><td><span class="pos">169,799</span></td></tr>
+<tr><td>4</td><td class="name">비츠로테크</td><td class="name">우주항공</td><td class="name"><span class="tag pos">1D+</span> <span class="tag pos">거래증가</span> <span class="tag pos">외+기관+</span></td><td><span class="pos">7.1%</span></td><td><span class="pos">6.93</span></td><td><span class="pos">1,426,997</span></td></tr>
+<tr><td>5</td><td class="name">스피어</td><td class="name">스페이스X, 우주항공</td><td class="name"><span class="tag pos">1D+</span> <span class="tag pos">거래증가</span> <span class="tag pos">외+기관+</span></td><td><span class="pos">6.0%</span></td><td><span class="pos">6.88</span></td><td><span class="pos">1,449,533</span></td></tr>
+<tr><td>6</td><td class="name">아이윈플러스</td><td class="name">양자</td><td class="name"><span class="tag pos">1D+</span> <span class="tag pos">거래증가</span> <span class="tag pos">외+기관+</span></td><td><span class="pos">8.7%</span></td><td><span class="pos">4.27</span></td><td><span class="pos">640,211</span></td></tr>
+<tr><td>7</td><td class="name">휴림로봇</td><td class="name">로봇</td><td class="name"><span class="tag pos">1D+</span> <span class="tag pos">거래증가</span> <span class="tag pos">외+기관+</span></td><td><span class="pos">7.4%</span></td><td><span class="pos">3.76</span></td><td><span class="pos">1,458,443</span></td></tr>
+<tr><td>8</td><td class="name">이노스페이스</td><td class="name">우주항공</td><td class="name"><span class="tag pos">1D+</span> <span class="tag pos">거래증가</span> <span class="tag pos">외+기관+</span></td><td><span class="pos">8.9%</span></td><td><span class="pos">3.15</span></td><td><span class="pos">156,681</span></td></tr>
+<tr><td>9</td><td class="name">루미르</td><td class="name">우주항공</td><td class="name"><span class="tag pos">1D+</span> <span class="tag pos">거래증가</span> <span class="tag pos">외+기관+</span></td><td><span class="pos">5.5%</span></td><td><span class="pos">3.77</span></td><td><span class="pos">75,730</span></td></tr>
+<tr><td>10</td><td class="name">켄코아에어로스</td><td class="name">스페이스X, 우주항공</td><td class="name"><span class="tag pos">1D+</span> <span class="tag pos">거래증가</span> <span class="tag pos">외+기관+</span></td><td><span class="pos">2.5%</span></td><td><span class="pos">4.53</span></td><td><span class="pos">22,819</span></td></tr>
+</tbody></table>
+</div>
+<p class="detail-note">※ 후보는 전일 스냅샷 기반 자동 선별이며, 장중 변동/뉴스/갭은 반영되지 않습니다.</p>
+</div>
+<div class="section-box">
+<div class="section-title">종목 TOP</div>
+<div class="section-sub">필수 2개(수익률/거래대금)만 먼저 노출하고, 수급은 접어서 봅니다.</div>
+<div class="grid-2">
+<div class="top5-card">
+<div class="top5-title">단기 수익률(1D) TOP5</div>
+<div class="top5-desc">전일 종가 기준 등락률 상위 종목</div>
+<div class="table-wrap">
+<table class="top5-table">
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>1D</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">원익홀딩스</td><td class="name">로봇, 지주사</td><td><span class="pos">22.7%</span></td></tr>
+<tr><td>2</td><td class="name">에이블씨엔씨</td><td class="name">화장품</td><td><span class="pos">22.7%</span></td></tr>
+<tr><td>3</td><td class="name">디아이씨</td><td class="name">자동차</td><td><span class="pos">15.7%</span></td></tr>
+<tr><td>4</td><td class="name">아주IB투자</td><td class="name">스페이스X</td><td><span class="pos">11.8%</span></td></tr>
+<tr><td>5</td><td class="name">티로보틱스</td><td class="name">로봇</td><td><span class="pos">10.4%</span></td></tr>
+</tbody></table>
+</div>
+</div>
 <div class="top5-card kind-volume">
 <div class="top5-title">거래대금 배수 TOP5</div>
-<div class="top5-desc">20일 평균 대비 전일 거래대금이 많이 몰린 종목입니다.</div>
+<div class="top5-desc">1일 거래대금 / 20일 평균 거래대금</div>
+<div class="table-wrap">
 <table class="top5-table">
 <thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>배수</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">하림지주</td><td class="name">지주사</td><td>13.93배</td></tr>
-<tr><td>2</td><td class="name">제이엘케이</td><td class="name">의료AI</td><td>11.00배</td></tr>
-<tr><td>3</td><td class="name">스피어</td><td class="name">우주항공, 스페이스X</td><td>9.54배</td></tr>
-<tr><td>4</td><td class="name">LS마린솔루션</td><td class="name">전력인프라, 풍력</td><td>9.44배</td></tr>
-<tr><td>5</td><td class="name">세아베스틸지주</td><td class="name">우주항공, 지주사, 스페이스X</td><td>9.30배</td></tr>
-</tbody></table></div>
+<tr><td>1</td><td class="name">아주IB투자</td><td class="name">스페이스X</td><td><span class="pos">14.81</span></td></tr>
+<tr><td>2</td><td class="name">세아베스틸지주</td><td class="name">우주항공, 지주사, 스페이스X</td><td><span class="pos">9.72</span></td></tr>
+<tr><td>3</td><td class="name">컨텍</td><td class="name">우주항공, 스페이스X</td><td><span class="pos">9.63</span></td></tr>
+<tr><td>4</td><td class="name">미래에셋벤처투자</td><td class="name">우주항공, 스페이스X</td><td><span class="pos">9.52</span></td></tr>
+<tr><td>5</td><td class="name">라이콤</td><td class="name">자율주행</td><td><span class="pos">9.35</span></td></tr>
+</tbody></table>
 </div>
-<div class="summary-row">
+</div>
+</div>
+<details class="accordion">
+<summary>수급 TOP5 <span class="summary-hint">외국인/기관 위주로 보기</span></summary>
+<div style="padding:12px;">
+<div class="grid-2">
 <div class="top5-card kind-foreign">
 <div class="top5-title">외국인 5일 순매수 TOP5</div>
-<div class="top5-desc">최근 5일 동안 외국인 수급이 가장 강하게 들어온 종목입니다.</div>
+<div class="top5-desc">최근 5일 외국인 매수세가 강했던 종목</div>
+<div class="table-wrap">
 <table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>5일 순매수</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">대원전선</td><td class="name">전력인프라</td><td><span class="pos">4,056,985</span></td></tr>
-<tr><td>2</td><td class="name">휴림로봇</td><td class="name">로봇</td><td><span class="pos">3,035,943</span></td></tr>
-<tr><td>3</td><td class="name">일동제약</td><td class="name">바이오</td><td><span class="pos">2,264,470</span></td></tr>
-<tr><td>4</td><td class="name">다날</td><td class="name">스테이블코인</td><td><span class="pos">2,171,998</span></td></tr>
-<tr><td>5</td><td class="name">SG</td><td class="name">우크라이나/재건</td><td><span class="pos">2,045,065</span></td></tr>
-</tbody></table></div>
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>5D</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">다날</td><td class="name">스테이블코인</td><td><span class="pos">2,357,017</span></td></tr>
+<tr><td>2</td><td class="name">원익홀딩스</td><td class="name">로봇, 지주사</td><td><span class="pos">2,235,461</span></td></tr>
+<tr><td>3</td><td class="name">한온시스템</td><td class="name">자동차</td><td><span class="pos">2,012,251</span></td></tr>
+<tr><td>4</td><td class="name">휴림로봇</td><td class="name">로봇</td><td><span class="pos">1,803,600</span></td></tr>
+<tr><td>5</td><td class="name">HD현대인프라코어</td><td class="name">우크라이나/재건</td><td><span class="pos">1,734,348</span></td></tr>
+</tbody></table>
+</div>
+</div>
 <div class="top5-card kind-inst">
 <div class="top5-title">기관 5일 순매수 TOP5</div>
-<div class="top5-desc">최근 5일 동안 기관 수급이 집중된 종목입니다.</div>
+<div class="top5-desc">최근 5일 기관 매수세가 강했던 종목</div>
+<div class="table-wrap">
 <table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>5일 순매수</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">우리기술</td><td class="name">원전</td><td><span class="pos">2,934,251</span></td></tr>
-<tr><td>2</td><td class="name">대원전선</td><td class="name">전력인프라</td><td><span class="pos">2,204,855</span></td></tr>
-<tr><td>3</td><td class="name">삼성중공업</td><td class="name">조선/LNG</td><td><span class="pos">1,758,423</span></td></tr>
-<tr><td>4</td><td class="name">LG씨엔에스</td><td class="name">AI, 스테이블코인</td><td><span class="pos">1,714,487</span></td></tr>
-<tr><td>5</td><td class="name">한화엔진</td><td class="name">조선/LNG</td><td><span class="pos">1,546,416</span></td></tr>
-</tbody></table></div>
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>5D</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">우리기술</td><td class="name">원전</td><td><span class="pos">2,799,628</span></td></tr>
+<tr><td>2</td><td class="name">대원전선</td><td class="name">전력인프라</td><td><span class="pos">2,338,902</span></td></tr>
+<tr><td>3</td><td class="name">LG씨엔에스</td><td class="name">AI, 스테이블코인</td><td><span class="pos">1,605,753</span></td></tr>
+<tr><td>4</td><td class="name">한화엔진</td><td class="name">조선/LNG</td><td><span class="pos">1,490,648</span></td></tr>
+<tr><td>5</td><td class="name">삼성중공업</td><td class="name">조선/LNG</td><td><span class="pos">1,322,423</span></td></tr>
+</tbody></table>
+</div>
+</div>
+</div>
+<details class="accordion" style="margin-top:12px;">
+<summary>참고: 개인 5일 순매수 TOP5 <span class="summary-hint">우선순위 낮음</span></summary>
+<div style="padding:12px;">
 <div class="top5-card kind-ind">
 <div class="top5-title">개인 5일 순매수 TOP5</div>
-<div class="top5-desc">최근 5일 동안 개인 매수세가 강했던 종목입니다.</div>
+<div class="top5-desc">참고용</div>
+<div class="table-wrap">
 <table class="top5-table">
-<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>5일 순매수</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">하림지주</td><td class="name">지주사</td><td><span class="pos">4,209,826</span></td></tr>
-<tr><td>2</td><td class="name">삼성전자</td><td class="name">반도체</td><td><span class="pos">3,408,107</span></td></tr>
-<tr><td>3</td><td class="name">한온시스템</td><td class="name">자동차</td><td><span class="pos">1,884,049</span></td></tr>
-<tr><td>4</td><td class="name">한국전력</td><td class="name">원전</td><td><span class="pos">1,775,917</span></td></tr>
-<tr><td>5</td><td class="name">MDS테크</td><td class="name">AI</td><td><span class="pos">1,629,102</span></td></tr>
-</tbody></table></div>
+<thead><tr><th>순위</th><th>종목명</th><th>테마</th><th>5D</th></tr></thead><tbody>
+<tr><td>1</td><td class="name">삼성전자</td><td class="name">반도체</td><td><span class="pos">11,874,227</span></td></tr>
+<tr><td>2</td><td class="name">하림지주</td><td class="name">지주사</td><td><span class="pos">4,592,158</span></td></tr>
+<tr><td>3</td><td class="name">MDS테크</td><td class="name">AI</td><td><span class="pos">2,103,462</span></td></tr>
+<tr><td>4</td><td class="name">고영</td><td class="name">로봇</td><td><span class="pos">1,874,306</span></td></tr>
+<tr><td>5</td><td class="name">한온시스템</td><td class="name">자동차</td><td><span class="pos">1,473,273</span></td></tr>
+</tbody></table>
 </div>
-<p class="detail-note">※ 52주 저점대비 값은 종목 단위 (전일 종가와 52주 최저가 기준) 수치를 테마별로 평균낸 값입니다.</p>
+</div>
+</div>
+</details>
+</div>
+</details>
+<p class="detail-note">※ 장전은 전일 스냅샷이므로, 장중 수급/등락은 달라질 수 있습니다.</p>
 </div>
 </section>
 

@@ -1,1555 +1,388 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>장마감 테마 대시보드</title>
+<title>장후 대시보드</title>
 <style>
-    :root {
-        --bg:#f8fafc;
-        --card:#ffffff;
-        --border:#e5e7eb;
-        --muted:#64748b;
-        --muted2:#94a3b8;
-        --up:#b91c1c;
-        --up-bg:#fee2e2;
-        --down:#1d4ed8;
-        --down-bg:#dbeafe;
-        --accent:#f97316;
-        --accent2:#22c55e;
-        --shadow-soft:0 10px 30px rgba(15,23,42,0.08);
-        --shadow-sub:0 6px 18px rgba(15,23,42,0.06);
-    }
-
-    * {
-        box-sizing: border-box;
-    }
-
-    body {
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        background: radial-gradient(circle at top,#e0f2fe,#f8fafc,#fefce8);
-        margin: 0;
-        color: #0f172a;
-    }
-
-    header {
-        background: linear-gradient(to bottom,rgba(248,250,252,0.96),rgba(248,250,252,0.99));
-        color: #0f172a;
-        padding: 14px 20px;
-        font-size: 18px;
-        font-weight: 700;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid rgba(148,163,184,0.25);
-        box-shadow: 0 6px 18px rgba(148,163,184,0.28);
-        position: sticky;
-        top: 0;
-        z-index: 1000;
-        backdrop-filter: blur(10px);
-    }
-    header .left {
-        display: flex;
-        flex-direction: column;
-        gap: 3px;
-    }
-    header .title-main {
-        font-size: 18px;
-        font-weight: 800;
-        letter-spacing: -0.03em;
-    }
-    header .title-sub {
-        font-size: 12px;
-        color: var(--muted);
-    }
-    header .right-info {
-        font-size: 11px;
-        color: var(--muted2);
-        text-align: right;
-    }
-
-    .subtitle-highlight {
-        display: inline-block;
-        padding: 4px 10px;
-        border-radius: 999px;
-        background: #fef9c3;
-        border: 1px solid #facc15;
-        color: #854d0e;
-        font-weight: 700;
-        box-shadow: 0 1px 3px rgba(15,23,42,0.12);
-    }
-    .subtitle-date {
-        color: var(--up);
-        font-weight: 800;
-    }
-
-    #container {
-        padding: 18px;
-        max-width: 1200px;
-        margin: 0 auto 32px auto;
-    }
-
-    .section-box {
-        background: var(--card);
-        border-radius: 18px;
-        padding: 14px 18px 16px 18px;
-        margin-bottom: 18px;
-        border: 1px solid var(--border);
-        box-shadow: var(--shadow-sub);
-        position: relative;
-        overflow: hidden;
-    }
-
-    .section-box::before {
-        content: "";
-        position: absolute;
-        inset: -40%;
-        background:
-          radial-gradient(circle at 0 0,rgba(251,191,36,0.12),transparent 55%),
-          radial-gradient(circle at 100% 20%,rgba(248,113,113,0.12),transparent 55%);
-        opacity: 0.75;
-        pointer-events: none;
-    }
-    .section-box > * {
-        position: relative;
-        z-index: 1;
-    }
-
-    .section-title {
-        font-size: 14px;
-        font-weight: 700;
-        color: #0f172a;
-        margin: 4px 2px 4px 2px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-    .section-title::before {
-        content: "";
-        width: 6px;
-        height: 6px;
-        border-radius: 999px;
-        background: linear-gradient(135deg,#38bdf8,#6366f1);
-    }
-    .section-sub {
-        font-size: 12px;
-        color: var(--muted);
-        margin: 0 2px 10px 2px;
-    }
-
-    #summary-section {
-        margin-bottom: 24px;
-    }
-
-    .three-line-box {
-        background: var(--card);
-        border: 1px solid var(--border);
-        border-radius: 16px;
-        padding: 12px 14px;
-        margin: 10px 0 14px 0;
-        box-shadow: var(--shadow-soft);
-    }
-    .three-line-title {
-        font-weight: 800;
-        font-size: 14px;
-        margin-bottom: 6px;
-    }
-    .three-line-list {
-        margin: 0;
-        padding-left: 18px;
-        color: #0f172a;
-        font-size: 13px;
-        line-height: 1.45;
-    }
-    .three-line-list li {
-        margin: 4px 0;
-    }
-
-    .summary-row {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(280px, 1fr));
-        gap: 14px;
-        margin-bottom: 12px;
-        align-items: start;
-    }
-
-    .summary-row.flow3 {
-        grid-template-columns: repeat(3, minmax(240px, 1fr));
-    }
-    @media (max-width: 980px) {
-        .summary-row.flow3 {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .signal-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(320px, 1fr));
-        gap: 14px;
-        margin-top: 10px;
-    }
-    @media (max-width: 900px) {
-        .signal-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    td.empty {
-        text-align: center;
-        color: var(--muted);
-        padding: 18px 8px;
-    }
-
-
-@media (max-width: 900px) {
-        .summary-row {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    .summary-card {
-        flex: 1 1 260px;
-        min-width: 260px;
-        background: linear-gradient(135deg,rgba(248,250,252,0.98),rgba(255,251,235,0.98));
-        border-radius: 14px;
-        padding: 12px 16px;
-        border: 1px solid rgba(250,204,21,0.85);
-        box-shadow: 0 2px 10px rgba(248,191,36,0.35);
-    }
-    .summary-card-title {
-        font-size: 13px;
-        font-weight: 700;
-        color: #92400e;
-        margin-bottom: 4px;
-    }
-    .summary-card-main {
-        font-size: 22px;
-        font-weight: 800;
-        margin-bottom: 2px;
-    }
-    .summary-card-sub {
-        font-size: 12px;
-        color: var(--muted2);
-    }
-
-    .where-card {
-        flex: 1 1 260px;
-        min-width: 260px;
-        background: rgba(248,250,252,0.98);
-        border-radius: 14px;
-        padding: 10px 14px;
-        border: 1px solid var(--border);
-        box-shadow: 0 2px 6px rgba(15,23,42,0.06);
-        position: relative;
-        overflow: hidden;
-    }
-    .where-card::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 4px;
-        bottom: 0;
-        background: #e5e7eb;
-    }
-    .where-card.momentum::before {
-        background: linear-gradient(to bottom,#fdba74,#f97316);
-    }
-    .where-card.flow::before {
-        background: linear-gradient(to bottom,#38bdf8,#2563eb);
-    }
-    .where-card.low52::before {
-        background: linear-gradient(to bottom,#a855f7,#6366f1);
-    }
-    .where-card .where-title {
-        font-size: 13px;
-        font-weight: 700;
-        margin-bottom: 4px;
-    }
-    .where-card .where-pill {
-        display: inline-block;
-        padding: 2px 8px;
-        border-radius: 999px;
-        font-size: 11px;
-        margin-bottom: 4px;
-        border: 1px solid var(--border);
-        color: #4b5563;
-        background: rgba(248,250,252,0.96);
-        box-shadow: 0 1px 3px rgba(15,23,42,0.04);
-    }
-    .where-text {
-        font-size: 12px;
-        color: var(--muted);
-        margin-bottom: 4px;
-    }
-    .where-em {
-        font-size: 12px;
-        color: #0f172a;
-        font-weight: 600;
-    }
-
-    .theme-top-card {
-        flex: 1 1 360px;
-        min-width: 360px;
-        background: linear-gradient(135deg,rgba(248,250,252,0.98),rgba(239,246,255,0.98));
-        border-radius: 14px;
-        padding: 10px 14px;
-        border: 1px solid var(--border);
-        box-shadow: 0 2px 8px rgba(15,23,42,0.06);
-        position: relative;
-        overflow: hidden;
-    }
-    .theme-top-card.bull::before,
-    .theme-top-card.bear::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        border-radius: 14px;
-        pointer-events: none;
-    }
-    .theme-top-card.bull::before {
-        border: 2px solid rgba(248,113,113,0.45);
-    }
-    .theme-top-card.bear::before {
-        border: 2px solid rgba(59,130,246,0.4);
-    }
-    .theme-top-card.bull .theme-name {
-        color: var(--up);
-    }
-    .theme-top-card.bear .theme-name {
-        color: var(--down);
-    }
-
-    .theme-top-title {
-        font-size: 13px;
-        font-weight: 700;
-        margin: 0 0 4px 0;
-        position: relative;
-        z-index: 1;
-    }
-    .theme-top-title span.badge {
-        display: inline-block;
-        margin-left: 6px;
-        padding: 1px 6px;
-        border-radius: 999px;
-        font-size: 11px;
-        background: var(--up-bg);
-        color: var(--up);
-    }
-    .theme-top-desc {
-        font-size: 12px;
-        color: var(--muted);
-        margin-bottom: 6px;
-        position: relative;
-        z-index: 1;
-    }
-    .theme-top-list {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        font-size: 12px;
-        position: relative;
-        z-index: 1;
-    }
-    .theme-top-list li {
-        padding: 4px 0;
-        border-bottom: 1px dashed #e5e7eb;
-    }
-    .theme-top-list li:last-child {
-        border-bottom: none;
-    }
-    .theme-name {
-        font-weight: 600;
-    }
-    .theme-stat {
-        color: var(--muted);
-        margin-left: 4px;
-    }
-    .theme-stat-main {
-        display: block;
-        margin-top: 2px;
-    }
-    .theme-stat-line {
-        display: block;
-        margin-left: 12px;
-        font-size: 11px;
-        color: var(--muted);
-    }
-
-    .top5-card {
-        flex: 1 1 280px;
-        min-width: 280px;
-        background: linear-gradient(135deg,rgba(248,250,252,0.99),rgba(249,250,251,0.99));
-        border-radius: 14px;
-        padding: 10px 14px;
-        border: 1px solid var(--border);
-        box-shadow: 0 2px 8px rgba(15,23,42,0.05);
-        position: relative;
-        overflow: hidden;
-    }
-    .top5-card::before {
-        content: "";
-        position: absolute;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        width: 4px;
-        background: linear-gradient(to bottom,#f97316,#ef4444);
-    }
-    .top5-card.kind-volume::before {
-        background: linear-gradient(to bottom,#38bdf8,#1d4ed8);
-    }
-    .top5-card.kind-foreign::before {
-        background: linear-gradient(to bottom,#22c55e,#15803d);
-    }
-    .top5-card.kind-inst::before {
-        background: linear-gradient(to bottom,#a855f7,#6d28d9);
-    }
-    .top5-card.kind-ind::before {
-        background: linear-gradient(to bottom,#f97316,#ec4899);
-    }
-
-    .top5-title {
-        font-size: 13px;
-        font-weight: 700;
-        margin: 0 0 2px 0;
-    }
-    .top5-desc {
-        font-size: 12px;
-        color: var(--muted);
-        margin-bottom: 6px;
-    }
-    table.top5-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 12px;
-    }
-    table.top5-table th {
-        background: #f3f4f6;
-        padding: 4px;
-        text-align: center;
-        border-bottom: 1px solid #e5e7eb;
-    }
-    table.top5-table td {
-        padding: 3px 4px;
-        border-bottom: 1px solid #f3f4f6;
-        text-align: right;
-    }
-    table.top5-table td.name {
-        text-align: left;
-        white-space: nowrap;
-    }
-
-    .table-wrap {
-        width: 100%;
-        overflow-x: auto;
-        -webkit-overflow-scrolling: touch;
-    }
-    .table-wrap table.top5-table {
-        min-width: 520px;
-    }
-    @media (max-width: 520px) {
-        table.top5-table td.name {
-            white-space: normal;
-        }
-        .table-wrap table.top5-table {
-            min-width: 420px;
-        }
-    }
-
-
-    .theme-pill-inline {
-        display: inline-block;
-        padding: 2px 8px;
-        margin: 0 4px 3px 0;
-        border-radius: 999px;
-        font-size: 11px;
-        background: #e0f2fe;
-        color: #0369a1;
-        border: 1px solid #bae6fd;
-        white-space: nowrap;
-    }
-
-    .pos {
-        color: var(--up);
-        font-weight: 600;
-    }
-    .neg {
-        color: var(--down);
-        font-weight: 600;
-    }
-    .zero {
-        color: var(--muted);
-    }
-
-    .detail-note {
-        margin-top: 16px;
-        font-size: 12px;
-        color: var(--muted2);
-    }
-.nav-links {
-    display: inline-flex;
-    gap: 6px;
-    margin-top: 8px;
-    flex-wrap: wrap;
-    padding: 4px;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.75);
-    border: 1px solid rgba(148,163,184,0.35);
-    box-shadow: 0 4px 12px rgba(15,23,42,0.08);
+:root {
+  color-scheme:light;
+  --bg:#f4f6fa;
+  --surface:#ffffff;
+  --surface-soft:#f8f9fc;
+  --surface-strong:#eef2f8;
+  --line:#e2e7f0;
+  --line-strong:#cfd7e5;
+  --text:#111827;
+  --text-soft:#374151;
+  --muted:#6b7280;
+  --up:#e0362f;
+  --up-soft:#fff1f0;
+  --down:#2563d9;
+  --down-soft:#eef4ff;
+  --flat:#9aa3b2;
+  --accent:#5267df;
+  --accent-soft:#eef0ff;
+  --phase:#5267df;
+  --phase-soft:#eef0ff;
+  --shadow:0 8px 30px rgba(33,43,72,.07);
+  --shadow-soft:0 3px 14px rgba(33,43,72,.05);
+  --radius:18px;
+  --radius-sm:13px;
 }
-.nav-link {
-    font-size: 13px;
-    padding: 8px 16px;
-    border-radius: 999px;
-    border: 1px solid rgba(148,163,184,0.28);
-    text-decoration: none;
-    color: #334155;
-    background: linear-gradient(180deg,rgba(255,255,255,0.95),rgba(248,250,252,0.85));
-    font-weight: 900;
-    letter-spacing: -0.01em;
-    line-height: 1.2;
-    white-space: nowrap;
-    cursor: pointer;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-
-    transition:
-      transform 120ms ease,
-      box-shadow 120ms ease,
-      background 120ms ease,
-      border-color 120ms ease,
-      color 120ms ease;
+.phase-preopen{--phase:#7357d8;--phase-soft:#f2efff}
+.phase-intraday{--phase:#078879;--phase-soft:#eafaf7}
+.phase-postclose{--phase:#d47a13;--phase-soft:#fff5e8}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:
+    radial-gradient(circle at 10% 0%,rgba(82,103,223,.07),transparent 28rem),
+    var(--bg);
+  color:var(--text);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR","Malgun Gothic",Arial,sans-serif;
+  font-size:15px;
+  line-height:1.45;
+  font-variant-numeric:tabular-nums;
+  word-break:keep-all;
 }
-.nav-link:hover {
-    transform: translateY(-1px);
-    background: linear-gradient(180deg,rgba(255,255,255,0.98),rgba(226,232,240,0.75));
-    border-color: rgba(148,163,184,0.45);
-    box-shadow: 0 8px 18px rgba(15,23,42,0.14);
+a,button,input,select{font:inherit}
+a:focus-visible{outline:3px solid rgba(82,103,223,.25);outline-offset:3px}
+.site-header,header{
+  position:sticky;
+  top:0;
+  z-index:20;
+  background:rgba(255,255,255,.92);
+  border-bottom:1px solid rgba(226,231,240,.9);
+  backdrop-filter:blur(14px);
+  -webkit-backdrop-filter:blur(14px);
 }
-.nav-link:active {
-    transform: translateY(0px) scale(0.99);
-    box-shadow: 0 3px 10px rgba(15,23,42,0.10);
+.header-inner,main,footer{width:min(100%,1380px);margin:0 auto;padding-left:24px;padding-right:24px}
+.header-inner{padding-top:18px;padding-bottom:15px}
+.header-row{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.title-block{min-width:0}
+.title-line{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.phase-pill{
+  display:inline-flex;align-items:center;justify-content:center;
+  min-width:48px;height:28px;padding:0 10px;border-radius:999px;
+  color:var(--phase);background:var(--phase-soft);font-size:12px;font-weight:800;
 }
-.nav-link:focus-visible {
-    outline: none;
-    box-shadow:
-      0 0 0 3px rgba(59,130,246,0.30),
-      0 10px 22px rgba(15,23,42,0.14);
-    border-color: rgba(59,130,246,0.55);
+h1{margin:0;font-size:clamp(23px,2.1vw,31px);line-height:1.15;letter-spacing:-.9px}
+.subtitle{margin:6px 0 0;color:var(--muted);font-size:13px}
+.data-line{display:flex;align-items:center;gap:7px;margin-top:10px;color:var(--muted);font-size:12px}
+.data-line::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--phase);box-shadow:0 0 0 4px var(--phase-soft)}
+.nav{display:flex;gap:6px;padding:4px;background:var(--surface-strong);border-radius:12px;flex:0 0 auto}
+.nav a{
+  min-width:54px;padding:8px 13px;border-radius:9px;text-align:center;
+  color:var(--text-soft);text-decoration:none;font-size:13px;font-weight:700;
+  transition:background .16s ease,color .16s ease,transform .16s ease;
 }
-.nav-link.active {
-    border-color: rgba(239,68,68,0.40);
-    color: #991b1b;
-    background: linear-gradient(135deg,#fee2e2,#fff7ed);
-    font-weight: 950;
-    box-shadow: 0 6px 16px rgba(239,68,68,0.22);
+.nav a:hover{background:var(--surface);color:var(--phase)}
+.nav a.active{color:#fff;background:var(--phase);box-shadow:0 5px 14px color-mix(in srgb,var(--phase) 24%,transparent)}
+main{padding-top:24px;padding-bottom:32px}
+footer{padding-top:0;padding-bottom:30px;color:var(--muted);font-size:12px;text-align:center}
+.up{color:var(--up)!important}.down{color:var(--down)!important}.flat,.muted{color:var(--muted)!important}
+.kpi-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-bottom:20px}
+.kpi{
+  position:relative;min-width:0;min-height:116px;padding:17px 17px 15px;
+  background:linear-gradient(180deg,#fff,var(--surface-soft));
+  border:1px solid var(--line);border-radius:var(--radius-sm);box-shadow:var(--shadow-soft);
+  overflow:hidden;
+}
+.kpi::after{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--phase);opacity:.75}
+.kpi-label{display:block;color:var(--muted);font-size:12px;font-weight:650;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-value{display:block;margin-top:9px;font-size:clamp(21px,1.75vw,27px);font-weight:850;line-height:1.12;letter-spacing:-.7px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kpi-sub{display:block;margin-top:8px;color:var(--muted);font-size:11px;line-height:1.35}
+.section{
+  margin-bottom:20px;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;
+}
+.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:18px 20px;border-bottom:1px solid var(--line)}
+.section-head h2{margin:0;font-size:18px;line-height:1.25;letter-spacing:-.45px}
+.section-head span{color:var(--muted);font-size:12px;text-align:right}
+.visual-grid{display:grid;grid-template-columns:.82fr 1.15fr 1.25fr;gap:14px;padding:16px}
+.visual-card{min-width:0;padding:17px;background:var(--surface-soft);border:1px solid var(--line);border-radius:var(--radius-sm)}
+.visual-card h3{margin:0;font-size:14px;letter-spacing:-.2px}
+.visual-note{margin-top:3px;margin-bottom:14px;color:var(--muted);font-size:11px}
+.breadth-wrap{display:flex;align-items:center;justify-content:center;gap:20px;min-height:236px}
+.donut{width:170px;height:170px;transform:rotate(-90deg);filter:drop-shadow(0 4px 8px rgba(33,43,72,.06))}
+.donut circle{fill:none;stroke-width:14}.donut-bg{stroke:#e8edf4}.donut-up{stroke:var(--up)}.donut-flat{stroke:var(--flat)}.donut-down{stroke:var(--down)}
+.donut-number,.donut-caption{transform:rotate(90deg);transform-origin:60px 60px;fill:var(--text)}.donut-number{font-size:19px;font-weight:850}.donut-caption{font-size:8px;fill:var(--muted)}
+.legend-list{min-width:112px}.legend-list div{display:grid;grid-template-columns:12px 1fr auto;gap:8px;align-items:center;padding:8px 0;border-bottom:1px dashed var(--line)}.legend-list div:last-child{border-bottom:0}
+.legend-dot{width:9px;height:9px;border-radius:50%}.legend-up{background:var(--up)}.legend-down{background:var(--down)}.legend-flat{background:var(--flat)}
+.bar-list{display:flex;flex-direction:column;gap:11px;padding-top:2px}.bar-row{display:grid;grid-template-columns:minmax(72px,112px) 1fr 66px;gap:9px;align-items:center}.bar-label{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--text-soft);font-size:12px;font-weight:650}.bar-value{text-align:right;font-size:12px;font-weight:700}.diverging-track{position:relative;height:14px;background:#e9edf3;border-radius:999px;overflow:hidden}.zero-line{position:absolute;left:50%;top:0;bottom:0;width:1px;background:#b9c2d1;z-index:2}.diverging-fill{position:absolute;top:3px;bottom:3px;min-width:2px;border-radius:999px}.diverging-fill.positive{left:50%;background:var(--up)}.diverging-fill.negative{right:50%;background:var(--down)}
+.flow-list{display:flex;flex-direction:column;gap:10px}.flow-row{padding-bottom:10px;border-bottom:1px solid var(--line)}.flow-row:last-child{padding-bottom:0;border-bottom:0}.flow-theme{margin-bottom:6px;font-size:12px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.flow-sub{display:grid;grid-template-columns:20px 1fr 64px;gap:7px;align-items:center;color:var(--muted);font-size:11px}.flow-sub strong{text-align:right;font-weight:750}.horizon-list .flow-sub{grid-template-columns:30px 1fr 50px}
+.top-table-wrap{padding:0 16px 16px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.top-table{width:100%;border-collapse:separate;border-spacing:0;white-space:nowrap}
+.top-table th,.top-table td{padding:13px 12px;border-bottom:1px solid var(--line);text-align:right}
+.top-table th{position:sticky;top:0;background:var(--surface-soft);color:var(--muted);font-size:11px;font-weight:750;z-index:1}
+.top-table td{font-size:13px}.top-table tbody tr:hover{background:var(--phase-soft)}
+.top-table th:nth-child(2),.top-table td:nth-child(2),.top-table th:nth-child(3),.top-table td:nth-child(3){text-align:left}
+.top-table .rank-no{width:54px;text-align:center}.rank-badge{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:8px;color:var(--phase);background:var(--phase-soft);font-weight:850}
+.top-table .theme-title{font-size:14px;font-weight:850}.leader-stock strong,.leader-stock span{display:block}.leader-stock span{margin-top:2px;font-size:11px}
+.map-wrap{padding:16px}.theme-map{position:relative;height:500px;background:#edf1f6;border-radius:14px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(207,215,229,.55)}
+.map-tile{position:absolute;display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden;padding:9px;border:2px solid #fff;border-radius:8px;text-align:left;line-height:1.25;transition:filter .15s ease,transform .15s ease}.map-tile:hover{filter:brightness(.95);z-index:3}.map-tile strong{font-size:13px;font-weight:850;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.map-tile span{margin-top:3px;font-size:11px;white-space:nowrap}
+.ranking-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px;padding:16px}
+.ranking-card{min-width:0;border:1px solid var(--line);border-radius:var(--radius-sm);background:var(--surface);overflow:hidden;box-shadow:0 2px 9px rgba(33,43,72,.035)}
+.ranking-card h3{margin:0;padding:14px 15px;background:var(--surface-soft);border-bottom:1px solid var(--line);font-size:14px;letter-spacing:-.2px}
+.ranking-card ol{counter-reset:rank;list-style:none;margin:0;padding:0}.ranking-card li{counter-increment:rank;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;min-height:66px;padding:11px 13px 11px 42px;border-bottom:1px solid var(--line);position:relative}.ranking-card li::before{content:counter(rank);position:absolute;left:13px;top:50%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;width:21px;height:21px;border-radius:7px;background:var(--surface-strong);color:var(--muted);font-size:10px;font-weight:850}.ranking-card li:nth-child(-n+3)::before{background:var(--phase-soft);color:var(--phase)}.ranking-card li:last-child{border-bottom:0}.ranking-card li:hover{background:var(--phase-soft)}
+.rank-stock{min-width:0}.rank-stock strong,.rank-stock span,.rank-metric strong,.rank-metric span{display:block}.rank-stock strong{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank-stock span,.rank-metric span{margin-top:4px;color:var(--muted);font-size:10px}.rank-metric{text-align:right;flex:0 0 auto}.rank-metric strong{font-size:13px;font-weight:850}.empty-row{display:flex!important;justify-content:center!important;padding-left:13px!important;color:var(--muted)}.empty-row::before{display:none!important}
+.index-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.index-card{position:relative;display:block;min-width:0;padding:22px;color:inherit;text-decoration:none;background:linear-gradient(150deg,#fff,var(--surface-soft));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform .17s ease,border-color .17s ease,box-shadow .17s ease}.index-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--phase)}.index-card:hover{transform:translateY(-3px);border-color:var(--phase);box-shadow:0 14px 34px rgba(33,43,72,.11)}.index-card h2{margin:0;font-size:20px;letter-spacing:-.45px}.index-card p{margin:8px 0 0;min-height:44px;color:var(--muted);font-size:13px;line-height:1.55}.index-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px}.index-kpi{min-width:0;padding:11px;background:rgba(238,242,248,.8);border-radius:10px}.index-kpi span{display:block;color:var(--muted);font-size:10px}.index-kpi strong{display:block;margin-top:5px;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.capture-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-bottom:12px}.capture-action{border:0;border-radius:12px;padding:11px 16px;background:var(--phase);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 6px 16px color-mix(in srgb,var(--phase) 20%,transparent)}.capture-action:hover{filter:brightness(.97)}.capture-action:disabled{opacity:.55;cursor:wait}.capture-message{min-height:18px;color:var(--muted);font-size:12px}.capture-action:focus-visible{outline:3px solid color-mix(in srgb,var(--phase) 28%,transparent);outline-offset:3px}
+@media(max-width:760px){.capture-toolbar{position:sticky;top:8px;z-index:15;justify-content:space-between;padding:8px 9px;margin-bottom:10px;background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--line);border-radius:13px;backdrop-filter:blur(10px)}.capture-action{padding:10px 13px;font-size:12px}.capture-message{font-size:10px;text-align:right}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media(max-width:1180px){.kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.visual-grid{grid-template-columns:1fr 1fr}.visual-card:first-child{grid-row:span 2}.ranking-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:760px){
+  body{font-size:14px;background:var(--bg)}
+  .site-header,header{position:relative;background:#fff;backdrop-filter:none;-webkit-backdrop-filter:none}
+  .header-inner,main,footer{padding-left:14px;padding-right:14px}
+  .header-inner{padding-top:16px;padding-bottom:12px}
+  .header-row{display:block}
+  .title-line{gap:8px}.phase-pill{height:25px;min-width:43px;padding:0 9px;font-size:11px}
+  h1{font-size:24px}.subtitle{font-size:12px}.data-line{margin-top:8px}
+  .nav{width:100%;margin-top:14px;padding:3px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}.nav::-webkit-scrollbar{display:none}.nav a{flex:1 0 62px;min-width:62px;padding:9px 10px;font-size:12px}
+  main{padding-top:14px;padding-bottom:24px}
+  .kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-bottom:14px}
+  .kpi{min-height:103px;padding:14px 13px 12px;border-radius:13px}.kpi-label{font-size:11px}.kpi-value{margin-top:8px;font-size:21px}.kpi-sub{margin-top:6px;font-size:10px}
+  .section{margin-bottom:14px;border-radius:15px;box-shadow:none}.section-head{display:block;padding:15px 15px 13px}.section-head h2{font-size:17px}.section-head span{display:block;margin-top:4px;text-align:left;font-size:11px}
+  .visual-grid{grid-template-columns:1fr;gap:10px;padding:11px}.visual-card{padding:14px}.visual-card:first-child{grid-row:auto}.breadth-wrap{min-height:178px;gap:14px}.donut{width:136px;height:136px}.legend-list{min-width:96px}.legend-list div{padding:6px 0;font-size:12px}
+  .bar-row{grid-template-columns:minmax(72px,96px) 1fr 58px;gap:7px}.bar-label,.bar-value{font-size:11px}.diverging-track{height:13px}
+  .flow-sub{grid-template-columns:20px 1fr 58px}.horizon-list .flow-sub{grid-template-columns:28px 1fr 47px}
+  .top-table-wrap{padding:11px;overflow:visible}
+  .top-table{display:block;white-space:normal}.top-table thead{display:none}.top-table tbody{display:grid;gap:10px}.top-table tr{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:8px 12px;padding:14px;background:var(--surface-soft);border:1px solid var(--line);border-radius:13px}.top-table td{display:flex;align-items:baseline;justify-content:space-between;gap:8px;padding:0;border:0;text-align:right;font-size:12px}.top-table td::before{content:attr(data-label);color:var(--muted);font-size:10px;font-weight:650}.top-table .rank-no{position:absolute;width:auto}.top-table .rank-no::before{display:none}.top-table .rank-badge{position:absolute;margin-top:-3px}.top-table .theme-title{grid-column:1/-1;padding-left:36px;justify-content:flex-start;font-size:16px}.top-table .theme-title::before{display:none}.top-table .leader-stock{grid-column:1/-1;justify-content:flex-start;padding-left:36px}.top-table .leader-stock::before{content:"대표";margin-right:2px}.leader-stock strong,.leader-stock span{display:inline}.leader-stock span{margin:0 0 0 6px}.top-table td:nth-child(n+4){padding-top:7px;border-top:1px dashed var(--line)}
+  .map-wrap{padding:11px}.theme-map{height:440px;border-radius:12px}.map-tile{padding:6px;border-width:1.5px;border-radius:6px}.map-tile strong{font-size:10px}.map-tile span{font-size:8px}
+  .ranking-grid{grid-template-columns:1fr;gap:10px;padding:11px}.ranking-card h3{padding:13px 14px}.ranking-card li{min-height:64px;padding:11px 12px 11px 40px}.rank-stock strong,.rank-metric strong{font-size:13px}.rank-stock span,.rank-metric span{font-size:10px}
+  .index-grid{grid-template-columns:1fr;gap:12px}.index-card{padding:19px;border-radius:15px;box-shadow:none}.index-card p{min-height:auto}.index-kpis{gap:8px}
+  footer{padding-bottom:calc(22px + env(safe-area-inset-bottom))}
+}
+@media(max-width:390px){.kpi-grid{grid-template-columns:1fr 1fr}.kpi{min-height:100px;padding-left:12px;padding-right:12px}.kpi-value{font-size:19px}.top-table tr{grid-template-columns:1fr}.top-table td:nth-child(n+4){grid-column:1/-1}.theme-map{height:410px}}
+@media(prefers-color-scheme:dark){
+  :root{color-scheme:dark;--bg:#0f131c;--surface:#171d28;--surface-soft:#1c2431;--surface-strong:#242e3e;--line:#2b3546;--line-strong:#3b475b;--text:#f4f7fb;--text-soft:#d6dce6;--muted:#9aa6b8;--up:#ff6b63;--up-soft:#3b2023;--down:#69a0ff;--down-soft:#182a4b;--flat:#7f8ba0;--accent-soft:#262d56;--shadow:0 10px 32px rgba(0,0,0,.22);--shadow-soft:0 4px 16px rgba(0,0,0,.18)}
+  body{background:var(--bg)}.site-header,header{background:rgba(23,29,40,.92)}.kpi,.index-card{background:linear-gradient(180deg,var(--surface),var(--surface-soft))}.donut-bg{stroke:#2a3444}.diverging-track{background:#2a3444}.zero-line{background:#59667b}.theme-map{background:#202938}.map-tile{border-color:#151b25}.index-kpi{background:var(--surface-strong)}
 }
 
-    @media (max-width: 900px) {
-        body {
-            font-size: 12px;
-        }
-        table {
-            font-size: 11px;
-        }
-        header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 4px;
-        }
-        .theme-top-card {
-            min-width: 260px;
-        }
-    }
-
-
-    /* ===== Visual Widgets (Donut / Bars / Mini Theme Map) ===== */
-    .viz-row { margin-top: 6px; }
-    .summary-card.full { flex: 1 1 100%; }
-
-    .viz-split {
-        display: flex;
-        gap: 14px;
-        align-items: center;
-        flex-wrap: wrap;
-    }
-
-    .donut {
-        --p-up: 0;
-        --p-down: 0;
-        width: 112px;
-        height: 112px;
-        border-radius: 999px;
-        background:
-            conic-gradient(
-                var(--up) 0 calc(var(--p-up) * 1%),
-                var(--down) 0 calc((var(--p-up) + var(--p-down)) * 1%),
-                rgba(148,163,184,0.55) 0 100%
-            );
-        position: relative;
-        box-shadow: 0 10px 22px rgba(15,23,42,0.12);
-        border: 1px solid rgba(148,163,184,0.25);
-        user-select: none;
-    }
-    .donut::before {
-        content: "";
-        position: absolute;
-        inset: 14px;
-        background: var(--card);
-        border-radius: 999px;
-        box-shadow: inset 0 0 0 1px rgba(148,163,184,0.22);
-    }
-    .donut-center {
-        position: absolute;
-        inset: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        gap: 2px;
-        z-index: 1;
-        text-align: center;
-    }
-    .donut-center .num {
-        font-weight: 800;
-        font-size: 18px;
-        letter-spacing: -0.3px;
-    }
-    .donut-center .sub {
-        font-size: 12px;
-        color: var(--muted);
-    }
-
-    .legend {
-        display: grid;
-        gap: 6px;
-        min-width: 210px;
-    }
-    .legend-item {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        font-size: 13px;
-        color: #0f172a;
-    }
-    .legend-dot {
-        width: 10px;
-        height: 10px;
-        border-radius: 999px;
-        box-shadow: inset 0 0 0 1px rgba(15,23,42,0.15);
-    }
-    .legend-dot.up { background: var(--up); }
-    .legend-dot.down { background: var(--down); }
-    .legend-dot.flat { background: rgba(148,163,184,0.75); }
-    .legend-val { margin-left: auto; color: var(--muted); font-variant-numeric: tabular-nums; }
-
-    .barlist { display: grid; gap: 10px; margin-top: 8px; }
-    .barrow { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; }
-    .barrow .label { font-size: 13px; color: #0f172a; }
-    .barrow .value { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
-    .bar {
-        height: 10px;
-        border-radius: 999px;
-        background: rgba(148,163,184,0.28);
-        overflow: hidden;
-        border: 1px solid rgba(148,163,184,0.18);
-    }
-    .bar .fill {
-        height: 100%;
-        border-radius: 999px;
-        transform-origin: left center;
-        transition: transform 140ms ease, filter 140ms ease;
-    }
-    .bar .fill.up { background: linear-gradient(90deg, rgba(185,28,28,0.35), var(--up)); }
-    .bar .fill.down { background: linear-gradient(90deg, rgba(29,78,216,0.30), var(--down)); }
-    .barrow:hover .bar .fill { filter: saturate(1.15); }
-
-    .theme-tiles {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 10px;
-        margin-top: 10px;
-    }
-    .theme-tile {
-        border-radius: 16px;
-        border: 1px solid rgba(148,163,184,0.22);
-        padding: 10px 10px;
-        box-shadow: 0 2px 10px rgba(15,23,42,0.06);
-        transition: transform 140ms ease, box-shadow 140ms ease;
-        cursor: pointer;
-    }
-    .theme-tile:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 10px 22px rgba(15,23,42,0.12);
-    }
-    .theme-tile .tname { font-weight: 800; font-size: 13px; color: #0f172a; }
-    .theme-tile .tmeta { margin-top: 6px; display:flex; justify-content: space-between; align-items:center; font-size: 12px; color: var(--muted); }
-    .theme-tile .tchg { font-weight: 800; font-variant-numeric: tabular-nums; }
-    .theme-tile .tchg.up { color: var(--up); }
-    .theme-tile .tchg.down { color: var(--down); }
-
-
-
-    /* === Theme Treemap (squarify) === */
-    .treemap-card {
-        padding: 14px 14px 16px 14px;
-    }
-    .treemap-wrap {
-        position: relative;
-        width: 100%;
-        height: 320px;
-        border-radius: 14px;
-        overflow: hidden;
-        background: #f3f6fb;
-        border: 1px solid var(--border);
-    }
-    .tm-tile {
-        position: absolute;
-        display: block;
-        border-radius: 10px;
-        overflow: hidden;
-        text-decoration: none;
-        color: rgba(255,255,255,0.92);
-        box-shadow: 0 1px 0 rgba(0,0,0,0.05);
-        outline: none;
-        transform: translateZ(0);
-    }
-    .tm-tile::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, rgba(0,0,0,0.08), rgba(0,0,0,0.38));
-        pointer-events: none;
-    }
-    .tm-tile:hover {
-        filter: brightness(1.04);
-        transform: translateY(-1px);
-        box-shadow: 0 10px 18px rgba(15,23,42,0.16);
-    }
-    .tm-tile:active {
-        transform: translateY(0px) scale(0.99);
-        box-shadow: 0 6px 12px rgba(15,23,42,0.12);
-    }
-    .tm-tile:focus-visible {
-        box-shadow: 0 0 0 3px rgba(59,130,246,0.35), 0 10px 18px rgba(15,23,42,0.16);
-    }
-    .tm-inner {
-        position: absolute;
-        inset: 10px 10px 10px 10px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        z-index: 1;
-    }
-    .tm-name {
-        font-weight: 800;
-        font-size: 15px;
-        line-height: 1.1;
-        letter-spacing: -0.2px;
-        text-shadow: 0 1px 10px rgba(0,0,0,0.25);
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        max-width: 100%;
-    }
-    .tm-meta {
-        font-size: 12px;
-        font-weight: 700;
-        opacity: 0.92;
-        text-shadow: 0 1px 10px rgba(0,0,0,0.25);
-        display: flex;
-        gap: 10px;
-        flex-wrap: wrap;
-    }
-    .tm-badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-        padding: 3px 8px;
-        border-radius: 999px;
-        background: rgba(255,255,255,0.18);
-        border: 1px solid rgba(255,255,255,0.22);
-        backdrop-filter: blur(6px);
-        -webkit-backdrop-filter: blur(6px);
-    }
-    .tm-badge .k {
-        opacity: 0.85;
-        font-weight: 800;
-    }
-    .tm-badge .v {
-        font-weight: 900;
-    }
-
-    /* barlist: add subtle gridlines for “chart-like” feel */
-    .barlist {
-        position: relative;
-        padding: 8px 12px 12px 12px;
-        background:
-            repeating-linear-gradient(
-                to right,
-                rgba(148,163,184,0.22) 0,
-                rgba(148,163,184,0.22) 1px,
-                transparent 1px,
-                transparent 60px
-            );
-        border-radius: 12px;
-        border: 1px solid rgba(226,232,240,0.85);
-    }
-
-
-    /* === ECharts chart layout (from intraday) === */
-    .chart-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 14px;
-        margin-top: 10px;
-    }
-    .chart-card {
-        background: rgba(248,250,252,0.98);
-        border-radius: 14px;
-        padding: 10px 12px 12px 12px;
-        border: 1px solid var(--border);
-        box-shadow: 0 2px 8px rgba(15,23,42,0.05);
-        overflow: hidden;
-    }
-    .chart-title {
-        font-size: 13px;
-        font-weight: 800;
-        margin: 0 0 2px 0;
-        letter-spacing: -0.02em;
-    }
-    .chart-sub {
-        font-size: 12px;
-        color: var(--muted);
-        margin: 0 0 8px 0;
-    }
-    .chart-box {
-        width: 100%;
-        height: 320px; /* ✅ 핵심: height 없으면 차트가 안 보입니다 */
-        min-height: 320px;
-    }
-
-    /* ✅ 트리맵 전용 높이(잘림 방지) */
-    .treemap-box {
-        width: 100%;
-        height: 260px;
-        min-height: 260px;
-    }
-
-    
-    /* [NEW] Treemap grid: show 1×4 on desktop (4 cards in one row) */
-.chart-grid.treemap-row4 {    
-    grid-template-columns: 1fr;
-}
-@media (max-width: 1200px) {
-    .chart-grid.treemap-row4 {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-@media (max-width: 900px) {
-    .chart-grid.treemap-row4 {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 900px) {
-        .chart-grid {
-            grid-template-columns: 1fr;
-        }
-        .chart-box {
-            height: 280px;
-            min-height: 280px;
-        }
-        .treemap-box {
-            height: 240px;
-            min-height: 240px;
-        }
-    }
-
-    
-
-        /* Modal (histogram drilldown) */
-        .pc-modal {
-            position: fixed;
-            inset: 0;
-            z-index: 9999;
-        }
-        .pc-modal-bg {
-            position: absolute;
-            inset: 0;
-            background: rgba(15, 23, 42, 0.55);
-        }
-        .pc-modal-panel {
-            position: absolute;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-            width: min(560px, calc(100vw - 24px));
-            max-height: calc(100vh - 32px);
-            overflow: auto;
-            background: rgba(255, 255, 255, 0.98);
-            border: 1px solid rgba(226, 232, 240, 0.9);
-            border-radius: 14px;
-            box-shadow: 0 16px 40px rgba(2, 6, 23, 0.18);
-        }
-        .pc-modal-head {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            padding: 12px 14px;
-            border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-        }
-        .pc-modal-title { font-weight: 800; font-size: 14px; }
-        .pc-modal-close {
-            border: 0;
-            background: transparent;
-            font-size: 22px;
-            line-height: 1;
-            cursor: pointer;
-            color: #334155;
-            padding: 4px 8px;
-            border-radius: 10px;
-        }
-        .pc-modal-close:hover { background: rgba(148, 163, 184, 0.18); }
-        .pc-modal-body { padding: 10px 14px 14px; }
-        .pc-modal-list { display: flex; flex-direction: column; gap: 8px; }
-        .pc-modal-item {
-            display: grid;
-            grid-template-columns: 1fr auto;
-            gap: 8px;
-            padding: 10px 10px;
-            border: 1px solid rgba(226, 232, 240, 0.85);
-            border-radius: 12px;
-            background: #fff;
-        }
-        .pc-modal-item .nm { font-weight: 800; }
-        .pc-modal-item .meta { font-size: 12px; color: #64748b; margin-top: 3px; }
-        .pc-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 10px;
-            border-radius: 999px;
-            font-weight: 800;
-            font-size: 12px;
-            white-space: nowrap;
-            border: 1px solid rgba(226, 232, 240, 0.9);
-            background: rgba(248, 250, 252, 0.9);
-        }
-        .pc-badge.up { color: #ef4444; }
-        .pc-badge.down { color: #2563eb; }
-        .pc-badge.flat { color: #334155; }
-    
 </style>
-<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
-
 </head>
-<body>
-<header>
-    <div class="left">
-        <div class="title-main">장마감 테마 스캐너</div>
-        <div class="title-sub">
-            <span class="subtitle-highlight">📌 현재 화면은 가장 최근 장마감 데이터(<span class='subtitle-date'>2026-07-30</span>) 기준입니다. 오늘 장마감 데이터는 장 종료 후 업데이트됩니다.</span>
-        </div>
-        <div class="nav-links">
-            <a href="postclose.html?v=20260730160809" class="nav-link active">요약 대시보드</a>
-            <a href="postclose_overview.html?v=20260730160809" class="nav-link">테마 맵 전체 보기</a>
-        </div>
-    </div>
-    <div class="right-info">
-        <div>생성 시각: 2026-07-30 16:08</div>
-        <div>데이터: theme_postclose_stats.tsv 기준</div>
-    </div>
-</header>
-<div id="container">
-<section id="summary-section">
-<div class="section-box">
-<div class="section-title">오늘 장 마감 스냅샷</div>
-<div class="section-sub">당일 종가 기준으로 주요 테마·종목의 가격과 수급 상황을 한 화면에 정리했습니다.</div>
-<div class="three-line-box">
-<div class="three-line-title">오늘 3줄 결론</div>
-<ul class="three-line-list">
-<li>강세 테마: 2차전지(83%↑, 7,141억), 금융(82%↑, 8,029억), 건설(79%↑, 3,419억)</li>
-<li>외+기관 수급: 조선/LNG(2,695,226), 증권(1,527,796), 금융(1,332,551)</li>
-<li>리스크(거래대금 동반 약세): SK하이닉스(-5.6%, 124,934억), SK스퀘어(-6.0%, 10,931억), NAVER(-3.4%, 3,305억)</li>
-</ul></div>
-<div class="summary-row">
-<div class="summary-card">
-<div class="summary-card-title">전체 커버리지</div>
-<div class="summary-card-main">535개</div>
-<div class="summary-card-sub">테마 33개 / 종목 535개</div>
-</div>
-<div class="summary-card">
-<div class="summary-card-title">상승 / 하락 종목 비율</div>
-<div class="summary-card-main"><span class="pos">47.7%</span> / <span class="neg">48.0%</span></div>
-<div class="summary-card-sub">상승 255개 / 하락 257개 / 보합 23개</div>
-</div>
-<div class="summary-card">
-<div class="summary-card-title">오늘 전체 거래대금(커버리지 기준)</div>
-<div class="summary-card-main">351,862.56억</div>
-<div class="summary-card-sub">TSV에 포함된 종목들의 거래대금 합계 (단위: 억 원, 10005=백만 기준)</div>
-</div>
-</div>
-<div class="section-title">어디부터 볼까?</div>
-<div class="section-sub">가격 모멘텀, 수급, 52주 저점/고점 관점에서 장 마감 이후 체크 포인트를 정리했습니다.</div>
-<div class="summary-row">
-<div class="where-card momentum">
-<div class="where-title">가격 · 등락율</div>
-<div class="where-pill">모멘텀 관점</div>
-<p class="where-text">오늘 기준 <span class="where-em">상승 종목 255개</span>, <span class="where-em">하락 종목 257개</span>입니다.</p>
-<p class="where-text">오늘 강하게 움직인 종목은 아래 <b>등락율 TOP5 / 하락 TOP5</b> 테이블에서 빠르게 확인할 수 있습니다.</p>
-</div>
-<div class="where-card flow">
-<div class="where-title">수급(외국인 · 기관 · 개인)</div>
-<div class="where-pill">수급 관점</div>
-<p class="where-text">오늘 기준, <span class="where-em">외국인 순매수 종목 397개</span>, <span class="where-em">기관 순매수 종목 239개</span>, <span class="where-em">개인 순매수 종목 122개</span>입니다.</p>
-<p class="where-text">테마 단위로는 <b>외국인/기관/개인 수급 상위 테마 카드</b>를 먼저 보고, 이후 종목 TOP5로 내려가면 흐름을 잡기 좋습니다.</p>
-</div>
-<div class="where-card low52">
-<div class="where-title">52주 저점 근처 종목</div>
-<div class="where-pill">밸류에이션 관점</div>
-<p class="where-text">52주 최저가 대비 ±10% 구간에 있는 종목은 <span class="where-em">244개</span>입니다.</p>
-<p class="where-text">바닥권/리밸런싱 후보를 찾는다면 52주 저점 인근 종목과 외국인·기관 수급을 함께 체크해보는 것이 좋습니다.</p>
-</div>
-<div class="where-card low">
-<div class="where-title">52주 고점 근처 종목</div>
-<div class="where-pill">돌파/상승 지속</div>
-<p class="where-text">52주 최고가 대비 ±10% 구간에 있는 종목은 <span class="where-em">1개</span>입니다.</p>
-<p class="where-text">고점권 종목은 변동성이 커질 수 있으니 거래대금과 외국인·기관 수급이 동반되는지 같이 확인하세요.</p>
-</div>
-</div>
-</div>
-<div class="section-box">
-<div class="section-title">테마 온도 &amp; 수급 강도</div>
-<div class="section-sub">테마별 평균 등락율과 수급(외국인·기관·개인) 흐름을 같이 봅니다.</div>
-<div class="summary-row">
-<div class="theme-top-card bull">
-<div class="theme-top-title">상승 테마 TOP3 <span class="badge">평균 등락율 기준</span></div>
-<div class="theme-top-desc">상승 종목 비율과 평균 등락율이 높은 테마입니다.</div>
-<ul class="theme-top-list">
-<li><span class="theme-name">2차전지</span><span class="theme-stat-main">· 상승 5/6개 (83.3%)</span><span class="theme-stat-line">평균 등락율: <span class="pos">4.65%</span></span><span class="theme-stat-line">거래대금 합계: 7,140.65억</span></li>
-<li><span class="theme-name">조선/LNG</span><span class="theme-stat-main">· 상승 22/28개 (78.6%)</span><span class="theme-stat-line">평균 등락율: <span class="pos">2.65%</span></span><span class="theme-stat-line">거래대금 합계: 7,989.97억</span></li>
-<li><span class="theme-name">건설</span><span class="theme-stat-main">· 상승 19/24개 (79.2%)</span><span class="theme-stat-line">평균 등락율: <span class="pos">2.41%</span></span><span class="theme-stat-line">거래대금 합계: 3,418.75억</span></li>
-</ul></div>
-<div class="theme-top-card bear">
-<div class="theme-top-title">하락 테마 TOP3 <span class="badge">조정 테마</span></div>
-<div class="theme-top-desc">조정이 깊었던 테마로, 내일 반등 후보군을 찾을 때 참고할 수 있습니다.</div>
-<ul class="theme-top-list">
-<li><span class="theme-name">반도체</span><span class="theme-stat-main">· 상승 0/17개 (0.0%)</span><span class="theme-stat-line">평균 등락율: <span class="neg">-5.18%</span></span><span class="theme-stat-line">거래대금 합계: 227,494.12억</span></li>
-<li><span class="theme-name">로봇</span><span class="theme-stat-main">· 상승 1/24개 (4.2%)</span><span class="theme-stat-line">평균 등락율: <span class="neg">-4.88%</span></span><span class="theme-stat-line">거래대금 합계: 4,664.42억</span></li>
-<li><span class="theme-name">반도체장비</span><span class="theme-stat-main">· 상승 2/19개 (10.5%)</span><span class="theme-stat-line">평균 등락율: <span class="neg">-4.49%</span></span><span class="theme-stat-line">거래대금 합계: 9,760.88억</span></li>
-</ul></div>
-</div>
-<div class="section-title">차트로 한눈에 보기</div>
-<div class="section-sub">시장 폭 · 테마 강도 · 수급(외인/기관) · 거래대금 · 분포/관계(히스토그램·스캐터)까지 한 번에 봅니다.</div>
-<div class="chart-grid">
-<div class="chart-card">
-<div class="chart-title">시장 폭(상승/하락/보합)</div>
-<div class="chart-sub">종목 수 기준</div>
-<div id="pc-chart-breadth" class="chart-box"></div>
-</div>
-<div class="chart-card">
-<div class="chart-title">상승 테마 TOP</div>
-<div class="chart-sub">평균 등락율 기준</div>
-<div id="pc-chart-topchg" class="chart-box"></div>
-</div>
-<div class="chart-card">
-<div class="chart-title">수급 TOP 테마</div>
-<div class="chart-sub">거래대금 상위 테마의 외국인/기관 순매수(주)</div>
-<div id="pc-chart-flow" class="chart-box"></div>
-</div>
-<div class="chart-card">
-<div class="chart-title">거래대금 TOP 테마</div>
-<div class="chart-sub">억 단위 (커버리지 내)</div>
-<div id="pc-chart-trading" class="chart-box"></div>
-</div>
-<div class="chart-card">
-<div class="chart-title">종목 등락율 분포</div>
-<div class="chart-sub">중복 제거 종목 기준 · -30%~+30% (5% 구간) · 구간별 종목 수</div>
-<div id="pc-chart-rethist" class="chart-box"></div>
-</div>
-<div class="chart-card">
-<div class="chart-title">테마 포지션 맵(스캐터)</div>
-<div class="chart-sub">X=평균등락율(%) · Y=외국인+기관 순매수(주) · 크기=거래대금(억) · 색=상승 종목 비율(%)</div>
-<div id="pc-chart-scatter" class="chart-box"></div>
-</div>
-</div>
-<div style="height:8px;"></div>
-<div class="section-sub">트리맵 4종(관심·수급·모멘텀·저점)을 <b>한 줄</b>로 비교합니다.</div>
-<div class="chart-grid treemap-row4">
-<div class="chart-card">
-<div class="chart-title">관심(거래대금) 트리맵</div>
-<div class="chart-sub">면적=거래대금 합(억)</div>
-<div id="pc-tm_trading" class="treemap-box"></div>
-</div>
-<div class="chart-card">
-<div class="chart-title">수급(외인+기관) 트리맵</div>
-<div class="chart-sub">면적=max(0, 외인+기관 순매수)</div>
-<div id="pc-tm_flow" class="treemap-box"></div>
-</div>
-<div class="chart-card">
-<div class="chart-title">모멘텀 트리맵</div>
-<div class="chart-sub">면적=log1p(거래대금)×상승(평균등락율)</div>
-<div id="pc-tm_momentum" class="treemap-box"></div>
-</div>
-<div class="chart-card">
-<div class="chart-title">저점(52주) 트리맵</div>
-<div class="chart-sub">면적=조정 비중(근사) · 바닥권 후보</div>
-<div id="pc-tm_nearlow" class="treemap-box"></div>
-</div>
-</div>
+<body class="phase-postclose">
+<header class="site-header"><div class="header-inner"><div class="header-row"><div class="title-block"><div class="title-line"><span class="phase-pill">장후</span><h1>장후 대시보드</h1></div><p class="subtitle">마감 흐름과 매수세</p></div><nav class="nav"><a class="" href="../index.html">자동</a><a class="" href="../overview.html">요약</a><a class="" href="../preopen/preopen.html">장전</a><a class="" href="../intraday/intraday.html">장중</a><a class="active" href="../postclose/postclose.html">장후</a></nav></div><div class="data-line">기준 2026-07-31</div></div></header>
+<main>
+  <div class="capture-toolbar"><span class="capture-message" id="capturePhaseMessage" aria-live="polite"></span><button class="capture-action" id="capturePhaseButton" type="button">캡처 저장</button></div>
+  <div class="kpi-grid"><div class="kpi"><span class="kpi-label">시장 평균</span><strong class="kpi-value up">+9.15%</strong><span class="kpi-sub">상승 491 · 하락 32</span></div><div class="kpi"><span class="kpi-label">상승 비중</span><strong class="kpi-value up">92%</strong><span class="kpi-sub">강세 테마 33개</span></div><div class="kpi"><span class="kpi-label">상승 거래 비중</span><strong class="kpi-value up">97%</strong><span class="kpi-sub">전체 거래대금 중 상승 종목</span></div><div class="kpi"><span class="kpi-label">거래 집중도</span><strong class="kpi-value ">73%</strong><span class="kpi-sub">상위 5종목 거래 비중</span></div><div class="kpi"><span class="kpi-label">외·기관 매수 비중</span><strong class="kpi-value up">73%</strong><span class="kpi-sub">외국인+기관 합계 순매수</span></div><div class="kpi"><span class="kpi-label">마감 매수세</span><strong class="kpi-value ">336개</strong><span class="kpi-sub">상승·가격 유지·순매수</span></div></div>
 
-<div id="pc-ret-modal" class="pc-modal" style="display:none;">
-  <div class="pc-modal-bg" onclick="(function(){var m=document.getElementById('pc-ret-modal'); if(m) m.style.display='none';})();"></div>
-  <div class="pc-modal-panel">
-    <div class="pc-modal-head">
-      <div id="pc-ret-modal-title" class="pc-modal-title">구간 종목</div>
-      <button class="pc-modal-close" onclick="(function(){var m=document.getElementById('pc-ret-modal'); if(m) m.style.display='none';})();">×</button>
-    </div>
-    <div id="pc-ret-modal-body" class="pc-modal-body"></div>
+  
+  <section class="section" id="market-overview"> 
+    <div class="section-head"><h2>시장 한눈에 보기</h2></div>
+    <div class="visual-grid">
+      <article class="visual-card"><h3>시장 폭</h3><div class="visual-note">상승·하락 종목 분포</div>
+<div class="breadth-wrap">
+  <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="상승 491개, 보합 8개, 하락 32개">
+    <circle class="donut-bg" cx="60" cy="60" r="42"></circle>
+    <circle class="donut-up" cx="60" cy="60" r="42" stroke-dasharray="244.015 19.879" stroke-dashoffset="0.000"></circle>
+    <circle class="donut-flat" cx="60" cy="60" r="42" stroke-dasharray="3.976 259.918" stroke-dashoffset="-244.015"></circle>
+    <circle class="donut-down" cx="60" cy="60" r="42" stroke-dasharray="15.903 247.991" stroke-dashoffset="-247.991"></circle>
+    <text x="60" y="57" text-anchor="middle" class="donut-number">92%</text>
+    <text x="60" y="73" text-anchor="middle" class="donut-caption">상승 비중</text>
+  </svg>
+  <div class="legend-list">
+    <div><span class="legend-dot legend-up"></span><span>상승</span><strong>491</strong></div>
+    <div><span class="legend-dot legend-flat"></span><span>보합</span><strong>8</strong></div>
+    <div><span class="legend-dot legend-down"></span><span>하락</span><strong>32</strong></div>
   </div>
-</div>
+</div></article>
+      <article class="visual-card"><h3>강·약 테마 TOP 5</h3><div class="visual-note">강한 테마와 약한 테마 비교</div><div class="bar-list"><div class="bar-row"><div class="bar-label" title="반도체">반도체</div><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:50.00%"></span></div><div class="bar-value up">+24.20%</div></div><div class="bar-row"><div class="bar-label" title="반도체장비">반도체장비</div><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:45.03%"></span></div><div class="bar-value up">+21.79%</div></div><div class="bar-row"><div class="bar-label" title="의류">의류</div><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:3.88%"></span></div><div class="bar-value up">+1.88%</div></div><div class="bar-row"><div class="bar-label" title="금융">금융</div><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:3.40%"></span></div><div class="bar-value up">+1.64%</div></div><div class="bar-row"><div class="bar-label" title="식음료">식음료</div><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:2.52%"></span></div><div class="bar-value up">+1.22%</div></div></div></article>
+      <article class="visual-card"><h3>테마 외국인·기관 순매수</h3><div class="visual-note">외국인·기관 순매수 규모 비교</div><div class="flow-list"><div class="flow-row"><div class="flow-theme">반도체</div><div class="flow-sub"><span>외</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:50.00%"></span></div><strong class="up">+957.3만</strong></div><div class="flow-sub"><span>기</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:30.27%"></span></div><strong class="up">+579.7만</strong></div></div><div class="flow-row"><div class="flow-theme">전력인프라</div><div class="flow-sub"><span>외</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:18.36%"></span></div><strong class="up">+351.5만</strong></div><div class="flow-sub"><span>기</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:0.05%"></span></div><strong class="up">+9,025</strong></div></div><div class="flow-row"><div class="flow-theme">로봇</div><div class="flow-sub"><span>외</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:15.84%"></span></div><strong class="up">+303.2만</strong></div><div class="flow-sub"><span>기</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:1.59%"></span></div><strong class="up">+30.4만</strong></div></div><div class="flow-row"><div class="flow-theme">증권</div><div class="flow-sub"><span>외</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:18.47%"></span></div><strong class="up">+353.6만</strong></div><div class="flow-sub"><span>기</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill negative" style="width:2.28%"></span></div><strong class="down">-43.7만</strong></div></div><div class="flow-row"><div class="flow-theme">원전</div><div class="flow-sub"><span>외</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:14.30%"></span></div><strong class="up">+273.8만</strong></div><div class="flow-sub"><span>기</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill negative" style="width:0.17%"></span></div><strong class="down">-3.3만</strong></div></div></div></article>
+    </div>
+  </section>
 
-<script type="application/json" id="pc-chart-data">
-{"breadth":{"up":255,"down":257,"flat":23},"barTopChg":{"names":["\uc9c0\uc8fc\uc0ac","\uc6b0\ud06c\ub77c\uc774\ub098/\uc7ac\uac74","\ud0dc\uc591\uad11","\uc2dd\uc74c\ub8cc","\uc758\ub958","\ubc29\uc0b0","\uae08\uc735","\uac74\uc124","\uc870\uc120/LNG","2\ucc28\uc804\uc9c0"],"vals":[0.88,0.92,0.96,1.08,1.32,1.59,2.2,2.41,2.65,4.65]},"flowTop":{"names":["\ubc18\ub3c4\uccb4","\uc9c0\uc8fc\uc0ac","ESS","\ubc18\ub3c4\uccb4\uc7a5\ube44","\uc804\ub825\uc778\ud504\ub77c","\uc790\ub3d9\ucc28","\ubc14\uc774\uc624","\uae08\uc735","\uc870\uc120/LNG","2\ucc28\uc804\uc9c0"],"foreign":[1993066.0,435619.0,-466143.0,1223097.0,175325.0,338143.0,789867.0,-287477.0,2036865.0,95006.0],"inst":[-1175487.0,289148.0,-168379.0,-918397.0,-524380.0,-81166.0,128871.0,1620028.0,658361.0,288772.0]},"trTop":{"names":["2\ucc28\uc804\uc9c0","\uc870\uc120/LNG","\uae08\uc735","\ubc14\uc774\uc624","\uc790\ub3d9\ucc28","\uc804\ub825\uc778\ud504\ub77c","\ubc18\ub3c4\uccb4\uc7a5\ube44","ESS","\uc9c0\uc8fc\uc0ac","\ubc18\ub3c4\uccb4"],"vals":[7140.65,7989.97,8029.03,9104.3,9672.61,9727.56,9760.88,10272.46,20452.0,227494.12]},"treemaps":{"trading":[{"name":"\ubc18\ub3c4\uccb4","value":227494.12,"metric":-5.1829,"tr_eok":227494.12,"avg":-5.18,"up_ratio":0.0,"fi":817579.0,"top3":"SK\ud558\uc774\ub2c9\uc2a4(-5.6%), \uc0bc\uc131\uc804\uc790(-0.7%), \uc6d0\uc775IPS(-8.3%)","subtitle":"\uac70\ub798\ub300\uae08 227494\uc5b5 \u00b7 \ud3c9\uade0 -5.18%"},{"name":"\uc9c0\uc8fc\uc0ac","value":20452.0,"metric":0.8843,"tr_eok":20452.0,"avg":0.88,"up_ratio":75.0,"fi":724767.0,"top3":"SK\uc2a4\ud018\uc5b4(-6.0%), \uc0bc\uc131\ubb3c\uc0b0(+3.0%), POSCO\ud640\ub529\uc2a4(+4.2%)","subtitle":"\uac70\ub798\ub300\uae08 20452\uc5b5 \u00b7 \ud3c9\uade0 +0.88%"},{"name":"ESS","value":10272.46,"metric":-0.878,"tr_eok":10272.46,"avg":-0.88,"up_ratio":33.3,"fi":-634522.0,"top3":"SK\uc774\ud130\ub2c9\uc2a4(-3.8%), \uc0bc\uc131SDI(-1.5%), \ud6a8\uc131\uc911\uacf5\uc5c5(-5.6%)","subtitle":"\uac70\ub798\ub300\uae08 10272\uc5b5 \u00b7 \ud3c9\uade0 -0.88%"},{"name":"\ubc18\ub3c4\uccb4\uc7a5\ube44","value":9760.88,"metric":-4.4863,"tr_eok":9760.88,"avg":-4.49,"up_ratio":10.5,"fi":304700.0,"top3":"\uc8fc\uc131\uc5d4\uc9c0\ub2c8\uc5b4\ub9c1(-15.3%), \ud55c\ubbf8\ubc18\ub3c4\uccb4(+0.0%), \uc6d0\uc775IPS(-8.3%)","subtitle":"\uac70\ub798\ub300\uae08 9761\uc5b5 \u00b7 \ud3c9\uade0 -4.49%"},{"name":"\uc804\ub825\uc778\ud504\ub77c","value":9727.56,"metric":-3.433,"tr_eok":9727.56,"avg":-3.43,"up_ratio":20.0,"fi":-349055.0,"top3":"HD\ud604\ub300\uc77c\ub809\ud2b8\ub9ad(-0.5%), \ud6a8\uc131\uc911\uacf5\uc5c5(-5.6%), LS ELECTRIC(-8.2%)","subtitle":"\uac70\ub798\ub300\uae08 9728\uc5b5 \u00b7 \ud3c9\uade0 -3.43%"},{"name":"\uc790\ub3d9\ucc28","value":9672.61,"metric":0.8268,"tr_eok":9672.61,"avg":0.83,"up_ratio":52.0,"fi":256977.0,"top3":"\ud604\ub300\ucc28(-0.7%), \ud604\ub300\ubaa8\ube44\uc2a4(+0.0%), \uae30\uc544(+0.3%)","subtitle":"\uac70\ub798\ub300\uae08 9673\uc5b5 \u00b7 \ud3c9\uade0 +0.83%"},{"name":"\ubc14\uc774\uc624","value":9104.3,"metric":-1.4055,"tr_eok":9104.3,"avg":-1.41,"up_ratio":38.7,"fi":918738.0,"top3":"\uc140\ud2b8\ub9ac\uc628(+5.6%), \uc0bc\uc131\ubc14\uc774\uc624\ub85c\uc9c1\uc2a4(+3.2%), \uc54c\ud14c\uc624\uc820(-1.1%)","subtitle":"\uac70\ub798\ub300\uae08 9104\uc5b5 \u00b7 \ud3c9\uade0 -1.41%"},{"name":"\uae08\uc735","value":8029.03,"metric":2.1955,"tr_eok":8029.03,"avg":2.2,"up_ratio":81.8,"fi":1332551.0,"top3":"KB\uae08\uc735(+4.6%), \uc2e0\ud55c\uc9c0\uc8fc(+2.5%), \uc6b0\ub9ac\uae08\uc735\uc9c0\uc8fc(+2.0%)","subtitle":"\uac70\ub798\ub300\uae08 8029\uc5b5 \u00b7 \ud3c9\uade0 +2.20%"},{"name":"\uc870\uc120/LNG","value":7989.97,"metric":2.6543,"tr_eok":7989.97,"avg":2.65,"up_ratio":78.6,"fi":2695226.0,"top3":"\ud55c\ud654\uc624\uc158(+6.3%), HD\ud55c\uad6d\uc870\uc120\ud574\uc591(+10.0%), HD\ud604\ub300\uc911\uacf5\uc5c5(+3.2%)","subtitle":"\uac70\ub798\ub300\uae08 7990\uc5b5 \u00b7 \ud3c9\uade0 +2.65%"},{"name":"2\ucc28\uc804\uc9c0","value":7140.65,"metric":4.6483,"tr_eok":7140.65,"avg":4.65,"up_ratio":83.3,"fi":383778.0,"top3":"\uc0bc\uc131SDI(-1.5%), LG\uc5d0\ub108\uc9c0\uc194\ub8e8\uc158(+6.5%), SK\uc774\ub178\ubca0\uc774\uc158(+6.5%)","subtitle":"\uac70\ub798\ub300\uae08 7141\uc5b5 \u00b7 \ud3c9\uade0 +4.65%"},{"name":"AI","value":6031.25,"metric":-1.3558,"tr_eok":6031.25,"avg":-1.36,"up_ratio":36.4,"fi":1230566.0,"top3":"NAVER(-3.4%), \uce74\uce74\uc624(+2.4%), \uc0bc\uc131\uc5d0\uc2a4\ub514\uc5d0\uc2a4(+0.7%)","subtitle":"\uac70\ub798\ub300\uae08 6031\uc5b5 \u00b7 \ud3c9\uade0 -1.36%"},{"name":"\ubc29\uc0b0","value":5722.36,"metric":1.5857,"tr_eok":5722.36,"avg":1.59,"up_ratio":78.6,"fi":947602.0,"top3":"\ud55c\ud654\uc5d0\uc5b4\ub85c\uc2a4\ud398\uc774\uc2a4(+6.8%), LIG\ub125\uc2a4\uc6d0(+3.4%), \ud604\ub300\ub85c\ud15c(+0.3%)","subtitle":"\uac70\ub798\ub300\uae08 5722\uc5b5 \u00b7 \ud3c9\uade0 +1.59%"},{"name":"\ud654\uc7a5\ud488","value":5569.17,"metric":0.7722,"tr_eok":5569.17,"avg":0.77,"up_ratio":65.2,"fi":829047.0,"top3":"LG\uc0dd\ud65c\uac74\uac15(+11.0%), \uc544\ubaa8\ub808\ud37c\uc2dc\ud53d(+9.9%), \ub2ec\ubc14\uae00\ub85c\ubc8c(-11.9%)","subtitle":"\uac70\ub798\ub300\uae08 5569\uc5b5 \u00b7 \ud3c9\uade0 +0.77%"},{"name":"\uc2a4\ud14c\uc774\ube14\ucf54\uc778","value":5096.88,"metric":-0.611,"tr_eok":5096.88,"avg":-0.61,"up_ratio":35.0,"fi":647988.0,"top3":"NAVER(-3.4%), \uc0bc\uc131\uc5d0\uc2a4\ub514\uc5d0\uc2a4(+0.7%), LG\uc528\uc5d4\uc5d0\uc2a4(-1.9%)","subtitle":"\uac70\ub798\ub300\uae08 5097\uc5b5 \u00b7 \ud3c9\uade0 -0.61%"},{"name":"\uc6b0\uc8fc\ud56d\uacf5","value":4902.18,"metric":-0.295,"tr_eok":4902.18,"avg":-0.29,"up_ratio":44.4,"fi":761001.0,"top3":"\ud55c\ud654\uc5d0\uc5b4\ub85c\uc2a4\ud398\uc774\uc2a4(+6.8%), LIG\ub125\uc2a4\uc6d0(+3.4%), \ud55c\uad6d\ud56d\uacf5\uc6b0\uc8fc(+2.7%)","subtitle":"\uac70\ub798\ub300\uae08 4902\uc5b5 \u00b7 \ud3c9\uade0 -0.29%"},{"name":"\ub85c\ubd07","value":4664.42,"metric":-4.88,"tr_eok":4664.42,"avg":-4.88,"up_ratio":4.2,"fi":-1099442.0,"top3":"\ub808\uc778\ubcf4\uc6b0\ub85c\ubcf4\ud2f1\uc2a4(-9.1%), \uc5d0\uc2a4\ud53c\uc9c0(-6.1%), \ud604\ub300\ubb34\ubca1\uc2a4(-17.5%)","subtitle":"\uac70\ub798\ub300\uae08 4664\uc5b5 \u00b7 \ud3c9\uade0 -4.88%"},{"name":"\uc6d0\uc804","value":3713.83,"metric":-0.7225,"tr_eok":3713.83,"avg":-0.72,"up_ratio":40.0,"fi":986370.0,"top3":"\ub450\uc0b0\uc5d0\ub108\ube4c\ub9ac\ud2f0(-1.0%), \ud55c\uad6d\uc804\ub825(-0.1%), \ud604\ub300\uac74\uc124(-3.4%)","subtitle":"\uac70\ub798\ub300\uae08 3714\uc5b5 \u00b7 \ud3c9\uade0 -0.72%"},{"name":"\uac74\uc124","value":3418.75,"metric":2.4096,"tr_eok":3418.75,"avg":2.41,"up_ratio":79.2,"fi":318725.0,"top3":"\uc0bc\uc131E&A(+3.1%), \ub300\uc6b0\uac74\uc124(-6.8%), GS\uac74\uc124(+0.2%)","subtitle":"\uac70\ub798\ub300\uae08 3419\uc5b5 \u00b7 \ud3c9\uade0 +2.41%"},{"name":"\ud48d\ub825","value":3264.33,"metric":-0.116,"tr_eok":3264.33,"avg":-0.12,"up_ratio":60.0,"fi":-783013.0,"top3":"SK\uc774\ud130\ub2c9\uc2a4(-3.8%), SK\uc624\uc158\ud50c\ub79c\ud2b8(+0.4%), \uc528\uc5d0\uc2a4\uc708\ub4dc(+1.4%)","subtitle":"\uac70\ub798\ub300\uae08 3264\uc5b5 \u00b7 \ud3c9\uade0 -0.12%"},{"name":"\uc99d\uad8c","value":2913.45,"metric":0.6518,"tr_eok":2913.45,"avg":0.65,"up_ratio":70.6,"fi":1527796.0,"top3":"\ubbf8\ub798\uc5d0\uc14b\uc99d\uad8c(-1.6%), \ud55c\uad6d\uae08\uc735\uc9c0\uc8fc(-1.0%), \uc0bc\uc131\uc99d\uad8c(+2.7%)","subtitle":"\uac70\ub798\ub300\uae08 2913\uc5b5 \u00b7 \ud3c9\uade0 +0.65%"},{"name":"\uc2dd\uc74c\ub8cc","value":2473.2,"metric":1.0796,"tr_eok":2473.2,"avg":1.08,"up_ratio":60.9,"fi":284171.0,"top3":"\uc0bc\uc591\uc2dd\ud488(+1.9%), \uc624\ub9ac\uc628(+0.2%), CJ\uc81c\uc77c\uc81c\ub2f9(-0.7%)","subtitle":"\uac70\ub798\ub300\uae08 2473\uc5b5 \u00b7 \ud3c9\uade0 +1.08%"},{"name":"\uc790\uc728\uc8fc\ud589","value":2307.56,"metric":-0.8547,"tr_eok":2307.56,"avg":-0.85,"up_ratio":41.2,"fi":344097.0,"top3":"\ud604\ub300\ubaa8\ube44\uc2a4(+0.0%), \ud604\ub300\uc624\ud1a0\uc5d0\ubc84(-6.7%), \uc5e0\uc528\ub125\uc2a4(+0.3%)","subtitle":"\uac70\ub798\ub300\uae08 2308\uc5b5 \u00b7 \ud3c9\uade0 -0.85%"},{"name":"\ud0dc\uc591\uad11","value":2172.82,"metric":0.957,"tr_eok":2172.82,"avg":0.96,"up_ratio":70.0,"fi":476065.0,"top3":"\ud55c\ud654\uc194\ub8e8\uc158(+2.8%), OCI\ud640\ub529\uc2a4(+3.1%), HD\ud604\ub300\uc5d0\ub108\uc9c0\uc194\ub8e8\uc158(+1.6%)","subtitle":"\uac70\ub798\ub300\uae08 2173\uc5b5 \u00b7 \ud3c9\uade0 +0.96%"},{"name":"\ubc18\ub3c4\uccb4\uc18c\uc7ac\ubd80\ud488","value":1974.66,"metric":-3.572,"tr_eok":1974.66,"avg":-3.57,"up_ratio":13.3,"fi":-26618.0,"top3":"\ub9ac\ub178\uacf5\uc5c5(-5.2%), ISC(-4.0%), \ud2f0\uc5d0\uc2a4\uc774(-8.8%)","subtitle":"\uac70\ub798\ub300\uae08 1975\uc5b5 \u00b7 \ud3c9\uade0 -3.57%"},{"name":"\uc720\ub9ac\uae30\ud310","value":1492.15,"metric":-0.7078,"tr_eok":1492.15,"avg":-0.71,"up_ratio":16.7,"fi":69550.0,"top3":"\uc774\uc624\ud14c\ud06c\ub2c9\uc2a4(-3.6%), ISC(-4.0%), \uc57c\uc2a4(+30.0%)","subtitle":"\uac70\ub798\ub300\uae08 1492\uc5b5 \u00b7 \ud3c9\uade0 -0.71%"},{"name":"\uc5d4\ud130","value":1059.71,"metric":-1.0118,"tr_eok":1059.71,"avg":-1.01,"up_ratio":45.5,"fi":244709.0,"top3":"\ud558\uc774\ube0c(-4.3%), JYP(-2.2%), \uc5d0\uc2a4\uc5e0(-0.1%)","subtitle":"\uac70\ub798\ub300\uae08 1060\uc5b5 \u00b7 \ud3c9\uade0 -1.01%"},{"name":"\uc6b0\ud06c\ub77c\uc774\ub098/\uc7ac\uac74","value":1039.23,"metric":0.915,"tr_eok":1039.23,"avg":0.92,"up_ratio":55.0,"fi":359560.0,"top3":"HD\ud604\ub300\uac74\uc124\uae30\uacc4(-3.5%), \ub2e4\uc2a4\ucf54(+0.5%), \ud55c\ubbf8\uae00\ub85c\ubc8c(+2.2%)","subtitle":"\uac70\ub798\ub300\uae08 1039\uc5b5 \u00b7 \ud3c9\uade0 +0.92%"},{"name":"\uc758\ub958","value":374.42,"metric":1.3235,"tr_eok":374.42,"avg":1.32,"up_ratio":58.8,"fi":-230954.0,"top3":"\uc601\uc6d0\ubb34\uc5ed(+1.7%), \ud6a8\uc131\ud2f0\uc564\uc528(+4.2%), F&F(+1.7%)","subtitle":"\uac70\ub798\ub300\uae08 374\uc5b5 \u00b7 \ud3c9\uade0 +1.32%"},{"name":"\uc758\ub8ccAI","value":350.59,"metric":-2.0924,"tr_eok":350.59,"avg":-2.09,"up_ratio":38.1,"fi":251020.0,"top3":"\ubcf4\ub85c\ub178\uc774(-5.7%), \ub85c\ud0b7\ud5ec\uc2a4\ucf00\uc5b4(-9.5%), \uc528\uc5b4\uc2a4\ud14c\ud06c\ub180\ub85c\uc9c0(-5.0%)","subtitle":"\uac70\ub798\ub300\uae08 351\uc5b5 \u00b7 \ud3c9\uade0 -2.09%"},{"name":"\uc2a4\ud398\uc774\uc2a4X","value":298.85,"metric":-1.626,"tr_eok":298.85,"avg":-1.63,"up_ratio":30.0,"fi":362835.0,"top3":"\uc2a4\ud53c\uc5b4(-3.1%), \uc138\uc544\ubca0\uc2a4\ud2f8\uc9c0\uc8fc(+2.7%), \uc384\ud2b8\ub809\uc544\uc774(-6.0%)","subtitle":"\uac70\ub798\ub300\uae08 299\uc5b5 \u00b7 \ud3c9\uade0 -1.63%"},{"name":"\ud1b5\uc2e0","value":201.07,"metric":-3.2371,"tr_eok":201.07,"avg":-3.24,"up_ratio":28.6,"fi":91920.0,"top3":"RFHIC(-4.7%), \uc3e0\ub9ac\ub4dc(-4.1%), \ucf00\uc774\uc5e0\ub354\ube14\uc720(-7.1%)","subtitle":"\uac70\ub798\ub300\uae08 201\uc5b5 \u00b7 \ud3c9\uade0 -3.24%"},{"name":"\uc591\uc790","value":166.96,"metric":-0.9381,"tr_eok":166.96,"avg":-0.94,"up_ratio":31.2,"fi":274554.0,"top3":"\uc5d1\uc2a4\uac8c\uc774\ud2b8(-4.9%), \uc544\uc774\uc528\ud2f0\ucf00\uc774(-4.3%), \ud30c\uc774\ubc84\ud504\ub85c(-6.2%)","subtitle":"\uac70\ub798\ub300\uae08 167\uc5b5 \u00b7 \ud3c9\uade0 -0.94%"},{"name":"\uc800\ucd9c\uc0b0","value":11.7,"metric":-0.9067,"tr_eok":11.7,"avg":-0.91,"up_ratio":66.7,"fi":89448.0,"top3":"\uc544\uac00\ubc29\ucef4\ud37c\ub2c8(+3.4%), \uafc8\ube44(-6.4%), \uc0bc\uc131\ucd9c\ud310\uc0ac(+0.2%)","subtitle":"\uac70\ub798\ub300\uae08 12\uc5b5 \u00b7 \ud3c9\uade0 -0.91%"}],"flow":[{"name":"\uc870\uc120/LNG","value":2695226.0,"metric":2695226.0,"tr_eok":7989.97,"avg":2.65,"up_ratio":78.6,"fi":2695226.0,"top3":"\ud55c\ud654\uc624\uc158(+6.3%), HD\ud55c\uad6d\uc870\uc120\ud574\uc591(+10.0%), HD\ud604\ub300\uc911\uacf5\uc5c5(+3.2%)","subtitle":"\uc678+\uae30\uad00 +2695226\uc8fc \u00b7 \ud3c9\uade0 +2.65%"},{"name":"\uc99d\uad8c","value":1527796.0,"metric":1527796.0,"tr_eok":2913.45,"avg":0.65,"up_ratio":70.6,"fi":1527796.0,"top3":"\ubbf8\ub798\uc5d0\uc14b\uc99d\uad8c(-1.6%), \ud55c\uad6d\uae08\uc735\uc9c0\uc8fc(-1.0%), \uc0bc\uc131\uc99d\uad8c(+2.7%)","subtitle":"\uc678+\uae30\uad00 +1527796\uc8fc \u00b7 \ud3c9\uade0 +0.65%"},{"name":"\uae08\uc735","value":1332551.0,"metric":1332551.0,"tr_eok":8029.03,"avg":2.2,"up_ratio":81.8,"fi":1332551.0,"top3":"KB\uae08\uc735(+4.6%), \uc2e0\ud55c\uc9c0\uc8fc(+2.5%), \uc6b0\ub9ac\uae08\uc735\uc9c0\uc8fc(+2.0%)","subtitle":"\uc678+\uae30\uad00 +1332551\uc8fc \u00b7 \ud3c9\uade0 +2.20%"},{"name":"AI","value":1230566.0,"metric":1230566.0,"tr_eok":6031.25,"avg":-1.36,"up_ratio":36.4,"fi":1230566.0,"top3":"NAVER(-3.4%), \uce74\uce74\uc624(+2.4%), \uc0bc\uc131\uc5d0\uc2a4\ub514\uc5d0\uc2a4(+0.7%)","subtitle":"\uc678+\uae30\uad00 +1230566\uc8fc \u00b7 \ud3c9\uade0 -1.36%"},{"name":"\uc6d0\uc804","value":986370.0,"metric":986370.0,"tr_eok":3713.83,"avg":-0.72,"up_ratio":40.0,"fi":986370.0,"top3":"\ub450\uc0b0\uc5d0\ub108\ube4c\ub9ac\ud2f0(-1.0%), \ud55c\uad6d\uc804\ub825(-0.1%), \ud604\ub300\uac74\uc124(-3.4%)","subtitle":"\uc678+\uae30\uad00 +986370\uc8fc \u00b7 \ud3c9\uade0 -0.72%"},{"name":"\ubc29\uc0b0","value":947602.0,"metric":947602.0,"tr_eok":5722.36,"avg":1.59,"up_ratio":78.6,"fi":947602.0,"top3":"\ud55c\ud654\uc5d0\uc5b4\ub85c\uc2a4\ud398\uc774\uc2a4(+6.8%), LIG\ub125\uc2a4\uc6d0(+3.4%), \ud604\ub300\ub85c\ud15c(+0.3%)","subtitle":"\uc678+\uae30\uad00 +947602\uc8fc \u00b7 \ud3c9\uade0 +1.59%"},{"name":"\ubc14\uc774\uc624","value":918738.0,"metric":918738.0,"tr_eok":9104.3,"avg":-1.41,"up_ratio":38.7,"fi":918738.0,"top3":"\uc140\ud2b8\ub9ac\uc628(+5.6%), \uc0bc\uc131\ubc14\uc774\uc624\ub85c\uc9c1\uc2a4(+3.2%), \uc54c\ud14c\uc624\uc820(-1.1%)","subtitle":"\uc678+\uae30\uad00 +918738\uc8fc \u00b7 \ud3c9\uade0 -1.41%"},{"name":"\ud654\uc7a5\ud488","value":829047.0,"metric":829047.0,"tr_eok":5569.17,"avg":0.77,"up_ratio":65.2,"fi":829047.0,"top3":"LG\uc0dd\ud65c\uac74\uac15(+11.0%), \uc544\ubaa8\ub808\ud37c\uc2dc\ud53d(+9.9%), \ub2ec\ubc14\uae00\ub85c\ubc8c(-11.9%)","subtitle":"\uc678+\uae30\uad00 +829047\uc8fc \u00b7 \ud3c9\uade0 +0.77%"},{"name":"\ubc18\ub3c4\uccb4","value":817579.0,"metric":817579.0,"tr_eok":227494.12,"avg":-5.18,"up_ratio":0.0,"fi":817579.0,"top3":"SK\ud558\uc774\ub2c9\uc2a4(-5.6%), \uc0bc\uc131\uc804\uc790(-0.7%), \uc6d0\uc775IPS(-8.3%)","subtitle":"\uc678+\uae30\uad00 +817579\uc8fc \u00b7 \ud3c9\uade0 -5.18%"},{"name":"\uc6b0\uc8fc\ud56d\uacf5","value":761001.0,"metric":761001.0,"tr_eok":4902.18,"avg":-0.29,"up_ratio":44.4,"fi":761001.0,"top3":"\ud55c\ud654\uc5d0\uc5b4\ub85c\uc2a4\ud398\uc774\uc2a4(+6.8%), LIG\ub125\uc2a4\uc6d0(+3.4%), \ud55c\uad6d\ud56d\uacf5\uc6b0\uc8fc(+2.7%)","subtitle":"\uc678+\uae30\uad00 +761001\uc8fc \u00b7 \ud3c9\uade0 -0.29%"},{"name":"\uc9c0\uc8fc\uc0ac","value":724767.0,"metric":724767.0,"tr_eok":20452.0,"avg":0.88,"up_ratio":75.0,"fi":724767.0,"top3":"SK\uc2a4\ud018\uc5b4(-6.0%), \uc0bc\uc131\ubb3c\uc0b0(+3.0%), POSCO\ud640\ub529\uc2a4(+4.2%)","subtitle":"\uc678+\uae30\uad00 +724767\uc8fc \u00b7 \ud3c9\uade0 +0.88%"},{"name":"\uc2a4\ud14c\uc774\ube14\ucf54\uc778","value":647988.0,"metric":647988.0,"tr_eok":5096.88,"avg":-0.61,"up_ratio":35.0,"fi":647988.0,"top3":"NAVER(-3.4%), \uc0bc\uc131\uc5d0\uc2a4\ub514\uc5d0\uc2a4(+0.7%), LG\uc528\uc5d4\uc5d0\uc2a4(-1.9%)","subtitle":"\uc678+\uae30\uad00 +647988\uc8fc \u00b7 \ud3c9\uade0 -0.61%"},{"name":"\ud0dc\uc591\uad11","value":476065.0,"metric":476065.0,"tr_eok":2172.82,"avg":0.96,"up_ratio":70.0,"fi":476065.0,"top3":"\ud55c\ud654\uc194\ub8e8\uc158(+2.8%), OCI\ud640\ub529\uc2a4(+3.1%), HD\ud604\ub300\uc5d0\ub108\uc9c0\uc194\ub8e8\uc158(+1.6%)","subtitle":"\uc678+\uae30\uad00 +476065\uc8fc \u00b7 \ud3c9\uade0 +0.96%"},{"name":"2\ucc28\uc804\uc9c0","value":383778.0,"metric":383778.0,"tr_eok":7140.65,"avg":4.65,"up_ratio":83.3,"fi":383778.0,"top3":"\uc0bc\uc131SDI(-1.5%), LG\uc5d0\ub108\uc9c0\uc194\ub8e8\uc158(+6.5%), SK\uc774\ub178\ubca0\uc774\uc158(+6.5%)","subtitle":"\uc678+\uae30\uad00 +383778\uc8fc \u00b7 \ud3c9\uade0 +4.65%"},{"name":"\uc2a4\ud398\uc774\uc2a4X","value":362835.0,"metric":362835.0,"tr_eok":298.85,"avg":-1.63,"up_ratio":30.0,"fi":362835.0,"top3":"\uc2a4\ud53c\uc5b4(-3.1%), \uc138\uc544\ubca0\uc2a4\ud2f8\uc9c0\uc8fc(+2.7%), \uc384\ud2b8\ub809\uc544\uc774(-6.0%)","subtitle":"\uc678+\uae30\uad00 +362835\uc8fc \u00b7 \ud3c9\uade0 -1.63%"},{"name":"\uc6b0\ud06c\ub77c\uc774\ub098/\uc7ac\uac74","value":359560.0,"metric":359560.0,"tr_eok":1039.23,"avg":0.92,"up_ratio":55.0,"fi":359560.0,"top3":"HD\ud604\ub300\uac74\uc124\uae30\uacc4(-3.5%), \ub2e4\uc2a4\ucf54(+0.5%), \ud55c\ubbf8\uae00\ub85c\ubc8c(+2.2%)","subtitle":"\uc678+\uae30\uad00 +359560\uc8fc \u00b7 \ud3c9\uade0 +0.92%"},{"name":"\uc790\uc728\uc8fc\ud589","value":344097.0,"metric":344097.0,"tr_eok":2307.56,"avg":-0.85,"up_ratio":41.2,"fi":344097.0,"top3":"\ud604\ub300\ubaa8\ube44\uc2a4(+0.0%), \ud604\ub300\uc624\ud1a0\uc5d0\ubc84(-6.7%), \uc5e0\uc528\ub125\uc2a4(+0.3%)","subtitle":"\uc678+\uae30\uad00 +344097\uc8fc \u00b7 \ud3c9\uade0 -0.85%"},{"name":"\uac74\uc124","value":318725.0,"metric":318725.0,"tr_eok":3418.75,"avg":2.41,"up_ratio":79.2,"fi":318725.0,"top3":"\uc0bc\uc131E&A(+3.1%), \ub300\uc6b0\uac74\uc124(-6.8%), GS\uac74\uc124(+0.2%)","subtitle":"\uc678+\uae30\uad00 +318725\uc8fc \u00b7 \ud3c9\uade0 +2.41%"},{"name":"\ubc18\ub3c4\uccb4\uc7a5\ube44","value":304700.0,"metric":304700.0,"tr_eok":9760.88,"avg":-4.49,"up_ratio":10.5,"fi":304700.0,"top3":"\uc8fc\uc131\uc5d4\uc9c0\ub2c8\uc5b4\ub9c1(-15.3%), \ud55c\ubbf8\ubc18\ub3c4\uccb4(+0.0%), \uc6d0\uc775IPS(-8.3%)","subtitle":"\uc678+\uae30\uad00 +304700\uc8fc \u00b7 \ud3c9\uade0 -4.49%"},{"name":"\uc2dd\uc74c\ub8cc","value":284171.0,"metric":284171.0,"tr_eok":2473.2,"avg":1.08,"up_ratio":60.9,"fi":284171.0,"top3":"\uc0bc\uc591\uc2dd\ud488(+1.9%), \uc624\ub9ac\uc628(+0.2%), CJ\uc81c\uc77c\uc81c\ub2f9(-0.7%)","subtitle":"\uc678+\uae30\uad00 +284171\uc8fc \u00b7 \ud3c9\uade0 +1.08%"},{"name":"\uc591\uc790","value":274554.0,"metric":274554.0,"tr_eok":166.96,"avg":-0.94,"up_ratio":31.2,"fi":274554.0,"top3":"\uc5d1\uc2a4\uac8c\uc774\ud2b8(-4.9%), \uc544\uc774\uc528\ud2f0\ucf00\uc774(-4.3%), \ud30c\uc774\ubc84\ud504\ub85c(-6.2%)","subtitle":"\uc678+\uae30\uad00 +274554\uc8fc \u00b7 \ud3c9\uade0 -0.94%"},{"name":"\uc790\ub3d9\ucc28","value":256977.0,"metric":256977.0,"tr_eok":9672.61,"avg":0.83,"up_ratio":52.0,"fi":256977.0,"top3":"\ud604\ub300\ucc28(-0.7%), \ud604\ub300\ubaa8\ube44\uc2a4(+0.0%), \uae30\uc544(+0.3%)","subtitle":"\uc678+\uae30\uad00 +256977\uc8fc \u00b7 \ud3c9\uade0 +0.83%"},{"name":"\uc758\ub8ccAI","value":251020.0,"metric":251020.0,"tr_eok":350.59,"avg":-2.09,"up_ratio":38.1,"fi":251020.0,"top3":"\ubcf4\ub85c\ub178\uc774(-5.7%), \ub85c\ud0b7\ud5ec\uc2a4\ucf00\uc5b4(-9.5%), \uc528\uc5b4\uc2a4\ud14c\ud06c\ub180\ub85c\uc9c0(-5.0%)","subtitle":"\uc678+\uae30\uad00 +251020\uc8fc \u00b7 \ud3c9\uade0 -2.09%"},{"name":"\uc5d4\ud130","value":244709.0,"metric":244709.0,"tr_eok":1059.71,"avg":-1.01,"up_ratio":45.5,"fi":244709.0,"top3":"\ud558\uc774\ube0c(-4.3%), JYP(-2.2%), \uc5d0\uc2a4\uc5e0(-0.1%)","subtitle":"\uc678+\uae30\uad00 +244709\uc8fc \u00b7 \ud3c9\uade0 -1.01%"},{"name":"\ud1b5\uc2e0","value":91920.0,"metric":91920.0,"tr_eok":201.07,"avg":-3.24,"up_ratio":28.6,"fi":91920.0,"top3":"RFHIC(-4.7%), \uc3e0\ub9ac\ub4dc(-4.1%), \ucf00\uc774\uc5e0\ub354\ube14\uc720(-7.1%)","subtitle":"\uc678+\uae30\uad00 +91920\uc8fc \u00b7 \ud3c9\uade0 -3.24%"},{"name":"\uc800\ucd9c\uc0b0","value":89448.0,"metric":89448.0,"tr_eok":11.7,"avg":-0.91,"up_ratio":66.7,"fi":89448.0,"top3":"\uc544\uac00\ubc29\ucef4\ud37c\ub2c8(+3.4%), \uafc8\ube44(-6.4%), \uc0bc\uc131\ucd9c\ud310\uc0ac(+0.2%)","subtitle":"\uc678+\uae30\uad00 +89448\uc8fc \u00b7 \ud3c9\uade0 -0.91%"},{"name":"\uc720\ub9ac\uae30\ud310","value":69550.0,"metric":69550.0,"tr_eok":1492.15,"avg":-0.71,"up_ratio":16.7,"fi":69550.0,"top3":"\uc774\uc624\ud14c\ud06c\ub2c9\uc2a4(-3.6%), ISC(-4.0%), \uc57c\uc2a4(+30.0%)","subtitle":"\uc678+\uae30\uad00 +69550\uc8fc \u00b7 \ud3c9\uade0 -0.71%"},{"name":"\ub85c\ubd07","value":0.0,"metric":-1099442.0,"tr_eok":4664.42,"avg":-4.88,"up_ratio":4.2,"fi":-1099442.0,"top3":"\ub808\uc778\ubcf4\uc6b0\ub85c\ubcf4\ud2f1\uc2a4(-9.1%), \uc5d0\uc2a4\ud53c\uc9c0(-6.1%), \ud604\ub300\ubb34\ubca1\uc2a4(-17.5%)","subtitle":"\uc678+\uae30\uad00 -1099442\uc8fc \u00b7 \ud3c9\uade0 -4.88%"},{"name":"ESS","value":0.0,"metric":-634522.0,"tr_eok":10272.46,"avg":-0.88,"up_ratio":33.3,"fi":-634522.0,"top3":"SK\uc774\ud130\ub2c9\uc2a4(-3.8%), \uc0bc\uc131SDI(-1.5%), \ud6a8\uc131\uc911\uacf5\uc5c5(-5.6%)","subtitle":"\uc678+\uae30\uad00 -634522\uc8fc \u00b7 \ud3c9\uade0 -0.88%"},{"name":"\uc804\ub825\uc778\ud504\ub77c","value":0.0,"metric":-349055.0,"tr_eok":9727.56,"avg":-3.43,"up_ratio":20.0,"fi":-349055.0,"top3":"HD\ud604\ub300\uc77c\ub809\ud2b8\ub9ad(-0.5%), \ud6a8\uc131\uc911\uacf5\uc5c5(-5.6%), LS ELECTRIC(-8.2%)","subtitle":"\uc678+\uae30\uad00 -349055\uc8fc \u00b7 \ud3c9\uade0 -3.43%"},{"name":"\ud48d\ub825","value":0.0,"metric":-783013.0,"tr_eok":3264.33,"avg":-0.12,"up_ratio":60.0,"fi":-783013.0,"top3":"SK\uc774\ud130\ub2c9\uc2a4(-3.8%), SK\uc624\uc158\ud50c\ub79c\ud2b8(+0.4%), \uc528\uc5d0\uc2a4\uc708\ub4dc(+1.4%)","subtitle":"\uc678+\uae30\uad00 -783013\uc8fc \u00b7 \ud3c9\uade0 -0.12%"},{"name":"\ubc18\ub3c4\uccb4\uc18c\uc7ac\ubd80\ud488","value":0.0,"metric":-26618.0,"tr_eok":1974.66,"avg":-3.57,"up_ratio":13.3,"fi":-26618.0,"top3":"\ub9ac\ub178\uacf5\uc5c5(-5.2%), ISC(-4.0%), \ud2f0\uc5d0\uc2a4\uc774(-8.8%)","subtitle":"\uc678+\uae30\uad00 -26618\uc8fc \u00b7 \ud3c9\uade0 -3.57%"},{"name":"\uc758\ub958","value":0.0,"metric":-230954.0,"tr_eok":374.42,"avg":1.32,"up_ratio":58.8,"fi":-230954.0,"top3":"\uc601\uc6d0\ubb34\uc5ed(+1.7%), \ud6a8\uc131\ud2f0\uc564\uc528(+4.2%), F&F(+1.7%)","subtitle":"\uc678+\uae30\uad00 -230954\uc8fc \u00b7 \ud3c9\uade0 +1.32%"}],"momentum":[{"name":"2\ucc28\uc804\uc9c0","value":41.2479,"metric":4.6483,"tr_eok":7140.65,"avg":4.65,"up_ratio":83.3,"fi":383778.0,"top3":"\uc0bc\uc131SDI(-1.5%), LG\uc5d0\ub108\uc9c0\uc194\ub8e8\uc158(+6.5%), SK\uc774\ub178\ubca0\uc774\uc158(+6.5%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 7141\uc5b5 \u00b7 \ud3c9\uade0 +4.65%"},{"name":"\uc870\uc120/LNG","value":23.8516,"metric":2.6543,"tr_eok":7989.97,"avg":2.65,"up_ratio":78.6,"fi":2695226.0,"top3":"\ud55c\ud654\uc624\uc158(+6.3%), HD\ud55c\uad6d\uc870\uc120\ud574\uc591(+10.0%), HD\ud604\ub300\uc911\uacf5\uc5c5(+3.2%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 7990\uc5b5 \u00b7 \ud3c9\uade0 +2.65%"},{"name":"\uae08\uc735","value":19.7392,"metric":2.1955,"tr_eok":8029.03,"avg":2.2,"up_ratio":81.8,"fi":1332551.0,"top3":"KB\uae08\uc735(+4.6%), \uc2e0\ud55c\uc9c0\uc8fc(+2.5%), \uc6b0\ub9ac\uae08\uc735\uc9c0\uc8fc(+2.0%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 8029\uc5b5 \u00b7 \ud3c9\uade0 +2.20%"},{"name":"\uac74\uc124","value":19.6076,"metric":2.4096,"tr_eok":3418.75,"avg":2.41,"up_ratio":79.2,"fi":318725.0,"top3":"\uc0bc\uc131E&A(+3.1%), \ub300\uc6b0\uac74\uc124(-6.8%), GS\uac74\uc124(+0.2%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 3419\uc5b5 \u00b7 \ud3c9\uade0 +2.41%"},{"name":"\ubc29\uc0b0","value":13.7201,"metric":1.5857,"tr_eok":5722.36,"avg":1.59,"up_ratio":78.6,"fi":947602.0,"top3":"\ud55c\ud654\uc5d0\uc5b4\ub85c\uc2a4\ud398\uc774\uc2a4(+6.8%), LIG\ub125\uc2a4\uc6d0(+3.4%), \ud604\ub300\ub85c\ud15c(+0.3%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 5722\uc5b5 \u00b7 \ud3c9\uade0 +1.59%"},{"name":"\uc9c0\uc8fc\uc0ac","value":8.7773,"metric":0.8843,"tr_eok":20452.0,"avg":0.88,"up_ratio":75.0,"fi":724767.0,"top3":"SK\uc2a4\ud018\uc5b4(-6.0%), \uc0bc\uc131\ubb3c\uc0b0(+3.0%), POSCO\ud640\ub529\uc2a4(+4.2%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 20452\uc5b5 \u00b7 \ud3c9\uade0 +0.88%"},{"name":"\uc2dd\uc74c\ub8cc","value":8.4354,"metric":1.0796,"tr_eok":2473.2,"avg":1.08,"up_ratio":60.9,"fi":284171.0,"top3":"\uc0bc\uc591\uc2dd\ud488(+1.9%), \uc624\ub9ac\uc628(+0.2%), CJ\uc81c\uc77c\uc81c\ub2f9(-0.7%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 2473\uc5b5 \u00b7 \ud3c9\uade0 +1.08%"},{"name":"\uc758\ub958","value":7.8459,"metric":1.3235,"tr_eok":374.42,"avg":1.32,"up_ratio":58.8,"fi":-230954.0,"top3":"\uc601\uc6d0\ubb34\uc5ed(+1.7%), \ud6a8\uc131\ud2f0\uc564\uc528(+4.2%), F&F(+1.7%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 374\uc5b5 \u00b7 \ud3c9\uade0 +1.32%"},{"name":"\uc790\ub3d9\ucc28","value":7.5877,"metric":0.8268,"tr_eok":9672.61,"avg":0.83,"up_ratio":52.0,"fi":256977.0,"top3":"\ud604\ub300\ucc28(-0.7%), \ud604\ub300\ubaa8\ube44\uc2a4(+0.0%), \uae30\uc544(+0.3%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 9673\uc5b5 \u00b7 \ud3c9\uade0 +0.83%"},{"name":"\ud0dc\uc591\uad11","value":7.3538,"metric":0.957,"tr_eok":2172.82,"avg":0.96,"up_ratio":70.0,"fi":476065.0,"top3":"\ud55c\ud654\uc194\ub8e8\uc158(+2.8%), OCI\ud640\ub529\uc2a4(+3.1%), HD\ud604\ub300\uc5d0\ub108\uc9c0\uc194\ub8e8\uc158(+1.6%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 2173\uc5b5 \u00b7 \ud3c9\uade0 +0.96%"},{"name":"\ud654\uc7a5\ud488","value":6.6601,"metric":0.7722,"tr_eok":5569.17,"avg":0.77,"up_ratio":65.2,"fi":829047.0,"top3":"LG\uc0dd\ud65c\uac74\uac15(+11.0%), \uc544\ubaa8\ub808\ud37c\uc2dc\ud53d(+9.9%), \ub2ec\ubc14\uae00\ub85c\ubc8c(-11.9%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 5569\uc5b5 \u00b7 \ud3c9\uade0 +0.77%"},{"name":"\uc6b0\ud06c\ub77c\uc774\ub098/\uc7ac\uac74","value":6.3567,"metric":0.915,"tr_eok":1039.23,"avg":0.92,"up_ratio":55.0,"fi":359560.0,"top3":"HD\ud604\ub300\uac74\uc124\uae30\uacc4(-3.5%), \ub2e4\uc2a4\ucf54(+0.5%), \ud55c\ubbf8\uae00\ub85c\ubc8c(+2.2%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 1039\uc5b5 \u00b7 \ud3c9\uade0 +0.92%"},{"name":"\uc99d\uad8c","value":5.1994,"metric":0.6518,"tr_eok":2913.45,"avg":0.65,"up_ratio":70.6,"fi":1527796.0,"top3":"\ubbf8\ub798\uc5d0\uc14b\uc99d\uad8c(-1.6%), \ud55c\uad6d\uae08\uc735\uc9c0\uc8fc(-1.0%), \uc0bc\uc131\uc99d\uad8c(+2.7%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 2913\uc5b5 \u00b7 \ud3c9\uade0 +0.65%"},{"name":"AI","value":0.0,"metric":-1.3558,"tr_eok":6031.25,"avg":-1.36,"up_ratio":36.4,"fi":1230566.0,"top3":"NAVER(-3.4%), \uce74\uce74\uc624(+2.4%), \uc0bc\uc131\uc5d0\uc2a4\ub514\uc5d0\uc2a4(+0.7%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 6031\uc5b5 \u00b7 \ud3c9\uade0 -1.36%"},{"name":"\ubc18\ub3c4\uccb4","value":0.0,"metric":-5.1829,"tr_eok":227494.12,"avg":-5.18,"up_ratio":0.0,"fi":817579.0,"top3":"SK\ud558\uc774\ub2c9\uc2a4(-5.6%), \uc0bc\uc131\uc804\uc790(-0.7%), \uc6d0\uc775IPS(-8.3%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 227494\uc5b5 \u00b7 \ud3c9\uade0 -5.18%"},{"name":"\uc591\uc790","value":0.0,"metric":-0.9381,"tr_eok":166.96,"avg":-0.94,"up_ratio":31.2,"fi":274554.0,"top3":"\uc5d1\uc2a4\uac8c\uc774\ud2b8(-4.9%), \uc544\uc774\uc528\ud2f0\ucf00\uc774(-4.3%), \ud30c\uc774\ubc84\ud504\ub85c(-6.2%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 167\uc5b5 \u00b7 \ud3c9\uade0 -0.94%"},{"name":"\ub85c\ubd07","value":0.0,"metric":-4.88,"tr_eok":4664.42,"avg":-4.88,"up_ratio":4.2,"fi":-1099442.0,"top3":"\ub808\uc778\ubcf4\uc6b0\ub85c\ubcf4\ud2f1\uc2a4(-9.1%), \uc5d0\uc2a4\ud53c\uc9c0(-6.1%), \ud604\ub300\ubb34\ubca1\uc2a4(-17.5%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 4664\uc5b5 \u00b7 \ud3c9\uade0 -4.88%"},{"name":"\uc6b0\uc8fc\ud56d\uacf5","value":0.0,"metric":-0.295,"tr_eok":4902.18,"avg":-0.29,"up_ratio":44.4,"fi":761001.0,"top3":"\ud55c\ud654\uc5d0\uc5b4\ub85c\uc2a4\ud398\uc774\uc2a4(+6.8%), LIG\ub125\uc2a4\uc6d0(+3.4%), \ud55c\uad6d\ud56d\uacf5\uc6b0\uc8fc(+2.7%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 4902\uc5b5 \u00b7 \ud3c9\uade0 -0.29%"},{"name":"\ubc14\uc774\uc624","value":0.0,"metric":-1.4055,"tr_eok":9104.3,"avg":-1.41,"up_ratio":38.7,"fi":918738.0,"top3":"\uc140\ud2b8\ub9ac\uc628(+5.6%), \uc0bc\uc131\ubc14\uc774\uc624\ub85c\uc9c1\uc2a4(+3.2%), \uc54c\ud14c\uc624\uc820(-1.1%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 9104\uc5b5 \u00b7 \ud3c9\uade0 -1.41%"},{"name":"\ud1b5\uc2e0","value":0.0,"metric":-3.2371,"tr_eok":201.07,"avg":-3.24,"up_ratio":28.6,"fi":91920.0,"top3":"RFHIC(-4.7%), \uc3e0\ub9ac\ub4dc(-4.1%), \ucf00\uc774\uc5e0\ub354\ube14\uc720(-7.1%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 201\uc5b5 \u00b7 \ud3c9\uade0 -3.24%"},{"name":"\uc800\ucd9c\uc0b0","value":0.0,"metric":-0.9067,"tr_eok":11.7,"avg":-0.91,"up_ratio":66.7,"fi":89448.0,"top3":"\uc544\uac00\ubc29\ucef4\ud37c\ub2c8(+3.4%), \uafc8\ube44(-6.4%), \uc0bc\uc131\ucd9c\ud310\uc0ac(+0.2%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 12\uc5b5 \u00b7 \ud3c9\uade0 -0.91%"},{"name":"ESS","value":0.0,"metric":-0.878,"tr_eok":10272.46,"avg":-0.88,"up_ratio":33.3,"fi":-634522.0,"top3":"SK\uc774\ud130\ub2c9\uc2a4(-3.8%), \uc0bc\uc131SDI(-1.5%), \ud6a8\uc131\uc911\uacf5\uc5c5(-5.6%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 10272\uc5b5 \u00b7 \ud3c9\uade0 -0.88%"},{"name":"\uc804\ub825\uc778\ud504\ub77c","value":0.0,"metric":-3.433,"tr_eok":9727.56,"avg":-3.43,"up_ratio":20.0,"fi":-349055.0,"top3":"HD\ud604\ub300\uc77c\ub809\ud2b8\ub9ad(-0.5%), \ud6a8\uc131\uc911\uacf5\uc5c5(-5.6%), LS ELECTRIC(-8.2%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 9728\uc5b5 \u00b7 \ud3c9\uade0 -3.43%"},{"name":"\ud48d\ub825","value":0.0,"metric":-0.116,"tr_eok":3264.33,"avg":-0.12,"up_ratio":60.0,"fi":-783013.0,"top3":"SK\uc774\ud130\ub2c9\uc2a4(-3.8%), SK\uc624\uc158\ud50c\ub79c\ud2b8(+0.4%), \uc528\uc5d0\uc2a4\uc708\ub4dc(+1.4%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 3264\uc5b5 \u00b7 \ud3c9\uade0 -0.12%"},{"name":"\uc720\ub9ac\uae30\ud310","value":0.0,"metric":-0.7078,"tr_eok":1492.15,"avg":-0.71,"up_ratio":16.7,"fi":69550.0,"top3":"\uc774\uc624\ud14c\ud06c\ub2c9\uc2a4(-3.6%), ISC(-4.0%), \uc57c\uc2a4(+30.0%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 1492\uc5b5 \u00b7 \ud3c9\uade0 -0.71%"},{"name":"\uc2a4\ud14c\uc774\ube14\ucf54\uc778","value":0.0,"metric":-0.611,"tr_eok":5096.88,"avg":-0.61,"up_ratio":35.0,"fi":647988.0,"top3":"NAVER(-3.4%), \uc0bc\uc131\uc5d0\uc2a4\ub514\uc5d0\uc2a4(+0.7%), LG\uc528\uc5d4\uc5d0\uc2a4(-1.9%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 5097\uc5b5 \u00b7 \ud3c9\uade0 -0.61%"},{"name":"\ubc18\ub3c4\uccb4\uc7a5\ube44","value":0.0,"metric":-4.4863,"tr_eok":9760.88,"avg":-4.49,"up_ratio":10.5,"fi":304700.0,"top3":"\uc8fc\uc131\uc5d4\uc9c0\ub2c8\uc5b4\ub9c1(-15.3%), \ud55c\ubbf8\ubc18\ub3c4\uccb4(+0.0%), \uc6d0\uc775IPS(-8.3%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 9761\uc5b5 \u00b7 \ud3c9\uade0 -4.49%"},{"name":"\ubc18\ub3c4\uccb4\uc18c\uc7ac\ubd80\ud488","value":0.0,"metric":-3.572,"tr_eok":1974.66,"avg":-3.57,"up_ratio":13.3,"fi":-26618.0,"top3":"\ub9ac\ub178\uacf5\uc5c5(-5.2%), ISC(-4.0%), \ud2f0\uc5d0\uc2a4\uc774(-8.8%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 1975\uc5b5 \u00b7 \ud3c9\uade0 -3.57%"},{"name":"\uc758\ub8ccAI","value":0.0,"metric":-2.0924,"tr_eok":350.59,"avg":-2.09,"up_ratio":38.1,"fi":251020.0,"top3":"\ubcf4\ub85c\ub178\uc774(-5.7%), \ub85c\ud0b7\ud5ec\uc2a4\ucf00\uc5b4(-9.5%), \uc528\uc5b4\uc2a4\ud14c\ud06c\ub180\ub85c\uc9c0(-5.0%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 351\uc5b5 \u00b7 \ud3c9\uade0 -2.09%"},{"name":"\uc790\uc728\uc8fc\ud589","value":0.0,"metric":-0.8547,"tr_eok":2307.56,"avg":-0.85,"up_ratio":41.2,"fi":344097.0,"top3":"\ud604\ub300\ubaa8\ube44\uc2a4(+0.0%), \ud604\ub300\uc624\ud1a0\uc5d0\ubc84(-6.7%), \uc5e0\uc528\ub125\uc2a4(+0.3%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 2308\uc5b5 \u00b7 \ud3c9\uade0 -0.85%"},{"name":"\uc2a4\ud398\uc774\uc2a4X","value":0.0,"metric":-1.626,"tr_eok":298.85,"avg":-1.63,"up_ratio":30.0,"fi":362835.0,"top3":"\uc2a4\ud53c\uc5b4(-3.1%), \uc138\uc544\ubca0\uc2a4\ud2f8\uc9c0\uc8fc(+2.7%), \uc384\ud2b8\ub809\uc544\uc774(-6.0%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 299\uc5b5 \u00b7 \ud3c9\uade0 -1.63%"},{"name":"\uc6d0\uc804","value":0.0,"metric":-0.7225,"tr_eok":3713.83,"avg":-0.72,"up_ratio":40.0,"fi":986370.0,"top3":"\ub450\uc0b0\uc5d0\ub108\ube4c\ub9ac\ud2f0(-1.0%), \ud55c\uad6d\uc804\ub825(-0.1%), \ud604\ub300\uac74\uc124(-3.4%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 3714\uc5b5 \u00b7 \ud3c9\uade0 -0.72%"},{"name":"\uc5d4\ud130","value":0.0,"metric":-1.0118,"tr_eok":1059.71,"avg":-1.01,"up_ratio":45.5,"fi":244709.0,"top3":"\ud558\uc774\ube0c(-4.3%), JYP(-2.2%), \uc5d0\uc2a4\uc5e0(-0.1%)","subtitle":"\ubaa8\uba58\ud140 \u00b7 \uac70\ub798 1060\uc5b5 \u00b7 \ud3c9\uade0 -1.01%"}],"near_low":[{"name":"\ub85c\ubd07","value":23.0,"metric":-4.88,"tr_eok":4664.42,"avg":-4.88,"up_ratio":4.2,"fi":-1099442.0,"top3":"\ub808\uc778\ubcf4\uc6b0\ub85c\ubcf4\ud2f1\uc2a4(-9.1%), \uc5d0\uc2a4\ud53c\uc9c0(-6.1%), \ud604\ub300\ubb34\ubca1\uc2a4(-17.5%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 24\uac1c \u00b7 \uc0c1\uc2b9 4%"},{"name":"AI","value":21.0,"metric":-1.3558,"tr_eok":6031.25,"avg":-1.36,"up_ratio":36.4,"fi":1230566.0,"top3":"NAVER(-3.4%), \uce74\uce74\uc624(+2.4%), \uc0bc\uc131\uc5d0\uc2a4\ub514\uc5d0\uc2a4(+0.7%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 33\uac1c \u00b7 \uc0c1\uc2b9 36%"},{"name":"\ubc14\uc774\uc624","value":19.0,"metric":-1.4055,"tr_eok":9104.3,"avg":-1.41,"up_ratio":38.7,"fi":918738.0,"top3":"\uc140\ud2b8\ub9ac\uc628(+5.6%), \uc0bc\uc131\ubc14\uc774\uc624\ub85c\uc9c1\uc2a4(+3.2%), \uc54c\ud14c\uc624\uc820(-1.1%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 31\uac1c \u00b7 \uc0c1\uc2b9 39%"},{"name":"\ubc18\ub3c4\uccb4","value":17.0,"metric":-5.1829,"tr_eok":227494.12,"avg":-5.18,"up_ratio":0.0,"fi":817579.0,"top3":"SK\ud558\uc774\ub2c9\uc2a4(-5.6%), \uc0bc\uc131\uc804\uc790(-0.7%), \uc6d0\uc775IPS(-8.3%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 17\uac1c \u00b7 \uc0c1\uc2b9 0%"},{"name":"\ubc18\ub3c4\uccb4\uc7a5\ube44","value":17.0,"metric":-4.4863,"tr_eok":9760.88,"avg":-4.49,"up_ratio":10.5,"fi":304700.0,"top3":"\uc8fc\uc131\uc5d4\uc9c0\ub2c8\uc5b4\ub9c1(-15.3%), \ud55c\ubbf8\ubc18\ub3c4\uccb4(+0.0%), \uc6d0\uc775IPS(-8.3%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 19\uac1c \u00b7 \uc0c1\uc2b9 11%"},{"name":"\uc804\ub825\uc778\ud504\ub77c","value":16.0,"metric":-3.433,"tr_eok":9727.56,"avg":-3.43,"up_ratio":20.0,"fi":-349055.0,"top3":"HD\ud604\ub300\uc77c\ub809\ud2b8\ub9ad(-0.5%), \ud6a8\uc131\uc911\uacf5\uc5c5(-5.6%), LS ELECTRIC(-8.2%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 20\uac1c \u00b7 \uc0c1\uc2b9 20%"},{"name":"\uc720\ub9ac\uae30\ud310","value":15.0,"metric":-0.7078,"tr_eok":1492.15,"avg":-0.71,"up_ratio":16.7,"fi":69550.0,"top3":"\uc774\uc624\ud14c\ud06c\ub2c9\uc2a4(-3.6%), ISC(-4.0%), \uc57c\uc2a4(+30.0%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 18\uac1c \u00b7 \uc0c1\uc2b9 17%"},{"name":"\uc2a4\ud14c\uc774\ube14\ucf54\uc778","value":13.0,"metric":-0.611,"tr_eok":5096.88,"avg":-0.61,"up_ratio":35.0,"fi":647988.0,"top3":"NAVER(-3.4%), \uc0bc\uc131\uc5d0\uc2a4\ub514\uc5d0\uc2a4(+0.7%), LG\uc528\uc5d4\uc5d0\uc2a4(-1.9%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 20\uac1c \u00b7 \uc0c1\uc2b9 35%"},{"name":"\ubc18\ub3c4\uccb4\uc18c\uc7ac\ubd80\ud488","value":13.0,"metric":-3.572,"tr_eok":1974.66,"avg":-3.57,"up_ratio":13.3,"fi":-26618.0,"top3":"\ub9ac\ub178\uacf5\uc5c5(-5.2%), ISC(-4.0%), \ud2f0\uc5d0\uc2a4\uc774(-8.8%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 15\uac1c \u00b7 \uc0c1\uc2b9 13%"},{"name":"\uc758\ub8ccAI","value":13.0,"metric":-2.0924,"tr_eok":350.59,"avg":-2.09,"up_ratio":38.1,"fi":251020.0,"top3":"\ubcf4\ub85c\ub178\uc774(-5.7%), \ub85c\ud0b7\ud5ec\uc2a4\ucf00\uc5b4(-9.5%), \uc528\uc5b4\uc2a4\ud14c\ud06c\ub180\ub85c\uc9c0(-5.0%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 21\uac1c \u00b7 \uc0c1\uc2b9 38%"},{"name":"\uc790\ub3d9\ucc28","value":12.0,"metric":-0.8268,"tr_eok":9672.61,"avg":0.83,"up_ratio":52.0,"fi":256977.0,"top3":"\ud604\ub300\ucc28(-0.7%), \ud604\ub300\ubaa8\ube44\uc2a4(+0.0%), \uae30\uc544(+0.3%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 25\uac1c \u00b7 \uc0c1\uc2b9 52%"},{"name":"\uc6d0\uc804","value":12.0,"metric":-0.7225,"tr_eok":3713.83,"avg":-0.72,"up_ratio":40.0,"fi":986370.0,"top3":"\ub450\uc0b0\uc5d0\ub108\ube4c\ub9ac\ud2f0(-1.0%), \ud55c\uad6d\uc804\ub825(-0.1%), \ud604\ub300\uac74\uc124(-3.4%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 20\uac1c \u00b7 \uc0c1\uc2b9 40%"},{"name":"\uc591\uc790","value":11.0,"metric":-0.9381,"tr_eok":166.96,"avg":-0.94,"up_ratio":31.2,"fi":274554.0,"top3":"\uc5d1\uc2a4\uac8c\uc774\ud2b8(-4.9%), \uc544\uc774\uc528\ud2f0\ucf00\uc774(-4.3%), \ud30c\uc774\ubc84\ud504\ub85c(-6.2%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 16\uac1c \u00b7 \uc0c1\uc2b9 31%"},{"name":"\uc6b0\uc8fc\ud56d\uacf5","value":10.0,"metric":-0.295,"tr_eok":4902.18,"avg":-0.29,"up_ratio":44.4,"fi":761001.0,"top3":"\ud55c\ud654\uc5d0\uc5b4\ub85c\uc2a4\ud398\uc774\uc2a4(+6.8%), LIG\ub125\uc2a4\uc6d0(+3.4%), \ud55c\uad6d\ud56d\uacf5\uc6b0\uc8fc(+2.7%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 18\uac1c \u00b7 \uc0c1\uc2b9 44%"},{"name":"ESS","value":10.0,"metric":-0.878,"tr_eok":10272.46,"avg":-0.88,"up_ratio":33.3,"fi":-634522.0,"top3":"SK\uc774\ud130\ub2c9\uc2a4(-3.8%), \uc0bc\uc131SDI(-1.5%), \ud6a8\uc131\uc911\uacf5\uc5c5(-5.6%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 15\uac1c \u00b7 \uc0c1\uc2b9 33%"},{"name":"\uc790\uc728\uc8fc\ud589","value":10.0,"metric":-0.8547,"tr_eok":2307.56,"avg":-0.85,"up_ratio":41.2,"fi":344097.0,"top3":"\ud604\ub300\ubaa8\ube44\uc2a4(+0.0%), \ud604\ub300\uc624\ud1a0\uc5d0\ubc84(-6.7%), \uc5e0\uc528\ub125\uc2a4(+0.3%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 17\uac1c \u00b7 \uc0c1\uc2b9 41%"},{"name":"\uc2dd\uc74c\ub8cc","value":9.0,"metric":-1.0796,"tr_eok":2473.2,"avg":1.08,"up_ratio":60.9,"fi":284171.0,"top3":"\uc0bc\uc591\uc2dd\ud488(+1.9%), \uc624\ub9ac\uc628(+0.2%), CJ\uc81c\uc77c\uc81c\ub2f9(-0.7%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 23\uac1c \u00b7 \uc0c1\uc2b9 61%"},{"name":"\uc6b0\ud06c\ub77c\uc774\ub098/\uc7ac\uac74","value":9.0,"metric":-0.915,"tr_eok":1039.23,"avg":0.92,"up_ratio":55.0,"fi":359560.0,"top3":"HD\ud604\ub300\uac74\uc124\uae30\uacc4(-3.5%), \ub2e4\uc2a4\ucf54(+0.5%), \ud55c\ubbf8\uae00\ub85c\ubc8c(+2.2%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 20\uac1c \u00b7 \uc0c1\uc2b9 55%"},{"name":"\ud654\uc7a5\ud488","value":8.0,"metric":-0.7722,"tr_eok":5569.17,"avg":0.77,"up_ratio":65.2,"fi":829047.0,"top3":"LG\uc0dd\ud65c\uac74\uac15(+11.0%), \uc544\ubaa8\ub808\ud37c\uc2dc\ud53d(+9.9%), \ub2ec\ubc14\uae00\ub85c\ubc8c(-11.9%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 23\uac1c \u00b7 \uc0c1\uc2b9 65%"},{"name":"\uc9c0\uc8fc\uc0ac","value":7.0,"metric":-0.8843,"tr_eok":20452.0,"avg":0.88,"up_ratio":75.0,"fi":724767.0,"top3":"SK\uc2a4\ud018\uc5b4(-6.0%), \uc0bc\uc131\ubb3c\uc0b0(+3.0%), POSCO\ud640\ub529\uc2a4(+4.2%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 28\uac1c \u00b7 \uc0c1\uc2b9 75%"},{"name":"\uc2a4\ud398\uc774\uc2a4X","value":7.0,"metric":-1.626,"tr_eok":298.85,"avg":-1.63,"up_ratio":30.0,"fi":362835.0,"top3":"\uc2a4\ud53c\uc5b4(-3.1%), \uc138\uc544\ubca0\uc2a4\ud2f8\uc9c0\uc8fc(+2.7%), \uc384\ud2b8\ub809\uc544\uc774(-6.0%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 10\uac1c \u00b7 \uc0c1\uc2b9 30%"},{"name":"\uc758\ub958","value":7.0,"metric":-1.3235,"tr_eok":374.42,"avg":1.32,"up_ratio":58.8,"fi":-230954.0,"top3":"\uc601\uc6d0\ubb34\uc5ed(+1.7%), \ud6a8\uc131\ud2f0\uc564\uc528(+4.2%), F&F(+1.7%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 17\uac1c \u00b7 \uc0c1\uc2b9 59%"},{"name":"\uc870\uc120/LNG","value":6.0,"metric":-2.6543,"tr_eok":7989.97,"avg":2.65,"up_ratio":78.6,"fi":2695226.0,"top3":"\ud55c\ud654\uc624\uc158(+6.3%), HD\ud55c\uad6d\uc870\uc120\ud574\uc591(+10.0%), HD\ud604\ub300\uc911\uacf5\uc5c5(+3.2%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 28\uac1c \u00b7 \uc0c1\uc2b9 79%"},{"name":"\uc5d4\ud130","value":6.0,"metric":-1.0118,"tr_eok":1059.71,"avg":-1.01,"up_ratio":45.5,"fi":244709.0,"top3":"\ud558\uc774\ube0c(-4.3%), JYP(-2.2%), \uc5d0\uc2a4\uc5e0(-0.1%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 11\uac1c \u00b7 \uc0c1\uc2b9 45%"},{"name":"\ud1b5\uc2e0","value":5.0,"metric":-3.2371,"tr_eok":201.07,"avg":-3.24,"up_ratio":28.6,"fi":91920.0,"top3":"RFHIC(-4.7%), \uc3e0\ub9ac\ub4dc(-4.1%), \ucf00\uc774\uc5e0\ub354\ube14\uc720(-7.1%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 7\uac1c \u00b7 \uc0c1\uc2b9 29%"},{"name":"\uc99d\uad8c","value":5.0,"metric":-0.6518,"tr_eok":2913.45,"avg":0.65,"up_ratio":70.6,"fi":1527796.0,"top3":"\ubbf8\ub798\uc5d0\uc14b\uc99d\uad8c(-1.6%), \ud55c\uad6d\uae08\uc735\uc9c0\uc8fc(-1.0%), \uc0bc\uc131\uc99d\uad8c(+2.7%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 17\uac1c \u00b7 \uc0c1\uc2b9 71%"},{"name":"\uac74\uc124","value":5.0,"metric":-2.4096,"tr_eok":3418.75,"avg":2.41,"up_ratio":79.2,"fi":318725.0,"top3":"\uc0bc\uc131E&A(+3.1%), \ub300\uc6b0\uac74\uc124(-6.8%), GS\uac74\uc124(+0.2%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 24\uac1c \u00b7 \uc0c1\uc2b9 79%"},{"name":"\ud48d\ub825","value":4.0,"metric":-0.116,"tr_eok":3264.33,"avg":-0.12,"up_ratio":60.0,"fi":-783013.0,"top3":"SK\uc774\ud130\ub2c9\uc2a4(-3.8%), SK\uc624\uc158\ud50c\ub79c\ud2b8(+0.4%), \uc528\uc5d0\uc2a4\uc708\ub4dc(+1.4%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 10\uac1c \u00b7 \uc0c1\uc2b9 60%"},{"name":"\ud0dc\uc591\uad11","value":3.0,"metric":-0.957,"tr_eok":2172.82,"avg":0.96,"up_ratio":70.0,"fi":476065.0,"top3":"\ud55c\ud654\uc194\ub8e8\uc158(+2.8%), OCI\ud640\ub529\uc2a4(+3.1%), HD\ud604\ub300\uc5d0\ub108\uc9c0\uc194\ub8e8\uc158(+1.6%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 10\uac1c \u00b7 \uc0c1\uc2b9 70%"},{"name":"\ubc29\uc0b0","value":3.0,"metric":-1.5857,"tr_eok":5722.36,"avg":1.59,"up_ratio":78.6,"fi":947602.0,"top3":"\ud55c\ud654\uc5d0\uc5b4\ub85c\uc2a4\ud398\uc774\uc2a4(+6.8%), LIG\ub125\uc2a4\uc6d0(+3.4%), \ud604\ub300\ub85c\ud15c(+0.3%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 14\uac1c \u00b7 \uc0c1\uc2b9 79%"},{"name":"\uc800\ucd9c\uc0b0","value":2.0,"metric":-0.9067,"tr_eok":11.7,"avg":-0.91,"up_ratio":66.7,"fi":89448.0,"top3":"\uc544\uac00\ubc29\ucef4\ud37c\ub2c8(+3.4%), \uafc8\ube44(-6.4%), \uc0bc\uc131\ucd9c\ud310\uc0ac(+0.2%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 6\uac1c \u00b7 \uc0c1\uc2b9 67%"},{"name":"\uae08\uc735","value":2.0,"metric":-2.1955,"tr_eok":8029.03,"avg":2.2,"up_ratio":81.8,"fi":1332551.0,"top3":"KB\uae08\uc735(+4.6%), \uc2e0\ud55c\uc9c0\uc8fc(+2.5%), \uc6b0\ub9ac\uae08\uc735\uc9c0\uc8fc(+2.0%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 11\uac1c \u00b7 \uc0c1\uc2b9 82%"},{"name":"2\ucc28\uc804\uc9c0","value":1.0,"metric":-4.6483,"tr_eok":7140.65,"avg":4.65,"up_ratio":83.3,"fi":383778.0,"top3":"\uc0bc\uc131SDI(-1.5%), LG\uc5d0\ub108\uc9c0\uc194\ub8e8\uc158(+6.5%), SK\uc774\ub178\ubca0\uc774\uc158(+6.5%)","subtitle":"\uc870\uc815 \ube44\uc911 \u00b7 \uc885\ubaa9 6\uac1c \u00b7 \uc0c1\uc2b9 83%"}]},"retHist":{"bins":["-30~-25","-25~-20","-20~-15","-15~-10","-10~-5","-5~0","0~5","5~10","10~15","15~20","20~25","25~30"],"counts":[0,0,4,7,61,185,248,22,4,0,1,3],"binStocks":[[],[],[{"code":"036930","name":"\uc8fc\uc131\uc5d4\uc9c0\ub2c8\uc5b4\ub9c1","theme":"\ubc18\ub3c4\uccb4\uc7a5\ube44","ret":-15.33,"tr":2824.05},{"code":"319400","name":"\ud604\ub300\ubb34\ubca1\uc2a4","theme":"\ub85c\ubd07","ret":-17.48,"tr":630.56},{"code":"264850","name":"\uc774\ub79c\uc2dc\uc2a4","theme":"\ub85c\ubd07","ret":-15.55,"tr":55.47},{"code":"417860","name":"\uc624\ube0c\uc820","theme":"AI","ret":-17.23,"tr":38.14}],[{"code":"483650","name":"\ub2ec\ubc14\uae00\ub85c\ubc8c","theme":"\ud654\uc7a5\ud488","ret":-11.89,"tr":855.79},{"code":"319660","name":"\ud53c\uc5d0\uc2a4\ucf00\uc774","theme":"\ubc18\ub3c4\uccb4\uc7a5\ube44","ret":-11.75,"tr":711.03},{"code":"095610","name":"\ud14c\uc2a4","theme":"\ubc18\ub3c4\uccb4\uc7a5\ube44","ret":-12.51,"tr":644.23},{"code":"000500","name":"\uac00\uc628\uc804\uc120","theme":"\uc804\ub825\uc778\ud504\ub77c","ret":-12.09,"tr":306.34},{"code":"087010","name":"\ud3a9\ud2b8\ub860","theme":"\ubc14\uc774\uc624","ret":-10.72,"tr":256.7},{"code":"463020","name":"\ub274\uc5d4AI","theme":"AI","ret":-10.41,"tr":41.44},{"code":"459510","name":"\ub098\uc6b0\ub85c\ubcf4\ud2f1\uc2a4","theme":"\ub85c\ubd07","ret":-10.77,"tr":24.21}],[{"code":"000660","name":"SK\ud558\uc774\ub2c9\uc2a4","theme":"\ubc18\ub3c4\uccb4","ret":-5.64,"tr":124934.27},{"code":"402340","name":"SK\uc2a4\ud018\uc5b4","theme":"\uc9c0\uc8fc\uc0ac","ret":-6.0,"tr":10930.64},{"code":"298040","name":"\ud6a8\uc131\uc911\uacf5\uc5c5","theme":"ESS","ret":-5.58,"tr":2143.27},{"code":"010120","name":"LS ELECTRIC","theme":"\uc804\ub825\uc778\ud504\ub77c","ret":-8.24,"tr":1989.23},{"code":"277810","name":"\ub808\uc778\ubcf4\uc6b0\ub85c\ubcf4\ud2f1\uc2a4","theme":"\ub85c\ubd07","ret":-9.14,"tr":1079.23},{"code":"058610","name":"\uc5d0\uc2a4\ud53c\uc9c0","theme":"\ub85c\ubd07","ret":-6.11,"tr":1060.83},{"code":"240810","name":"\uc6d0\uc775IPS","theme":"\ubc18\ub3c4\uccb4","ret":-8.29,"tr":1047.72},{"code":"000150","name":"\ub450\uc0b0","theme":"\uc9c0\uc8fc\uc0ac","ret":-9.91,"tr":1019.68},{"code":"353200","name":"\ub300\ub355\uc804\uc790","theme":"\ubc18\ub3c4\uccb4","ret":-7.91,"tr":1006.07},{"code":"006340","name":"\ub300\uc6d0\uc804\uc120","theme":"\uc804\ub825\uc778\ud504\ub77c","ret":-6.61,"tr":753.93},{"code":"047040","name":"\ub300\uc6b0\uac74\uc124","theme":"\uac74\uc124","ret":-6.82,"tr":648.91},{"code":"001440","name":"\ub300\ud55c\uc804\uc120","theme":"\uc804\ub825\uc778\ud504\ub77c","ret":-6.31,"tr":621.08},{"code":"307950","name":"\ud604\ub300\uc624\ud1a0\uc5d0\ubc84","theme":"\uc790\ub3d9\ucc28","ret":-6.66,"tr":526.43},{"code":"347850","name":"\ub514\uc564\ub514\ud30c\ub9c8\ud14d","theme":"\ubc14\uc774\uc624","ret":-6.06,"tr":503.0},{"code":"222800","name":"\uc2ec\ud14d","theme":"\ubc18\ub3c4\uccb4","ret":-7.0,"tr":452.67},{"code":"006260","name":"LS","theme":"\uc804\ub825\uc778\ud504\ub77c","ret":-8.21,"tr":423.15},{"code":"062040","name":"\uc0b0\uc77c\uc804\uae30","theme":"ESS","ret":-5.48,"tr":413.58},{"code":"058470","name":"\ub9ac\ub178\uacf5\uc5c5","theme":"\ubc18\ub3c4\uccb4\uc18c\uc7ac\ubd80\ud488","ret":-5.15,"tr":404.47},{"code":"108490","name":"\ub85c\ubcf4\ud2f0\uc988","theme":"\ub85c\ubd07","ret":-8.65,"tr":403.98},{"code":"141080","name":"\ub9ac\uac00\ucf10\ubc14\uc774\uc624","theme":"\ubc14\uc774\uc624","ret":-6.03,"tr":344.42}],[{"code":"005930","name":"\uc0bc\uc131\uc804\uc790","theme":"\ubc18\ub3c4\uccb4","ret":-0.72,"tr":98017.99},{"code":"005380","name":"\ud604\ub300\ucc28","theme":"\uc790\ub3d9\ucc28","ret":-0.71,"tr":3394.16},{"code":"035420","name":"NAVER","theme":"AI","ret":-3.37,"tr":3304.58},{"code":"475150","name":"SK\uc774\ud130\ub2c9\uc2a4","theme":"ESS","ret":-3.8,"tr":2898.54},{"code":"006400","name":"\uc0bc\uc131SDI","theme":"2\ucc28\uc804\uc9c0","ret":-1.51,"tr":2795.4},{"code":"267260","name":"HD\ud604\ub300\uc77c\ub809\ud2b8\ub9ad","theme":"\uc804\ub825\uc778\ud504\ub77c","ret":-0.51,"tr":2199.8},{"code":"034020","name":"\ub450\uc0b0\uc5d0\ub108\ube4c\ub9ac\ud2f0","theme":"\uc6d0\uc804","ret":-0.99,"tr":1942.87},{"code":"034730","name":"SK","theme":"\uc9c0\uc8fc\uc0ac","ret":-4.19,"tr":1134.48},{"code":"196170","name":"\uc54c\ud14c\uc624\uc820","theme":"\ubc14\uc774\uc624","ret":-1.06,"tr":934.93},{"code":"006800","name":"\ubbf8\ub798\uc5d0\uc14b\uc99d\uad8c","theme":"\uc99d\uad8c","ret":-1.63,"tr":910.12},{"code":"278470","name":"\uc5d0\uc774\ud53c\uc54c","theme":"\ud654\uc7a5\ud488","ret":-3.08,"tr":853.52},{"code":"352820","name":"\ud558\uc774\ube0c","theme":"\uc5d4\ud130","ret":-4.29,"tr":759.29},{"code":"267270","name":"HD\ud604\ub300\uac74\uc124\uae30\uacc4","theme":"\uc6b0\ud06c\ub77c\uc774\ub098/\uc7ac\uac74","ret":-3.47,"tr":757.95},{"code":"071050","name":"\ud55c\uad6d\uae08\uc735\uc9c0\uc8fc","theme":"\uc99d\uad8c","ret":-0.98,"tr":615.24},{"code":"015760","name":"\ud55c\uad6d\uc804\ub825","theme":"\uc6d0\uc804","ret":-0.15,"tr":607.65},{"code":"403870","name":"HPSP","theme":"\ubc18\ub3c4\uccb4\uc7a5\ube44","ret":-3.71,"tr":557.89},{"code":"064400","name":"LG\uc528\uc5d4\uc5d0\uc2a4","theme":"\uc2a4\ud14c\uc774\ube14\ucf54\uc778","ret":-1.85,"tr":538.07},{"code":"000720","name":"\ud604\ub300\uac74\uc124","theme":"\uac74\uc124","ret":-3.43,"tr":473.92},{"code":"039030","name":"\uc774\uc624\ud14c\ud06c\ub2c9\uc2a4","theme":"\uc720\ub9ac\uae30\ud310","ret":-3.61,"tr":436.38},{"code":"098460","name":"\uace0\uc601","theme":"\ub85c\ubd07","ret":-0.88,"tr":371.48}],[{"code":"105560","name":"KB\uae08\uc735","theme":"\uae08\uc735","ret":4.56,"tr":2799.64},{"code":"028260","name":"\uc0bc\uc131\ubb3c\uc0b0","theme":"\uc9c0\uc8fc\uc0ac","ret":2.98,"tr":2512.33},{"code":"042700","name":"\ud55c\ubbf8\ubc18\ub3c4\uccb4","theme":"\ubc18\ub3c4\uccb4\uc7a5\ube44","ret":0.0,"tr":2342.05},{"code":"003230","name":"\uc0bc\uc591\uc2dd\ud488","theme":"\uc2dd\uc74c\ub8cc","ret":1.89,"tr":1753.05},{"code":"012330","name":"\ud604\ub300\ubaa8\ube44\uc2a4","theme":"\uc790\ub3d9\ucc28","ret":0.0,"tr":1701.78},{"code":"000270","name":"\uae30\uc544","theme":"\uc790\ub3d9\ucc28","ret":0.33,"tr":1658.75},{"code":"055550","name":"\uc2e0\ud55c\uc9c0\uc8fc","theme":"\uae08\uc735","ret":2.54,"tr":1489.49},{"code":"329180","name":"HD\ud604\ub300\uc911\uacf5\uc5c5","theme":"\uc870\uc120/LNG","ret":3.23,"tr":1480.12},{"code":"005490","name":"POSCO\ud640\ub529\uc2a4","theme":"\uc9c0\uc8fc\uc0ac","ret":4.16,"tr":1440.51},{"code":"316140","name":"\uc6b0\ub9ac\uae08\uc735\uc9c0\uc8fc","theme":"\uae08\uc735","ret":2.03,"tr":1344.7},{"code":"086790","name":"\ud558\ub098\uae08\uc735\uc9c0\uc8fc","theme":"\uae08\uc735","ret":3.49,"tr":1338.64},{"code":"207940","name":"\uc0bc\uc131\ubc14\uc774\uc624\ub85c\uc9c1\uc2a4","theme":"\ubc14\uc774\uc624","ret":3.25,"tr":1258.81},{"code":"079550","name":"LIG\ub125\uc2a4\uc6d0","theme":"\uc6b0\uc8fc\ud56d\uacf5","ret":3.39,"tr":1196.33},{"code":"009830","name":"\ud55c\ud654\uc194\ub8e8\uc158","theme":"\ud0dc\uc591\uad11","ret":2.84,"tr":927.9},{"code":"035720","name":"\uce74\uce74\uc624","theme":"AI","ret":2.41,"tr":925.57},{"code":"064350","name":"\ud604\ub300\ub85c\ud15c","theme":"\ubc29\uc0b0","ret":0.33,"tr":920.46},{"code":"028050","name":"\uc0bc\uc131E&A","theme":"\uac74\uc124","ret":3.14,"tr":911.47},{"code":"018260","name":"\uc0bc\uc131\uc5d0\uc2a4\ub514\uc5d0\uc2a4","theme":"AI","ret":0.71,"tr":805.02},{"code":"010060","name":"OCI\ud640\ub529\uc2a4","theme":"\ud0dc\uc591\uad11","ret":3.12,"tr":633.53},{"code":"006360","name":"GS\uac74\uc124","theme":"\uac74\uc124","ret":0.23,"tr":592.76}],[{"code":"068270","name":"\uc140\ud2b8\ub9ac\uc628","theme":"\ubc14\uc774\uc624","ret":5.56,"tr":3304.98},{"code":"012450","name":"\ud55c\ud654\uc5d0\uc5b4\ub85c\uc2a4\ud398\uc774\uc2a4","theme":"\uc6b0\uc8fc\ud56d\uacf5","ret":6.79,"tr":2229.98},{"code":"042660","name":"\ud55c\ud654\uc624\uc158","theme":"\uc870\uc120/LNG","ret":6.3,"tr":2013.03},{"code":"373220","name":"LG\uc5d0\ub108\uc9c0\uc194\ub8e8\uc158","theme":"2\ucc28\uc804\uc9c0","ret":6.49,"tr":1523.63},{"code":"090430","name":"\uc544\ubaa8\ub808\ud37c\uc2dc\ud53d","theme":"\ud654\uc7a5\ud488","ret":9.93,"tr":1275.95},{"code":"010140","name":"\uc0bc\uc131\uc911\uacf5\uc5c5","theme":"\uc870\uc120/LNG","ret":5.93,"tr":1246.79},{"code":"096770","name":"SK\uc774\ub178\ubca0\uc774\uc158","theme":"2\ucc28\uc804\uc9c0","ret":6.48,"tr":930.58},{"code":"073240","name":"\uae08\ud638\ud0c0\uc774\uc5b4","theme":"\uc790\ub3d9\ucc28","ret":8.57,"tr":733.42},{"code":"003670","name":"\ud3ec\uc2a4\ucf54\ud4e8\ucc98\uc5e0","theme":"2\ucc28\uc804\uc9c0","ret":6.63,"tr":705.32},{"code":"051910","name":"LG\ud654\ud559","theme":"2\ucc28\uc804\uc9c0","ret":5.59,"tr":667.78},{"code":"000100","name":"\uc720\ud55c\uc591\ud589","theme":"\ubc14\uc774\uc624","ret":5.26,"tr":295.15},{"code":"139130","name":"iM\uae08\uc735\uc9c0\uc8fc","theme":"\uae08\uc735","ret":5.03,"tr":132.43},{"code":"007340","name":"DN\uc624\ud1a0\ubaa8\ud2f0\ube0c","theme":"\uc790\ub3d9\ucc28","ret":9.79,"tr":112.41},{"code":"123330","name":"\uc81c\ub2c9","theme":"\ud654\uc7a5\ud488","ret":5.13,"tr":77.27},{"code":"439260","name":"\ub300\ud55c\uc870\uc120","theme":"\uc870\uc120/LNG","ret":9.61,"tr":67.93},{"code":"002790","name":"\uc544\ubaa8\ub808\ud37c\uc2dc\ud53d\ud640\ub529\uc2a4","theme":"\uc9c0\uc8fc\uc0ac","ret":5.57,"tr":60.89},{"code":"013360","name":"\uc77c\uc131\uac74\uc124","theme":"\uac74\uc124","ret":8.46,"tr":38.1},{"code":"003570","name":"SNT\ub2e4\uc774\ub0b4\ubbf9\uc2a4","theme":"\ubc29\uc0b0","ret":6.03,"tr":17.03},{"code":"340810","name":"\uc2dc\uc120AI","theme":"AI","ret":9.19,"tr":13.15},{"code":"237880","name":"\ud074\ub9ac\uc624","theme":"\ud654\uc7a5\ud488","ret":5.1,"tr":9.59}],[{"code":"009540","name":"HD\ud55c\uad6d\uc870\uc120\ud574\uc591","theme":"\uc870\uc120/LNG","ret":10.0,"tr":1547.46},{"code":"051900","name":"LG\uc0dd\ud65c\uac74\uac15","theme":"\ud654\uc7a5\ud488","ret":11.03,"tr":1478.34},{"code":"333430","name":"\uc77c\uc2b9","theme":"\uc870\uc120/LNG","ret":11.85,"tr":346.18},{"code":"332290","name":"\ub204\ubcf4","theme":"\uc6b0\ud06c\ub77c\uc774\ub098/\uc7ac\uac74","ret":14.47,"tr":5.68}],[],[{"code":"402030","name":"\ucf54\ub09c\ud14c\ud06c\ub180\ub85c\uc9c0","theme":"AI","ret":20.07,"tr":26.16}],[{"code":"002990","name":"\uae08\ud638\uac74\uc124","theme":"\uac74\uc124","ret":30.0,"tr":385.35},{"code":"255440","name":"\uc57c\uc2a4","theme":"\uc720\ub9ac\uae30\ud310","ret":29.97,"tr":191.52},{"code":"475400","name":"\uc528\uba54\uc2a4","theme":"\ub85c\ubd07","ret":29.95,"tr":4.84}]]},"themeScatter":{"points":[{"name":"\ubc18\ub3c4\uccb4","x":-5.183,"y":817579.0,"s":227494.12,"n":17,"up_ratio":0.0},{"name":"\uc9c0\uc8fc\uc0ac","x":0.884,"y":724767.0,"s":20452.0,"n":28,"up_ratio":75.0},{"name":"ESS","x":-0.878,"y":-634522.0,"s":10272.46,"n":15,"up_ratio":33.3},{"name":"\ubc18\ub3c4\uccb4\uc7a5\ube44","x":-4.486,"y":304700.0,"s":9760.88,"n":19,"up_ratio":10.5},{"name":"\uc804\ub825\uc778\ud504\ub77c","x":-3.433,"y":-349055.0,"s":9727.56,"n":20,"up_ratio":20.0},{"name":"\uc790\ub3d9\ucc28","x":0.827,"y":256977.0,"s":9672.61,"n":25,"up_ratio":52.0},{"name":"\ubc14\uc774\uc624","x":-1.405,"y":918738.0,"s":9104.3,"n":31,"up_ratio":38.7},{"name":"\uae08\uc735","x":2.195,"y":1332551.0,"s":8029.03,"n":11,"up_ratio":81.8},{"name":"\uc870\uc120/LNG","x":2.654,"y":2695226.0,"s":7989.97,"n":28,"up_ratio":78.6},{"name":"2\ucc28\uc804\uc9c0","x":4.648,"y":383778.0,"s":7140.65,"n":6,"up_ratio":83.3},{"name":"AI","x":-1.356,"y":1230566.0,"s":6031.25,"n":33,"up_ratio":36.4},{"name":"\ubc29\uc0b0","x":1.586,"y":947602.0,"s":5722.36,"n":14,"up_ratio":78.6},{"name":"\ud654\uc7a5\ud488","x":0.772,"y":829047.0,"s":5569.17,"n":23,"up_ratio":65.2},{"name":"\uc2a4\ud14c\uc774\ube14\ucf54\uc778","x":-0.611,"y":647988.0,"s":5096.88,"n":20,"up_ratio":35.0},{"name":"\uc6b0\uc8fc\ud56d\uacf5","x":-0.295,"y":761001.0,"s":4902.18,"n":18,"up_ratio":44.4},{"name":"\ub85c\ubd07","x":-4.88,"y":-1099442.0,"s":4664.42,"n":24,"up_ratio":4.2},{"name":"\uc6d0\uc804","x":-0.722,"y":986370.0,"s":3713.83,"n":20,"up_ratio":40.0},{"name":"\uac74\uc124","x":2.41,"y":318725.0,"s":3418.75,"n":24,"up_ratio":79.2},{"name":"\ud48d\ub825","x":-0.116,"y":-783013.0,"s":3264.33,"n":10,"up_ratio":60.0},{"name":"\uc99d\uad8c","x":0.652,"y":1527796.0,"s":2913.45,"n":17,"up_ratio":70.6},{"name":"\uc2dd\uc74c\ub8cc","x":1.08,"y":284171.0,"s":2473.2,"n":23,"up_ratio":60.9},{"name":"\uc790\uc728\uc8fc\ud589","x":-0.855,"y":344097.0,"s":2307.56,"n":17,"up_ratio":41.2},{"name":"\ud0dc\uc591\uad11","x":0.957,"y":476065.0,"s":2172.82,"n":10,"up_ratio":70.0},{"name":"\ubc18\ub3c4\uccb4\uc18c\uc7ac\ubd80\ud488","x":-3.572,"y":-26618.0,"s":1974.66,"n":15,"up_ratio":13.3},{"name":"\uc720\ub9ac\uae30\ud310","x":-0.708,"y":69550.0,"s":1492.15,"n":18,"up_ratio":16.7},{"name":"\uc5d4\ud130","x":-1.012,"y":244709.0,"s":1059.71,"n":11,"up_ratio":45.5},{"name":"\uc6b0\ud06c\ub77c\uc774\ub098/\uc7ac\uac74","x":0.915,"y":359560.0,"s":1039.23,"n":20,"up_ratio":55.0},{"name":"\uc758\ub958","x":1.324,"y":-230954.0,"s":374.42,"n":17,"up_ratio":58.8},{"name":"\uc758\ub8ccAI","x":-2.092,"y":251020.0,"s":350.59,"n":21,"up_ratio":38.1},{"name":"\uc2a4\ud398\uc774\uc2a4X","x":-1.626,"y":362835.0,"s":298.85,"n":10,"up_ratio":30.0},{"name":"\ud1b5\uc2e0","x":-3.237,"y":91920.0,"s":201.07,"n":7,"up_ratio":28.6},{"name":"\uc591\uc790","x":-0.938,"y":274554.0,"s":166.96,"n":16,"up_ratio":31.2},{"name":"\uc800\ucd9c\uc0b0","x":-0.907,"y":89448.0,"s":11.7,"n":6,"up_ratio":66.7}]}}
-</script>
+  <section class="section">
+    <div class="section-head"><h2>주도 테마 TOP 3</h2><span>대표 종목과 핵심 흐름</span></div>
+    <div class="top-table-wrap"><table class="top-table"><thead><tr><th>순위</th><th>테마</th><th>대표 종목</th><th>평균 등락</th><th>상승 비중</th><th>거래대금</th><th>외국인</th><th>기관</th><th>종가 위치</th></tr></thead><tbody><tr><td class="rank-no" data-label="순위"><span class="rank-badge">1</span></td><td class="theme-title" data-label="테마">반도체</td><td class="leader-stock" data-label="대표 종목"><strong>SK하이닉스</strong><span class="up">+29.9%</span></td><td class="up" data-label="평균 등락">+24.20%</td><td class="" data-label="상승 비중">94%</td><td class="" data-label="거래대금">32,785,440.0억</td><td class="up" data-label="외국인">+9,573,445</td><td class="up" data-label="기관">+5,796,632</td><td class="up" data-label="종가 위치">87%</td></tr><tr><td class="rank-no" data-label="순위"><span class="rank-badge">2</span></td><td class="theme-title" data-label="테마">반도체장비</td><td class="leader-stock" data-label="대표 종목"><strong>테스</strong><span class="up">+30.0%</span></td><td class="up" data-label="평균 등락">+21.79%</td><td class="" data-label="상승 비중">95%</td><td class="" data-label="거래대금">1,507,794.0억</td><td class="up" data-label="외국인">+201,817</td><td class="up" data-label="기관">+1,354,486</td><td class="up" data-label="종가 위치">87%</td></tr><tr><td class="rank-no" data-label="순위"><span class="rank-badge">3</span></td><td class="theme-title" data-label="테마">반도체소재부품</td><td class="leader-stock" data-label="대표 종목"><strong>티에스이</strong><span class="up">+29.9%</span></td><td class="up" data-label="평균 등락">+18.11%</td><td class="" data-label="상승 비중">100%</td><td class="" data-label="거래대금">215,481.0억</td><td class="down" data-label="외국인">-364,109</td><td class="up" data-label="기관">+533,389</td><td class="up" data-label="종가 위치">85%</td></tr></tbody></table></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>테마 맵</h2><span>면적은 거래대금, 색은 평균 등락률</span></div>
+    <div class="map-wrap"><div class="theme-map" aria-label="테마 거래대금 트리맵"><div class="map-tile" data-theme="반도체" style="left:0.0000%;top:0.0000%;width:67.3979%;height:100.0000%;background:hsl(5 72% 53%);color:#ffffff" title="반도체 · 평균 +24.20% · 거래대금 32,785,440.0억"><strong>반도체</strong><span>+24.20% · 32,785,440.0억</span></div><div class="map-tile" data-theme="지주사" style="left:67.3979%;top:0.0000%;width:19.8601%;height:24.3258%;background:hsl(5 72% 53%);color:#ffffff" title="지주사 · 평균 +7.22% · 거래대금 2,350,082.0억"><strong>지주사</strong><span>+7.22% · 2,350,082.0억</span></div><div class="map-tile" data-theme="반도체장비" style="left:87.2579%;top:0.0000%;width:12.7421%;height:24.3258%;background:hsl(5 72% 53%);color:#ffffff" title="반도체장비 · 평균 +21.79% · 거래대금 1,507,794.0억"><strong>반도체장비</strong><span>+21.79% · 1,507,794.0억</span></div><div class="map-tile" data-theme="전력인프라" style="left:67.3979%;top:24.3258%;width:18.0040%;height:14.3982%;background:hsl(5 72% 53%);color:#ffffff" title="전력인프라 · 평균 +16.46% · 거래대금 1,260,996.0억"><strong>전력인프라</strong><span>+16.46% · 1,260,996.0억</span></div><div class="map-tile" data-theme="ESS" style="left:67.3979%;top:38.7240%;width:18.0040%;height:13.4591%;background:hsl(5 72% 53%);color:#ffffff" title="ESS · 평균 +11.96% · 거래대금 1,178,744.0억"><strong>ESS</strong><span>+11.96% · 1,178,744.0억</span></div><div class="map-tile" data-theme="자동차" style="left:85.4019%;top:24.3258%;width:14.5981%;height:15.9266%;background:hsl(5 72% 53%);color:#ffffff" title="자동차 · 평균 +7.79% · 거래대금 1,130,977.0억"><strong>자동차</strong><span>+7.79% · 1,130,977.0억</span></div><div class="map-tile" data-theme="바이오" style="left:85.4019%;top:40.2524%;width:14.5981%;height:11.9307%;background:hsl(5 72% 53%);color:#ffffff" title="바이오 · 평균 +6.36% · 거래대금 847,223.0억"><strong>바이오</strong><span>+6.36% · 847,223.0억</span></div><div class="map-tile" data-theme="2차전지" style="left:67.3979%;top:52.1831%;width:13.9034%;height:11.8735%;background:hsl(5 72% 59%);color:#ffffff" title="2차전지 · 평균 +4.35% · 거래대금 803,037.0억"><strong>2차전지</strong><span>+4.35% · 803,037.0억</span></div><div class="map-tile" data-theme="금융" style="left:67.3979%;top:64.0566%;width:13.9034%;height:11.1347%;background:hsl(5 72% 82%);color:#172033" title="금융 · 평균 +1.64% · 거래대금 753,070.0억"><strong>금융</strong><span>+1.64% · 753,070.0억</span></div><div class="map-tile" data-theme="조선/LNG" style="left:81.3013%;top:52.1831%;width:18.6987%;height:8.2674%;background:hsl(5 72% 53%);color:#ffffff" title="조선/LNG · 평균 +7.29% · 거래대금 752,000.0억"><strong>조선/LNG</strong><span>+7.29% · 752,000.0억</span></div><div class="map-tile" data-theme="AI" style="left:81.3013%;top:60.4505%;width:9.7431%;height:14.7408%;background:hsl(5 72% 53%);color:#ffffff" title="AI · 평균 +7.50% · 거래대금 698,644.0억"><strong>AI</strong><span>+7.50% · 698,644.0억</span></div><div class="map-tile" data-theme="로봇" style="left:91.0444%;top:60.4505%;width:8.9556%;height:14.7408%;background:hsl(5 72% 53%);color:#ffffff" title="로봇 · 평균 +13.08% · 거래대금 642,173.0억"><strong>로봇</strong><span>+13.08% · 642,173.0억</span></div><div class="map-tile" data-theme="방산" style="left:67.3979%;top:75.1914%;width:14.9478%;height:8.3322%;background:hsl(5 72% 53%);color:#ffffff" title="방산 · 평균 +9.54% · 거래대금 605,859.0억"><strong>방산</strong><span>+9.54% · 605,859.0억</span></div><div class="map-tile" data-theme="건설" style="left:67.3979%;top:83.5235%;width:14.9478%;height:8.2963%;background:hsl(5 72% 53%);color:#ffffff" title="건설 · 평균 +5.33% · 거래대금 603,252.0억"><strong>건설</strong><span>+5.33% · 603,252.0억</span></div><div class="map-tile" data-theme="스테이블코인" style="left:67.3979%;top:91.8198%;width:14.9478%;height:8.1802%;background:hsl(5 72% 53%);color:#ffffff" title="스테이블코인 · 평균 +7.55% · 거래대금 594,806.0억"><strong>스테이블코인</strong><span>+7.55% · 594,806.0억</span></div><div class="map-tile" data-theme="우주항공" style="left:82.3457%;top:75.1914%;width:8.9608%;height:11.5788%;background:hsl(5 72% 53%);color:#ffffff" title="우주항공 · 평균 +12.01% · 거래대금 504,714.0억"><strong>우주항공</strong><span>+12.01%</span></div><div class="map-tile" data-theme="원전" style="left:91.3065%;top:75.1914%;width:8.6935%;height:11.5788%;background:hsl(5 72% 53%);color:#ffffff" title="원전 · 평균 +13.32% · 거래대금 489,654.0억"><strong>원전</strong><span>+13.32%</span></div><div class="map-tile" data-theme="풍력" style="left:82.3457%;top:86.7701%;width:7.3468%;height:13.2299%;background:hsl(5 72% 53%);color:#ffffff" title="풍력 · 평균 +8.30% · 거래대금 472,810.0억"><strong>풍력</strong><span>+8.30%</span></div><div class="map-tile" data-theme="화장품" style="left:89.6925%;top:86.7701%;width:10.3075%;height:7.3271%;background:hsl(5 72% 75%);color:#172033" title="화장품 · 평균 +2.49% · 거래대금 367,386.0억"><strong>화장품</strong><span>+2.49%</span></div><div class="map-tile" data-theme="증권" style="left:89.6925%;top:94.0972%;width:10.3075%;height:5.9028%;background:hsl(5 72% 53%);color:#ffffff" title="증권 · 평균 +9.99% · 거래대금 295,968.0억"><strong>증권</strong><span>+9.99%</span></div></div></div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>마감 핵심 종목</h2><span>조건별 TOP 5</span></div>
+    <div class="ranking-grid"><article class="ranking-card"><h3>마감 강세 TOP 5</h3><ol>
+<li>
+  <div class="rank-stock"><strong>테스</strong><span>반도체 · 095610</span></div>
+  <div class="rank-metric"><strong class="up">+30.00%</strong><span>종가 위치 100% · 거래 50,458.0억</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>두산</strong><span>지주사 · 000150</span></div>
+  <div class="rank-metric"><strong class="up">+30.00%</strong><span>종가 위치 100% · 거래 152,973.0억</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>SK하이닉스</strong><span>반도체 · 000660</span></div>
+  <div class="rank-metric"><strong class="up">+29.95%</strong><span>종가 위치 100% · 거래 17,287,902.0억</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>심텍</strong><span>반도체 · 222800</span></div>
+  <div class="rank-metric"><strong class="up">+29.94%</strong><span>종가 위치 100% · 거래 69,592.0억</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>테크윙</strong><span>반도체 · 089030</span></div>
+  <div class="rank-metric"><strong class="up">+29.94%</strong><span>종가 위치 100% · 거래 50,052.0억</span></div>
+</li></ol></article><article class="ranking-card"><h3>거래대금 TOP 5</h3><ol>
+<li>
+  <div class="rank-stock"><strong>SK하이닉스</strong><span>반도체 · 000660</span></div>
+  <div class="rank-metric"><strong class="">17,287,902.0억</strong><span>등락 +29.9% · 종가 위치 100%</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>삼성전자</strong><span>반도체 · 005930</span></div>
+  <div class="rank-metric"><strong class="">14,769,099.0억</strong><span>등락 +26.8% · 종가 위치 81%</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>SK스퀘어</strong><span>지주사 · 402340</span></div>
+  <div class="rank-metric"><strong class="">1,058,269.0억</strong><span>등락 +29.9% · 종가 위치 100%</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>한미반도체</strong><span>반도체장비 · 042700</span></div>
+  <div class="rank-metric"><strong class="">451,405.0억</strong><span>등락 +28.0% · 종가 위치 89%</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>SK이터닉스</strong><span>ESS · 475150</span></div>
+  <div class="rank-metric"><strong class="">427,027.0억</strong><span>등락 +8.7% · 종가 위치 29%</span></div>
+</li></ol></article><article class="ranking-card"><h3>외·기관 순매수 TOP 5</h3><ol>
+<li>
+  <div class="rank-stock"><strong>삼성전자</strong><span>반도체 · 005930</span></div>
+  <div class="rank-metric"><strong class="up">+1,203.2만</strong><span>외국인 +842.5만 · 기관 +360.7만</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>대원전선</strong><span>전력인프라 · 006340</span></div>
+  <div class="rank-metric"><strong class="up">+271.1만</strong><span>외국인 +270.9만 · 기관 +1,721</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>SK하이닉스</strong><span>반도체 · 000660</span></div>
+  <div class="rank-metric"><strong class="up">+248.2만</strong><span>외국인 +218.1만 · 기관 +30.1만</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>우리기술</strong><span>원전 · 032820</span></div>
+  <div class="rank-metric"><strong class="up">+101.0만</strong><span>외국인 +93.5만 · 기관 +7.5만</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>SK증권</strong><span>증권 · 001510</span></div>
+  <div class="rank-metric"><strong class="up">+93.7만</strong><span>외국인 +92.7만 · 기관 +1.1만</span></div>
+</li></ol></article><article class="ranking-card"><h3>마감 매수세 TOP 5</h3><ol>
+<li>
+  <div class="rank-stock"><strong>SK하이닉스</strong><span>반도체 · 000660</span></div>
+  <div class="rank-metric"><strong class="up">+29.95%</strong><span>종가 위치 100% · 순매수 +248.2만</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>SK스퀘어</strong><span>지주사 · 402340</span></div>
+  <div class="rank-metric"><strong class="up">+29.91%</strong><span>종가 위치 100% · 순매수 +31.1만</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>대덕전자</strong><span>반도체 · 353200</span></div>
+  <div class="rank-metric"><strong class="up">+29.93%</strong><span>종가 위치 100% · 순매수 +26.3만</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>심텍</strong><span>반도체 · 222800</span></div>
+  <div class="rank-metric"><strong class="up">+29.94%</strong><span>종가 위치 100% · 순매수 +22.1만</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>테스</strong><span>반도체 · 095610</span></div>
+  <div class="rank-metric"><strong class="up">+30.00%</strong><span>종가 위치 100% · 순매수 +10.4만</span></div>
+</li></ol></article><article class="ranking-card"><h3>하락 중 순매수 TOP 5</h3><ol>
+<li>
+  <div class="rank-stock"><strong>아모레퍼시픽</strong><span>화장품 · 090430</span></div>
+  <div class="rank-metric"><strong class="up">+1.5만</strong><span>등락 -3.0% · 종가 위치 90%</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>아모레퍼시픽홀딩스</strong><span>지주사 · 002790</span></div>
+  <div class="rank-metric"><strong class="up">+1.0만</strong><span>등락 -0.4% · 종가 위치 88%</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>F&amp;F홀딩스</strong><span>지주사 · 007700</span></div>
+  <div class="rank-metric"><strong class="up">+2,194</strong><span>등락 -0.7% · 종가 위치 76%</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>화승엔터프라이즈</strong><span>의류 · 241590</span></div>
+  <div class="rank-metric"><strong class="up">+812</strong><span>등락 -0.2% · 종가 위치 58%</span></div>
+</li></ol></article><article class="ranking-card"><h3>거래 많은 하락 TOP 5</h3><ol>
+<li>
+  <div class="rank-stock"><strong>대웅제약</strong><span>바이오 · 069620</span></div>
+  <div class="rank-metric"><strong class="down">-9.25%</strong><span>거래 17,911.0억 · 고점 대비 -9.0%</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>삼양식품</strong><span>식음료 · 003230</span></div>
+  <div class="rank-metric"><strong class="down">-6.03%</strong><span>거래 90,182.0억 · 고점 대비 -2.2%</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>SK이노베이션</strong><span>2차전지 · 096770</span></div>
+  <div class="rank-metric"><strong class="down">-5.23%</strong><span>거래 199,502.0억 · 고점 대비 -8.3%</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>달바글로벌</strong><span>화장품 · 483650</span></div>
+  <div class="rank-metric"><strong class="down">-5.35%</strong><span>거래 61,446.0억 · 고점 대비 -5.2%</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>영원무역홀딩스</strong><span>지주사 · 009970</span></div>
+  <div class="rank-metric"><strong class="down">-6.11%</strong><span>거래 4,463.0억 · 고점 대비 -5.9%</span></div>
+</li></ol></article><article class="ranking-card"><h3>52주 최고가 근접 TOP 5</h3><ol>
+<li>
+  <div class="rank-stock"><strong>금호타이어</strong><span>자동차 · 073240</span></div>
+  <div class="rank-metric"><strong class="">-7.02%</strong><span>현재 7,290원 · 52주 최고 7,840원</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>F&amp;F</strong><span>의류 · 383220</span></div>
+  <div class="rank-metric"><strong class="">-9.55%</strong><span>현재 80,500원 · 52주 최고 89,000원</span></div>
+</li></ol></article><article class="ranking-card"><h3>52주 최저가 근접 TOP 5</h3><ol>
+<li>
+  <div class="rank-stock"><strong>코미코</strong><span>반도체 · 183300</span></div>
+  <div class="rank-metric"><strong class="down">+2.64%</strong><span>현재 54,400원 · 52주 최저 53,000원</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>HK이노엔</strong><span>바이오 · 195940</span></div>
+  <div class="rank-metric"><strong class="">+3.74%</strong><span>현재 36,100원 · 52주 최저 34,800원</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>하림</strong><span>식음료 · 136480</span></div>
+  <div class="rank-metric"><strong class="">+4.12%</strong><span>현재 2,655원 · 52주 최저 2,550원</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>에스제이그룹</strong><span>의류 · 306040</span></div>
+  <div class="rank-metric"><strong class="">+4.14%</strong><span>현재 1,408원 · 52주 최저 1,352원</span></div>
+</li>
+<li>
+  <div class="rank-stock"><strong>해태제과식품</strong><span>식음료 · 101530</span></div>
+  <div class="rank-metric"><strong class="">+4.86%</strong><span>현재 5,610원 · 52주 최저 5,350원</span></div>
+</li></ol></article></div>
+  </section>
+  
 <script>
-
-(function(){
-  const data = JSON.parse((document.getElementById('pc-chart-data')||{}).textContent || '{}');
-  if(typeof echarts === "undefined"){
-    console.warn("[WARN] echarts not loaded");
-    const ids = ["pc-chart-breadth","pc-chart-topchg","pc-chart-flow","pc-chart-trading","pc-chart-rethist","pc-chart-scatter","pc-tm_trading","pc-tm_flow","pc-tm_momentum","pc-tm_nearlow"];
-    for(const id of ids){
-      const el = document.getElementById(id);
-      if(!el) continue;
-      el.innerHTML = "<div style='padding:14px;color:#64748b;font-size:13px;line-height:1.45'>"
-        + "<b style='color:#ef4444'>차트 라이브러리(ECharts) 로딩 실패</b><br/>"
-        + "회사망/보안 설정으로 CDN이 차단된 경우가 많습니다.<br/>"
-        + "해결: <code>echarts.min.js</code>를 <b>postclose.html과 같은 폴더</b>에 두고 새로고침하세요."
-        + "</div>";
+(function() {
+  var button = document.getElementById('capturePhaseButton');
+  var message = document.getElementById('capturePhaseMessage');
+  if (!button) return;
+  button.addEventListener('click', async function() {
+    if (location.protocol === 'file:') {
+      message.textContent = 'InsightMap 런처의 현재 시간 화면 열기로 실행해 주세요.';
+      return;
     }
-    return;
-  }
-  const $ = (id)=>document.getElementById(id);
-  function safeArr(x){ return Array.isArray(x) ? x : []; }
-  function clampNum(v,a,b){ v=Number(v); if(!isFinite(v)) return a; return Math.max(a, Math.min(b, v)); }
-
-  // 1) Breadth donut
-  const el1 = $("pc-chart-breadth");
-  if(el1){
-    const c1 = echarts.init(el1);
-    const b = data.breadth || {};
-    const up = Number(b.up||0), down = Number(b.down||0), flat = Number(b.flat||0);
-    c1.setOption({
-      tooltip:{ trigger:"item" },
-      series:[{
-        type:"pie",
-        radius:["55%","78%"],
-        label:{ show:true, formatter:(p)=> `${p.name}
-${p.value}` },
-        data:[{name:"상승",value:up},{name:"하락",value:down},{name:"보합",value:flat}]
-      }]
-    });
-    window.addEventListener("resize", ()=>c1.resize());
-  }
-
-  // 2) Top theme avg_chg bar
-  const el2 = $("pc-chart-topchg");
-  if(el2){
-    const c2 = echarts.init(el2);
-    const bar = data.barTopChg || {};
-    c2.setOption({
-      tooltip:{ trigger:"axis", axisPointer:{ type:"shadow" }},
-      grid:{ left:10, right:14, top:18, bottom:30, containLabel:true },
-      xAxis:{ type:"value", axisLabel:{ formatter:"{value}%" } },
-      yAxis:{ type:"category", data:safeArr(bar.names), axisLabel:{ width:120, overflow:"truncate" } },
-      series:[{ type:"bar", data:safeArr(bar.vals),
-        itemStyle:{
-          borderRadius:[6,6,6,6],
-          color:(p)=>{
-            const v = Number(p.value||0);
-            if(v > 0) return "#ef4444";
-            if(v < 0) return "#2563eb";
-            return "rgba(148,163,184,0.85)";
-          }
-        },
-        label:{ show:true, position:"right", formatter:(p)=> (Number(p.value).toFixed(2) + "%") } }]
-    });
-    window.addEventListener("resize", ()=>c2.resize());
-  }
-
-  // 3) Flow bar
-  const el3 = $("pc-chart-flow");
-  if(el3){
-    const c3 = echarts.init(el3);
-    const f = data.flowTop || {};
-    c3.setOption({
-      tooltip:{ trigger:"axis" },
-      legend:{ top:0 },
-      grid:{ left:10, right:14, top:28, bottom:30, containLabel:true },
-      xAxis:{ type:"category", data:safeArr(f.names), axisLabel:{ interval:0, rotate:30, width:120, overflow:"truncate" } },
-      yAxis:{ type:"value" },
-      series:[{ name:"외국인", type:"bar", data:safeArr(f.foreign) },{ name:"기관", type:"bar", data:safeArr(f.inst) }]
-    });
-    window.addEventListener("resize", ()=>c3.resize());
-  }
-
-  // 4) Trading bar
-  const el4 = $("pc-chart-trading");
-  if(el4){
-    const c4 = echarts.init(el4);
-    const t = data.trTop || {};
-    c4.setOption({
-      tooltip:{ trigger:"axis" },
-      grid:{ left:10, right:14, top:18, bottom:30, containLabel:true },
-      xAxis:{ type:"value" },
-      yAxis:{ type:"category", data:safeArr(t.names), axisLabel:{ width:120, overflow:"truncate" } },
-      series:[{ type:"bar", data:safeArr(t.vals),
-        itemStyle:{ borderRadius:[6,6,6,6], color:"#f59e0b" },
-        label:{ show:true, position:"right", formatter:(p)=> (Number(p.value).toFixed(0) + "억") } }]
-    });
-    window.addEventListener("resize", ()=>c4.resize());
-  }
-
-  // 5) Return histogram (Stock return distribution)
-  const el5 = $("pc-chart-rethist");
-  if(el5){
-    const c5 = echarts.init(el5);
-    const h = data.retHist || {};
-    const bins = safeArr(h.bins);
-    const counts = safeArr(h.counts);
-
-    function binMid(lbl){
-      const nums = (String(lbl||"").match(/-?\d+(?:\.\d+)?/g) || []).map(Number);
-      if(nums.length >= 2) return (nums[0] + nums[1]) / 2.0;
-      if(nums.length === 1) return nums[0];
-      return 0;
+    button.disabled = true;
+    button.textContent = '저장 중…';
+    message.textContent = '항목별 PNG 생성 중';
+    try {
+      var response = await fetch('/api/capture?phase=postclose', {method:'POST'});
+      var result = await response.json();
+      if (!response.ok || !result.ok) throw new Error(result.message || '캡처 실패');
+      message.textContent = '저장 완료 · capture/장후 폴더';
+    } catch (error) {
+      message.textContent = '저장 실패 · 런처가 실행 중인지 확인';
+    } finally {
+      button.disabled = false;
+      button.textContent = '캡처 저장';
     }
-
-    c5.setOption({
-      tooltip:{
-        trigger:"axis",
-        formatter:(params)=>{
-          const p = (params && params[0]) ? params[0] : {};
-          const i = Number(p.dataIndex||0);
-          const lbl = bins[i] || "-";
-          const cnt = Number((p.data)||0);
-          return `${lbl}<br/>종목 수: ${cnt.toLocaleString()}개`;
-        }
-      },
-      grid:{ left:10, right:14, top:18, bottom:44, containLabel:true },
-      xAxis:{ type:"category", data:bins, axisLabel:{ interval:1, rotate:30 } },
-      yAxis:{ type:"value" },
-      series:[{
-        type:"bar",
-        data:counts,
-        itemStyle:{
-          color:(p)=>{
-            const mid = binMid(bins[p.dataIndex]);
-            if(mid > 0) return "#ef4444";
-            if(mid < 0) return "#2563eb";
-            return "rgba(148,163,184,0.85)";
-          }
-        }
-      }]
-    });
-    // click -> drilldown list
-    c5.on("click", (p)=>{
-      const i = Number(p.dataIndex||0);
-      const lbl = bins[i] || "-";
-      const items = safeArr((h.binStocks||[])[i]);
-      const modal = document.getElementById("pc-ret-modal");
-      const title = document.getElementById("pc-ret-modal-title");
-      const body = document.getElementById("pc-ret-modal-body");
-      if(!modal || !title || !body) return;
-      title.textContent = `등락율 ${lbl}% 구간 · 종목 TOP${items.length ? "" : " (데이터 없음)"}`;
-      if(!items.length){
-        body.innerHTML = '<div style="color:#64748b; font-size:13px;">이 구간에 해당하는 종목이 없습니다.</div>';
-      }else{
-        const rows = items.map(it=>{
-          const r = Number(it.ret||0);
-          const cls = (r>0) ? "up" : (r<0 ? "down" : "flat");
-          const sign = (r>0) ? "+" : "";
-          const tr = Number(it.tr||0);
-          const theme = (it.theme||"").trim();
-          const code = (it.code||"").trim();
-          const nm = (it.name||"").trim();
-          return `
-            <div class="pc-modal-item">
-              <div>
-                <div class="nm">${nm} <span style="color:#94a3b8; font-weight:700; font-size:12px;">(${code})</span></div>
-                <div class="meta">${theme ? ("테마: " + theme + " · ") : ""}거래대금: ${tr.toLocaleString()}억</div>
-              </div>
-              <div class="pc-badge ${cls}">${sign}${r.toFixed(2)}%</div>
-            </div>`;
-        }).join("");
-        body.innerHTML = `<div class="pc-modal-list">${rows}</div>`;
-      }
-      modal.style.display = "block";
-    });
-
-    window.addEventListener("resize", ()=>c5.resize());
-  }
-
-  // 6) Theme scatter (Position Map)
-  const el6 = $("pc-chart-scatter");
-  if(el6){
-    const c6 = echarts.init(el6);
-    const sc = (data.themeScatter||{}).points || [];
-
-    // value: [x=avg_chg(%), y=flow(shares), s=trading_eok, n=stocks, up_ratio(%)]
-    const seriesData = sc.map(p => ({
-      name:p.name,
-      value:[
-        Number(p.x||0),
-        Number(p.y||0),
-        Number(p.s||0),
-        Number(p.n||0),
-        Number(p.up_ratio||0)
-      ]
-    }));
-
-    // ✅ Color encodes "up_ratio(%)" so the dots are not all the same color.
-    //    (Low=blue → High=red)
-    const vm = {
-      type:"continuous",
-      min:0, max:100,
-      dimension:4,
-      orient:"horizontal",
-      left:"center",
-      bottom:0,
-      itemWidth: 14,
-      itemHeight: 120,
-      text:["상승비율 높음","낮음"],
-      formatter:(v)=> (Number(v).toFixed(0) + "%"),
-      inRange:{ color:["#1d4ed8","#38bdf8","#facc15","#ef4444"] }
-    };
-
-    c6.setOption({
-      tooltip:{ trigger:"item",
-        formatter:(p)=>{
-          const v=p.value||[];
-          return `${p.name}<br/>평균등락율: ${Number(v[0]||0).toFixed(2)}%<br/>외+기관: ${Number(v[1]||0).toFixed(0)}주<br/>거래대금: ${Number(v[2]||0).toFixed(0)}억<br/>종목수: ${Number(v[3]||0)}개<br/>상승비율: ${Number(v[4]||0).toFixed(0)}%`;
-        }
-      },
-      visualMap: vm,
-      grid:{ left:10, right:16, top:12, bottom:52, containLabel:true },
-      xAxis:{
-        type:"value",
-        name:"평균등락율(%)",
-        axisLine:{ onZero:true },
-        splitLine:{ show:true }
-      },
-      yAxis:{
-        type:"value",
-        name:"외국인+기관(주)",
-        axisLine:{ onZero:true },
-        splitLine:{ show:true }
-      },
-      series:[{
-        type:"scatter",
-        data:seriesData,
-        symbolSize:(v)=>{
-          const s=Number(v[2]||0);
-          return clampNum(6 + Math.sqrt(Math.max(s,0))*1.2, 6, 42);
-        },
-        itemStyle:{ opacity:0.88, borderWidth:1, borderColor:"rgba(255,255,255,0.75)" },
-        emphasis:{
-          focus:"series",
-          label:{ show:true, formatter:(p)=>p.name, position:"top", fontWeight:700 }
-        },
-        // ✅ help interpretation: quadrant lines
-        markLine:{
-          silent:true,
-          lineStyle:{ type:"dashed", opacity:0.35 },
-          data:[{xAxis:0},{yAxis:0}]
-        }
-      }]
-    });
-    window.addEventListener("resize", ()=>c6.resize());
-  }
-
-  function treemapOption(items){
-    return {
-      tooltip:{ formatter:(p)=>{ const d=p.data||{}; return `${d.name||"-"}<br/>${d.subtitle||""}<br/>대표: ${d.top3||"-"}`; } },
-      series:[{ type:"treemap", roam:false, nodeClick:false, breadcrumb:{show:false},
-        // 1줄 스트립형(가로 슬라이스)로 보이게
-        layoutAlgorithm:"sliceAndDice", sort:"desc",
-        label:{ show:true, formatter:(p)=>String(p.name||"").replace(/\s+/g," ").slice(0,18), overflow:"truncate" },
-        itemStyle:{ borderColor:"rgba(255,255,255,0.92)", borderWidth:1, gapWidth:1 },
-        data: items || [] }]
-    };
-  }
-
-  const tm1=$("pc-tm_trading");
-  if(tm1){ const c=echarts.init(tm1); c.setOption(treemapOption(((data.treemaps||{}).trading)||[])); window.addEventListener("resize", ()=>c.resize()); }
-  const tm2=$("pc-tm_flow");
-  if(tm2){ const c=echarts.init(tm2); c.setOption(treemapOption(((data.treemaps||{}).flow)||[])); window.addEventListener("resize", ()=>c.resize()); }
-  const tm3=$("pc-tm_momentum");
-  if(tm3){ const c=echarts.init(tm3); c.setOption(treemapOption(((data.treemaps||{}).momentum)||[])); window.addEventListener("resize", ()=>c.resize()); }
-  const tm4=$("pc-tm_nearlow");
-  if(tm4){ const c=echarts.init(tm4); c.setOption(treemapOption(((data.treemaps||{}).near_low)||[])); window.addEventListener("resize", ()=>c.resize()); }
+  });
 })();
 </script>
-<div class="summary-row flow3">
-<div class="where-card flow">
-<div class="where-title">외국인 순매수 상위 테마</div>
-<div class="where-pill">수급 · 외국인</div>
-<p class="where-text">오늘 외국인 순매수(수량 기준)가 강한 테마 TOP3입니다.</p>
-<p class="where-text"><span class="theme-pill-inline">조선/LNG</span> <span class="theme-pill-inline">반도체</span> <span class="theme-pill-inline">증권</span></p>
-</div>
-<div class="where-card flow">
-<div class="where-title">기관 순매수 상위 테마</div>
-<div class="where-pill">수급 · 기관</div>
-<p class="where-text">오늘 기관(연기금 포함) 순매수(수량 기준)가 강한 테마 TOP3입니다.</p>
-<p class="where-text"><span class="theme-pill-inline">금융</span> <span class="theme-pill-inline">조선/LNG</span> <span class="theme-pill-inline">화장품</span></p>
-</div>
-<div class="where-card flow">
-<div class="where-title">개인 순매수 상위 테마</div>
-<div class="where-pill">수급 · 개인</div>
-<p class="where-text">오늘 개인 순매수(수량 기준)가 강한 테마 TOP3입니다.</p>
-<p class="where-text"><span class="theme-pill-inline">로봇</span> <span class="theme-pill-inline">풍력</span> <span class="theme-pill-inline">ESS</span></p>
-</div>
-</div>
-</div>
-<div class="section-box">
-<div class="section-title">장마감 종목 시그널</div>
-<div class="section-sub">장마감 이후에 확인하기 좋은 조합(거래대금·수급·바닥권)을 중심으로 정리했습니다. 단순 등락율 TOP보다 <b>거래대금/수급 동반</b>을 우선으로 보세요.</div>
-<div class="signal-grid">
-<div class="top5-card kind-volume">
-<div class="top5-title">거래대금 TOP10</div>
-<div class="top5-desc">오늘 가장 많은 돈이 모인 종목입니다. (단위: 억)</div>
-<div class="table-wrap">
-<table class="top5-table">
-<thead><tr><th>순위</th><th>종목</th><th>테마</th><th>거래대금</th><th>등락율</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td>124,934.27</td><td><span class="neg">-5.64%</span></td></tr>
-<tr><td>2</td><td class="name">삼성전자</td><td class="name">반도체</td><td>98,017.99</td><td><span class="neg">-0.72%</span></td></tr>
-<tr><td>3</td><td class="name">SK스퀘어</td><td class="name">지주사</td><td>10,930.64</td><td><span class="neg">-6.00%</span></td></tr>
-<tr><td>4</td><td class="name">현대차</td><td class="name">자동차</td><td>3,394.16</td><td><span class="neg">-0.71%</span></td></tr>
-<tr><td>5</td><td class="name">셀트리온</td><td class="name">바이오</td><td>3,304.98</td><td><span class="pos">5.56%</span></td></tr>
-<tr><td>6</td><td class="name">NAVER</td><td class="name">AI, 스테이블코인</td><td>3,304.58</td><td><span class="neg">-3.37%</span></td></tr>
-<tr><td>7</td><td class="name">SK이터닉스</td><td class="name">ESS, 풍력</td><td>2,898.54</td><td><span class="neg">-3.80%</span></td></tr>
-<tr><td>8</td><td class="name">주성엔지니어링</td><td class="name">반도체장비</td><td>2,824.05</td><td><span class="neg">-15.33%</span></td></tr>
-<tr><td>9</td><td class="name">KB금융</td><td class="name">금융</td><td>2,799.64</td><td><span class="pos">4.56%</span></td></tr>
-<tr><td>10</td><td class="name">삼성SDI</td><td class="name">2차전지, ESS</td><td>2,795.40</td><td><span class="neg">-1.51%</span></td></tr>
-</tbody></table></div></div>
-<div class="top5-card kind-foreign">
-<div class="top5-title">외+기관 순매수 TOP10</div>
-<div class="top5-desc">외국인+기관(합산) 순매수가 강한 종목입니다. (단위: 주)</div>
-<div class="table-wrap">
-<table class="top5-table">
-<thead><tr><th>순위</th><th>종목</th><th>테마</th><th>외+기관</th><th>등락율</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">삼성중공업</td><td class="name">조선/LNG</td><td><span class="pos">1,305,968</span></td><td><span class="pos">5.93%</span></td></tr>
-<tr><td>2</td><td class="name">한화오션</td><td class="name">조선/LNG</td><td><span class="pos">719,647</span></td><td><span class="pos">6.30%</span></td></tr>
-<tr><td>3</td><td class="name">우리금융지주</td><td class="name">금융</td><td><span class="pos">707,561</span></td><td><span class="pos">2.03%</span></td></tr>
-<tr><td>4</td><td class="name">한온시스템</td><td class="name">자동차</td><td><span class="pos">673,143</span></td><td><span class="pos">3.32%</span></td></tr>
-<tr><td>5</td><td class="name">카카오</td><td class="name">AI</td><td><span class="pos">534,581</span></td><td><span class="pos">2.41%</span></td></tr>
-<tr><td>6</td><td class="name">삼성전자</td><td class="name">반도체</td><td><span class="pos">419,985</span></td><td><span class="neg">-0.72%</span></td></tr>
-<tr><td>7</td><td class="name">삼성E&A</td><td class="name">건설</td><td><span class="pos">409,245</span></td><td><span class="pos">3.14%</span></td></tr>
-<tr><td>8</td><td class="name">한화솔루션</td><td class="name">태양광</td><td><span class="pos">406,886</span></td><td><span class="pos">2.84%</span></td></tr>
-<tr><td>9</td><td class="name">셀트리온</td><td class="name">바이오</td><td><span class="pos">397,459</span></td><td><span class="pos">5.56%</span></td></tr>
-<tr><td>10</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td><span class="pos">367,760</span></td><td><span class="neg">-5.64%</span></td></tr>
-</tbody></table></div></div>
-<div class="top5-card kind-price">
-<div class="top5-title">강세×거래대금 TOP10</div>
-<div class="top5-desc">등락율×거래대금(로그) 스코어 기준 — '주도주' 성격을 빠르게 확인합니다.</div>
-<div class="table-wrap">
-<table class="top5-table">
-<thead><tr><th>순위</th><th>종목</th><th>테마</th><th>등락율</th><th>거래대금</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">금호건설</td><td class="name">건설</td><td><span class="pos">30.00%</span></td><td>385.35</td></tr>
-<tr><td>2</td><td class="name">야스</td><td class="name">유리기판</td><td><span class="pos">29.97%</span></td><td>191.52</td></tr>
-<tr><td>3</td><td class="name">LG생활건강</td><td class="name">화장품</td><td><span class="pos">11.03%</span></td><td>1,478.34</td></tr>
-<tr><td>4</td><td class="name">HD한국조선해양</td><td class="name">조선/LNG</td><td><span class="pos">10.00%</span></td><td>1,547.46</td></tr>
-<tr><td>5</td><td class="name">아모레퍼시픽</td><td class="name">화장품</td><td><span class="pos">9.93%</span></td><td>1,275.95</td></tr>
-<tr><td>6</td><td class="name">일승</td><td class="name">조선/LNG</td><td><span class="pos">11.85%</span></td><td>346.18</td></tr>
-<tr><td>7</td><td class="name">코난테크놀로지</td><td class="name">AI</td><td><span class="pos">20.07%</span></td><td>26.16</td></tr>
-<tr><td>8</td><td class="name">금호타이어</td><td class="name">자동차</td><td><span class="pos">8.57%</span></td><td>733.42</td></tr>
-<tr><td>9</td><td class="name">씨메스</td><td class="name">로봇</td><td><span class="pos">29.95%</span></td><td>4.84</td></tr>
-<tr><td>10</td><td class="name">한화에어로스페이스</td><td class="name">방산, 우주항공</td><td><span class="pos">6.79%</span></td><td>2,229.98</td></tr>
-</tbody></table></div></div>
-<div class="top5-card kind-inst">
-<div class="top5-title">수급 역행 TOP10</div>
-<div class="top5-desc">외+기관은 사는데(+) 가격이 내려간(-) 종목 — 매집/악재 해소 후보군(주의 필요).</div>
-<div class="table-wrap">
-<table class="top5-table">
-<thead><tr><th>순위</th><th>종목</th><th>테마</th><th>외+기관</th><th>등락율</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">삼성전자</td><td class="name">반도체</td><td><span class="pos">419,985</span></td><td><span class="neg">-0.72%</span></td></tr>
-<tr><td>2</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td><span class="pos">367,760</span></td><td><span class="neg">-5.64%</span></td></tr>
-<tr><td>3</td><td class="name">미래에셋증권</td><td class="name">증권</td><td><span class="pos">333,812</span></td><td><span class="neg">-1.63%</span></td></tr>
-<tr><td>4</td><td class="name">에스와이스틸텍</td><td class="name">우크라이나/재건</td><td><span class="pos">274,920</span></td><td><span class="neg">-1.42%</span></td></tr>
-<tr><td>5</td><td class="name">SK증권</td><td class="name">증권</td><td><span class="pos">216,426</span></td><td><span class="neg">-3.02%</span></td></tr>
-<tr><td>6</td><td class="name">폴라리스오피스</td><td class="name">AI</td><td><span class="pos">208,290</span></td><td><span class="neg">-2.14%</span></td></tr>
-<tr><td>7</td><td class="name">두산에너빌리티</td><td class="name">원전</td><td><span class="pos">207,554</span></td><td><span class="neg">-0.99%</span></td></tr>
-<tr><td>8</td><td class="name">보성파워텍</td><td class="name">원전, 전력인프라</td><td><span class="pos">168,957</span></td><td><span class="neg">-4.17%</span></td></tr>
-<tr><td>9</td><td class="name">한국전력</td><td class="name">원전</td><td><span class="pos">142,022</span></td><td><span class="neg">-0.15%</span></td></tr>
-<tr><td>10</td><td class="name">고영</td><td class="name">로봇</td><td><span class="pos">135,889</span></td><td><span class="neg">-0.88%</span></td></tr>
-</tbody></table></div></div>
-<div class="top5-card kind-price">
-<div class="top5-title">거래대금 동반 급락 TOP10</div>
-<div class="top5-desc">하락폭×거래대금(로그) 스코어 기준 — '손절/리스크' 체크용.</div>
-<div class="table-wrap">
-<table class="top5-table">
-<thead><tr><th>순위</th><th>종목</th><th>테마</th><th>등락율</th><th>거래대금</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">주성엔지니어링</td><td class="name">반도체장비</td><td><span class="neg">-15.33%</span></td><td>2,824.05</td></tr>
-<tr><td>2</td><td class="name">현대무벡스</td><td class="name">로봇</td><td><span class="neg">-17.48%</span></td><td>630.56</td></tr>
-<tr><td>3</td><td class="name">테스</td><td class="name">반도체, 반도체장비</td><td><span class="neg">-12.51%</span></td><td>644.22</td></tr>
-<tr><td>4</td><td class="name">달바글로벌</td><td class="name">화장품</td><td><span class="neg">-11.89%</span></td><td>855.79</td></tr>
-<tr><td>5</td><td class="name">피에스케이</td><td class="name">반도체장비</td><td><span class="neg">-11.75%</span></td><td>711.03</td></tr>
-<tr><td>6</td><td class="name">가온전선</td><td class="name">전력인프라</td><td><span class="neg">-12.09%</span></td><td>306.34</td></tr>
-<tr><td>7</td><td class="name">두산</td><td class="name">지주사</td><td><span class="neg">-9.91%</span></td><td>1,019.68</td></tr>
-<tr><td>8</td><td class="name">SK하이닉스</td><td class="name">반도체</td><td><span class="neg">-5.64%</span></td><td>124,934.27</td></tr>
-<tr><td>9</td><td class="name">레인보우로보틱스</td><td class="name">로봇</td><td><span class="neg">-9.14%</span></td><td>1,079.23</td></tr>
-<tr><td>10</td><td class="name">오브젠</td><td class="name">AI</td><td><span class="neg">-17.23%</span></td><td>38.14</td></tr>
-</tbody></table></div></div>
-<div class="top5-card kind-volume">
-<div class="top5-title">52주 저점 근처 + 외+기관</div>
-<div class="top5-desc">저점권(±10%)이면서 외+기관 순매수인 종목 — 반등/리밸런싱 후보군.</div>
-<div class="table-wrap">
-<table class="top5-table">
-<thead><tr><th>순위</th><th>종목</th><th>저점대비</th><th>외+기관</th><th>테마</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">한화솔루션</td><td>+6.8%</td><td><span class="pos">406,886</span></td><td class="name">태양광</td></tr>
-<tr><td>2</td><td class="name">에스와이스틸텍</td><td>+6.2%</td><td><span class="pos">274,920</span></td><td class="name">우크라이나/재건</td></tr>
-<tr><td>3</td><td class="name">한화투자증권</td><td>+4.6%</td><td><span class="pos">225,360</span></td><td class="name">증권</td></tr>
-<tr><td>4</td><td class="name">폴라리스오피스</td><td>+7.0%</td><td><span class="pos">208,290</span></td><td class="name">AI</td></tr>
-<tr><td>5</td><td class="name">YGPLUS</td><td>+9.2%</td><td><span class="pos">163,365</span></td><td class="name">엔터</td></tr>
-<tr><td>6</td><td class="name">성우하이텍</td><td>+5.5%</td><td><span class="pos">151,422</span></td><td class="name">자동차</td></tr>
-<tr><td>7</td><td class="name">한국전력</td><td>+3.3%</td><td><span class="pos">142,022</span></td><td class="name">원전</td></tr>
-<tr><td>8</td><td class="name">슈어소프트테크</td><td>+7.5%</td><td><span class="pos">139,577</span></td><td class="name">자율주행</td></tr>
-<tr><td>9</td><td class="name">태영건설</td><td>+6.0%</td><td><span class="pos">135,043</span></td><td class="name">건설</td></tr>
-<tr><td>10</td><td class="name">우리기술투자</td><td>+5.5%</td><td><span class="pos">131,278</span></td><td class="name">스테이블코인</td></tr>
-</tbody></table></div></div>
-<div class="top5-card kind-price">
-<div class="top5-title">52주 고점 근처 + 외+기관</div>
-<div class="top5-desc">고점권(±10%)이면서 외+기관 순매수인 종목 — 돌파/추세 후보군.</div>
-<div class="table-wrap">
-<table class="top5-table">
-<thead><tr><th>순위</th><th>종목</th><th>고점대비</th><th>외+기관</th><th>거래대금</th><th>등락율</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">오리온</td><td>-9.9%</td><td><span class="pos">3,206</span></td><td>216.33</td><td><span class="pos">0.22%</span></td></tr>
-</tbody></table></div></div>
-<div class="top5-card kind-volume">
-<div class="top5-title">종가 강도 TOP10</div>
-<div class="top5-desc">종가가 일중 고가에 가까운 종목(≥0.85) × 거래대금 스코어 — '마감 강한 종목' 선별용.</div>
-<div class="table-wrap">
-<table class="top5-table">
-<thead><tr><th>순위</th><th>종목</th><th>테마</th><th>종가강도</th><th>갭(%)</th><th>변동폭(%)</th><th>거래대금</th></tr></thead><tbody>
-<tr><td>1</td><td class="name">아모레퍼시픽</td><td class="name">화장품</td><td>100</td><td>+0.0</td><td>10.8</td><td>1,275.95</td></tr>
-<tr><td>2</td><td class="name">셀트리온</td><td class="name">바이오</td><td>86</td><td>+0.1</td><td>6.6</td><td>3,304.98</td></tr>
-<tr><td>3</td><td class="name">삼성바이오로직스</td><td class="name">바이오</td><td>86</td><td>-0.4</td><td>6.7</td><td>1,258.81</td></tr>
-<tr><td>4</td><td class="name">금호건설</td><td class="name">건설</td><td>100</td><td>+12.6</td><td>24.9</td><td>385.35</td></tr>
-<tr><td>5</td><td class="name">야스</td><td class="name">유리기판</td><td>100</td><td>+0.0</td><td>30.0</td><td>191.52</td></tr>
-<tr><td>6</td><td class="name">유한양행</td><td class="name">바이오</td><td>92</td><td>-0.4</td><td>7.0</td><td>295.15</td></tr>
-<tr><td>7</td><td class="name">DN오토모티브</td><td class="name">자동차</td><td>85</td><td>+0.3</td><td>13.6</td><td>112.41</td></tr>
-<tr><td>8</td><td class="name">아모레퍼시픽홀딩스</td><td class="name">지주사</td><td>93</td><td>+0.8</td><td>5.8</td><td>60.89</td></tr>
-<tr><td>9</td><td class="name">하이트진로</td><td class="name">식음료</td><td>99</td><td>+0.1</td><td>4.5</td><td>28.55</td></tr>
-<tr><td>10</td><td class="name">코난테크놀로지</td><td class="name">AI</td><td>99</td><td>+9.4</td><td>18.9</td><td>26.16</td></tr>
-</tbody></table></div></div>
-</div>
-<p class="detail-note">※ 거래대금은 Kiwoom TR10005 기준 <b>백만 원 단위</b>이며, 대시보드에서는 <b>억 원</b> 단위로 환산해 표시했습니다. 수급(개인·외국인·기관)은 TR10059 기준이며, 금액이 아닌 <b>수량(주)</b> 기준입니다. 테마·종목은 커버리지 데이터(= theme_postclose_stats.tsv에 포함된 범위) 기준입니다.</p>
-</div>
-</section>
-</div>
+
+</main>
+<footer>Insight Map</footer>
 </body>
 </html>

@@ -1,4 +1,4 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Insight Map</title><style>
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>공유용 캡처</title><style>
 :root {
   color-scheme:light;
   --bg:#f4f6fa;
@@ -155,33 +155,4 @@ footer{padding-top:0;padding-bottom:30px;color:var(--muted);font-size:12px;text-
   :root{color-scheme:dark;--bg:#0f131c;--surface:#171d28;--surface-soft:#1c2431;--surface-strong:#242e3e;--line:#2b3546;--line-strong:#3b475b;--text:#f4f7fb;--text-soft:#d6dce6;--muted:#9aa6b8;--up:#ff6b63;--up-soft:#3b2023;--down:#69a0ff;--down-soft:#182a4b;--flat:#7f8ba0;--accent-soft:#262d56;--shadow:0 10px 32px rgba(0,0,0,.22);--shadow-soft:0 4px 16px rgba(0,0,0,.18)}
   body{background:var(--bg)}.site-header,header{background:rgba(23,29,40,.92)}.kpi,.index-card{background:linear-gradient(180deg,var(--surface),var(--surface-soft))}.donut-bg{stroke:#2a3444}.diverging-track{background:#2a3444}.zero-line{background:#59667b}.theme-map{background:#202938}.map-tile{border-color:#151b25}.index-kpi{background:var(--surface-strong)}
 }
-
-.router-box{max-width:760px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:32px;box-shadow:var(--shadow)}
-.router-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
-.router-links a{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:14px;border:1px solid var(--line);background:var(--surface-soft);color:var(--text);font-weight:800}
-.router-links a:hover{border-color:var(--phase);background:var(--phase-soft)}
-.router-note{margin-top:12px;color:var(--muted);font-size:13px}
-@media(max-width:720px){.router-box{padding:22px}.router-links{grid-template-columns:1fr 1fr}}
-</style>
-<script>
-function choosePhase(){
-  var parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Seoul',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
-  var values={};
-  parts.forEach(function(part){ values[part.type]=part.value; });
-  var minute=Number(values.hour||0)*60+Number(values.minute||0);
-  var weekend=values.weekday==='Sat'||values.weekday==='Sun';
-  if(weekend) return {key:'postclose',label:'장후',href:'postclose/postclose.html'};
-  if(minute<540) return {key:'preopen',label:'장전',href:'preopen/preopen.html'};
-  if(minute<930) return {key:'intraday',label:'장중',href:'intraday/intraday.html'};
-  return {key:'postclose',label:'장후',href:'postclose/postclose.html'};
-}
-document.addEventListener('DOMContentLoaded', function(){
-  var choice=choosePhase();
-  var target=document.getElementById('targetPhase');
-  var status=document.getElementById('routerStatus');
-  if(target) target.textContent=choice.label;
-  if(status) status.textContent='현재 시간에 맞는 화면으로 이동합니다.';
-  setTimeout(function(){ location.replace(choice.href); }, 250);
-});
-</script>
-</head><body class="phase-index"><header class="site-header"><div class="header-inner"><div class="header-row"><div class="title-block"><div class="title-line"><span class="phase-pill">AUTO</span><h1>Insight Map</h1></div><p class="subtitle">현재 시간에 맞는 장전·장중·장후 화면으로 연결</p></div><nav class="nav"><a class="active" href="index.html">자동</a><a class="" href="overview.html">요약</a><a class="" href="preopen/preopen.html">장전</a><a class="" href="intraday/intraday.html">장중</a><a class="" href="postclose/postclose.html">장후</a></nav></div></div></header><main><div class="router-box"><h2>자동 이동: <span id="targetPhase">-</span></h2><p class="router-note" id="routerStatus">화면을 준비하고 있습니다.</p><div class="router-links"><a href="preopen/preopen.html">장전</a><a href="intraday/intraday.html">장중</a><a href="postclose/postclose.html">장후</a><a href="overview.html">요약</a></div></div></main><footer>Insight Map</footer></body></html>
+.share-list{max-width:900px;margin:0 auto;padding:24px}.share-list ul{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;list-style:none;padding:0}.share-list a{display:block;padding:14px 16px;background:var(--surface);border:1px solid var(--line);border-radius:14px;color:var(--text);font-weight:700}</style></head><body class="phase-index"><header class="site-header"><div class="header-inner"><div class="header-row"><div class="title-block"><div class="title-line"><span class="phase-pill">SHARE</span><h1>공유용 캡처 페이지</h1></div><p class="subtitle">항목별 페이지</p></div>{nav_html("overview")}</div></div></header><main><div class="share-list"><ul><li><a href="preopen/01_핵심지표.html">01_핵심지표</a></li><li><a href="preopen/02_시장폭.html">02_시장폭</a></li><li><a href="preopen/03_강약테마_TOP5.html">03_강약테마_TOP5</a></li><li><a href="preopen/04_기간별_테마흐름.html">04_기간별_테마흐름</a></li><li><a href="preopen/05_주도테마_TOP3.html">05_주도테마_TOP3</a></li><li><a href="preopen/06_테마맵.html">06_테마맵</a></li><li><a href="preopen/07_장전_관심_TOP_5.html">07_장전_관심_TOP_5</a></li><li><a href="preopen/08_평소_대비_거래대금_TOP_5.html">08_평소_대비_거래대금_TOP_5</a></li><li><a href="preopen/09_외_기관_5일_순매수_TOP_5.html">09_외_기관_5일_순매수_TOP_5</a></li><li><a href="preopen/10_5일_상승_전환_TOP_5.html">10_5일_상승_전환_TOP_5</a></li><li><a href="preopen/11_5일_상승_TOP_5.html">11_5일_상승_TOP_5</a></li><li><a href="preopen/12_52주_최고가_근접_TOP_5.html">12_52주_최고가_근접_TOP_5</a></li><li><a href="intraday/01_핵심지표.html">01_핵심지표</a></li><li><a href="intraday/02_시장폭.html">02_시장폭</a></li><li><a href="intraday/03_강약테마_TOP5.html">03_강약테마_TOP5</a></li><li><a href="intraday/04_테마_외기관순매수.html">04_테마_외기관순매수</a></li><li><a href="intraday/05_주도테마_TOP3.html">05_주도테마_TOP3</a></li><li><a href="intraday/06_테마맵.html">06_테마맵</a></li><li><a href="intraday/07_장중_강세_TOP_5.html">07_장중_강세_TOP_5</a></li><li><a href="intraday/08_거래대금_TOP_5.html">08_거래대금_TOP_5</a></li><li><a href="intraday/09_외_기관_순매수_TOP_5.html">09_외_기관_순매수_TOP_5</a></li><li><a href="intraday/10_시가_대비_상승_TOP_5.html">10_시가_대비_상승_TOP_5</a></li><li><a href="intraday/11_장중_밀림_TOP_5.html">11_장중_밀림_TOP_5</a></li><li><a href="intraday/12_52주_최고가_근접_TOP_5.html">12_52주_최고가_근접_TOP_5</a></li><li><a href="postclose/01_핵심지표.html">01_핵심지표</a></li><li><a href="postclose/02_시장폭.html">02_시장폭</a></li><li><a href="postclose/03_강약테마_TOP5.html">03_강약테마_TOP5</a></li><li><a href="postclose/04_테마_외기관순매수.html">04_테마_외기관순매수</a></li><li><a href="postclose/05_주도테마_TOP3.html">05_주도테마_TOP3</a></li><li><a href="postclose/06_테마맵.html">06_테마맵</a></li><li><a href="postclose/07_마감_강세_TOP_5.html">07_마감_강세_TOP_5</a></li><li><a href="postclose/08_거래대금_TOP_5.html">08_거래대금_TOP_5</a></li><li><a href="postclose/09_외_기관_순매수_TOP_5.html">09_외_기관_순매수_TOP_5</a></li><li><a href="postclose/10_마감_매수세_TOP_5.html">10_마감_매수세_TOP_5</a></li><li><a href="postclose/11_하락_중_순매수_TOP_5.html">11_하락_중_순매수_TOP_5</a></li><li><a href="postclose/12_거래_많은_하락_TOP_5.html">12_거래_많은_하락_TOP_5</a></li><li><a href="postclose/13_52주_최고가_근접_TOP_5.html">13_52주_최고가_근접_TOP_5</a></li><li><a href="postclose/14_52주_최저가_근접_TOP_5.html">14_52주_최저가_근접_TOP_5</a></li></ul></div></main><footer>Insight Map</footer></body></html>

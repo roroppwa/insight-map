@@ -1,4 +1,13 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Insight Map</title><style>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="insight-capture-width" content="980">
+<meta name="insight-capture-height" content="600">
+<title>테마 맵</title>
+<style>
 :root {
   color-scheme:light;
   --bg:#f4f6fa;
@@ -156,32 +165,47 @@ footer{padding-top:0;padding-bottom:30px;color:var(--muted);font-size:12px;text-
   body{background:var(--bg)}.site-header,header{background:rgba(23,29,40,.92)}.kpi,.index-card{background:linear-gradient(180deg,var(--surface),var(--surface-soft))}.donut-bg{stroke:#2a3444}.diverging-track{background:#2a3444}.zero-line{background:#59667b}.theme-map{background:#202938}.map-tile{border-color:#151b25}.index-kpi{background:var(--surface-strong)}
 }
 
-.router-box{max-width:760px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:32px;box-shadow:var(--shadow)}
-.router-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
-.router-links a{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:14px;border:1px solid var(--line);background:var(--surface-soft);color:var(--text);font-weight:800}
-.router-links a:hover{border-color:var(--phase);background:var(--phase-soft)}
-.router-note{margin-top:12px;color:var(--muted);font-size:13px}
-@media(max-width:720px){.router-box{padding:22px}.router-links{grid-template-columns:1fr 1fr}}
-</style>
-<script>
-function choosePhase(){
-  var parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Seoul',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
-  var values={};
-  parts.forEach(function(part){ values[part.type]=part.value; });
-  var minute=Number(values.hour||0)*60+Number(values.minute||0);
-  var weekend=values.weekday==='Sat'||values.weekday==='Sun';
-  if(weekend) return {key:'postclose',label:'장후',href:'postclose/postclose.html'};
-  if(minute<540) return {key:'preopen',label:'장전',href:'preopen/preopen.html'};
-  if(minute<930) return {key:'intraday',label:'장중',href:'intraday/intraday.html'};
-  return {key:'postclose',label:'장후',href:'postclose/postclose.html'};
+
+:root{
+  color-scheme:light!important;
+  --bg:#f4f6fa;--surface:#ffffff;--surface-soft:#f8f9fc;--surface-strong:#eef2f8;
+  --line:#e2e7f0;--line-strong:#cfd7e5;--text:#111827;--text-soft:#374151;
+  --muted:#6b7280;--up:#e0362f;--up-soft:#fff1f0;--down:#2563d9;
+  --down-soft:#eef4ff;--flat:#9aa3b2;--accent:#5267df;--accent-soft:#eef0ff;
+  --shadow:0 8px 30px rgba(33,43,72,.07);--shadow-soft:0 3px 14px rgba(33,43,72,.05)
 }
-document.addEventListener('DOMContentLoaded', function(){
-  var choice=choosePhase();
-  var target=document.getElementById('targetPhase');
-  var status=document.getElementById('routerStatus');
-  if(target) target.textContent=choice.label;
-  if(status) status.textContent='현재 시간에 맞는 화면으로 이동합니다.';
-  setTimeout(function(){ location.replace(choice.href); }, 250);
-});
-</script>
-</head><body class="phase-index"><header class="site-header"><div class="header-inner"><div class="header-row"><div class="title-block"><div class="title-line"><span class="phase-pill">AUTO</span><h1>Insight Map</h1></div><p class="subtitle">현재 시간에 맞는 장전·장중·장후 화면으로 연결</p></div><nav class="nav"><a class="active" href="index.html">자동</a><a class="" href="overview.html">요약</a><a class="" href="preopen/preopen.html">장전</a><a class="" href="intraday/intraday.html">장중</a><a class="" href="postclose/postclose.html">장후</a></nav></div></div></header><main><div class="router-box"><h2>자동 이동: <span id="targetPhase">-</span></h2><p class="router-note" id="routerStatus">화면을 준비하고 있습니다.</p><div class="router-links"><a href="preopen/preopen.html">장전</a><a href="intraday/intraday.html">장중</a><a href="postclose/postclose.html">장후</a><a href="overview.html">요약</a></div></div></main><footer>Insight Map</footer></body></html>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}
+body{background:#fff;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR","Malgun Gothic",Arial,sans-serif}
+.capture-page{width:100%;height:100%;padding:0;background:#fff}
+.capture-section{width:100%;height:100%;margin:0;background:#fff;border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:none}
+.capture-head{height:57px;display:flex;align-items:center;padding:0 20px;border-bottom:1px solid var(--line);background:#fff}
+.capture-head h1{margin:0;font-size:18px;line-height:1.2;letter-spacing:-.45px}
+.capture-body{height:calc(100% - 57px);overflow:hidden;background:#fff}
+.capture-body .kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;height:100%;padding:0}
+.capture-body .kpi{min-height:0;height:100%;padding:16px 17px 14px;border-radius:13px}
+.capture-body.kpi-capture{padding:0}.capture-body.kpi-capture .kpi-grid{grid-template-rows:repeat(2,minmax(0,1fr))}
+.capture-body.visual-capture{padding:14px}.capture-body.visual-capture .visual-grid{display:block;padding:0;height:100%}
+.capture-body.visual-capture .visual-card{height:100%;padding:16px;background:var(--surface-soft)}
+.capture-body.visual-capture .breadth-wrap{min-height:0;height:calc(100% - 34px)}
+.capture-body.visual-capture .bar-list,.capture-body.visual-capture .flow-list{height:auto}
+.capture-body.theme-capture{padding:14px}.capture-body.theme-capture .top-table-wrap{padding:0;height:100%;overflow:hidden}
+.capture-body.theme-capture .top-table{height:100%}.capture-body.theme-capture .top-table th,.capture-body.theme-capture .top-table td{padding:11px 10px}
+.capture-body.map-capture{padding:14px}.capture-body.map-capture .map-wrap{height:100%;padding:0}.capture-body.map-capture .theme-map{height:100%;border-radius:12px}
+.capture-body.ranking-capture{padding:14px}.capture-body.ranking-capture .ranking-grid{display:block;padding:0;height:100%}
+.capture-body.ranking-capture .ranking-card{height:100%;max-width:none;margin:0;box-shadow:none}
+.capture-body.ranking-capture .ranking-card h3{display:none}
+.capture-body.ranking-capture .ranking-card ol{height:100%;display:grid;grid-template-rows:repeat(var(--rank-rows,5),minmax(0,1fr))}
+.capture-body.ranking-capture .ranking-card li{min-height:0;height:100%;padding-top:8px;padding-bottom:8px}
+.capture-body.ranking-capture .ranking-card .empty-row{grid-row:1/-1;align-items:center}
+@media(prefers-color-scheme:dark){html,body,.capture-page,.capture-section,.capture-head,.capture-body{background:#fff;color:#111827}}
+</style>
+</head>
+<body class="phase-postclose">
+<main class="capture-page">
+  <section class="capture-section">
+    <div class="capture-head"><h1>테마 맵</h1></div>
+    <div class="capture-body map-capture" style="--rank-rows:5"><div class="map-wrap"><div class="theme-map" aria-label="테마 거래대금 트리맵"><div class="map-tile" data-theme="반도체" style="left:0.0000%;top:0.0000%;width:67.3979%;height:100.0000%;background:hsl(5 72% 53%);color:#ffffff" title="반도체 · 평균 +24.20% · 거래대금 32,785,440.0억"><strong>반도체</strong><span>+24.20% · 32,785,440.0억</span></div><div class="map-tile" data-theme="지주사" style="left:67.3979%;top:0.0000%;width:19.8601%;height:24.3258%;background:hsl(5 72% 53%);color:#ffffff" title="지주사 · 평균 +7.22% · 거래대금 2,350,082.0억"><strong>지주사</strong><span>+7.22% · 2,350,082.0억</span></div><div class="map-tile" data-theme="반도체장비" style="left:87.2579%;top:0.0000%;width:12.7421%;height:24.3258%;background:hsl(5 72% 53%);color:#ffffff" title="반도체장비 · 평균 +21.79% · 거래대금 1,507,794.0억"><strong>반도체장비</strong><span>+21.79% · 1,507,794.0억</span></div><div class="map-tile" data-theme="전력인프라" style="left:67.3979%;top:24.3258%;width:18.0040%;height:14.3982%;background:hsl(5 72% 53%);color:#ffffff" title="전력인프라 · 평균 +16.46% · 거래대금 1,260,996.0억"><strong>전력인프라</strong><span>+16.46% · 1,260,996.0억</span></div><div class="map-tile" data-theme="ESS" style="left:67.3979%;top:38.7240%;width:18.0040%;height:13.4591%;background:hsl(5 72% 53%);color:#ffffff" title="ESS · 평균 +11.96% · 거래대금 1,178,744.0억"><strong>ESS</strong><span>+11.96% · 1,178,744.0억</span></div><div class="map-tile" data-theme="자동차" style="left:85.4019%;top:24.3258%;width:14.5981%;height:15.9266%;background:hsl(5 72% 53%);color:#ffffff" title="자동차 · 평균 +7.79% · 거래대금 1,130,977.0억"><strong>자동차</strong><span>+7.79% · 1,130,977.0억</span></div><div class="map-tile" data-theme="바이오" style="left:85.4019%;top:40.2524%;width:14.5981%;height:11.9307%;background:hsl(5 72% 53%);color:#ffffff" title="바이오 · 평균 +6.36% · 거래대금 847,223.0억"><strong>바이오</strong><span>+6.36% · 847,223.0억</span></div><div class="map-tile" data-theme="2차전지" style="left:67.3979%;top:52.1831%;width:13.9034%;height:11.8735%;background:hsl(5 72% 59%);color:#ffffff" title="2차전지 · 평균 +4.35% · 거래대금 803,037.0억"><strong>2차전지</strong><span>+4.35% · 803,037.0억</span></div><div class="map-tile" data-theme="금융" style="left:67.3979%;top:64.0566%;width:13.9034%;height:11.1347%;background:hsl(5 72% 82%);color:#172033" title="금융 · 평균 +1.64% · 거래대금 753,070.0억"><strong>금융</strong><span>+1.64% · 753,070.0억</span></div><div class="map-tile" data-theme="조선/LNG" style="left:81.3013%;top:52.1831%;width:18.6987%;height:8.2674%;background:hsl(5 72% 53%);color:#ffffff" title="조선/LNG · 평균 +7.29% · 거래대금 752,000.0억"><strong>조선/LNG</strong><span>+7.29% · 752,000.0억</span></div><div class="map-tile" data-theme="AI" style="left:81.3013%;top:60.4505%;width:9.7431%;height:14.7408%;background:hsl(5 72% 53%);color:#ffffff" title="AI · 평균 +7.50% · 거래대금 698,644.0억"><strong>AI</strong><span>+7.50% · 698,644.0억</span></div><div class="map-tile" data-theme="로봇" style="left:91.0444%;top:60.4505%;width:8.9556%;height:14.7408%;background:hsl(5 72% 53%);color:#ffffff" title="로봇 · 평균 +13.08% · 거래대금 642,173.0억"><strong>로봇</strong><span>+13.08% · 642,173.0억</span></div><div class="map-tile" data-theme="방산" style="left:67.3979%;top:75.1914%;width:14.9478%;height:8.3322%;background:hsl(5 72% 53%);color:#ffffff" title="방산 · 평균 +9.54% · 거래대금 605,859.0억"><strong>방산</strong><span>+9.54% · 605,859.0억</span></div><div class="map-tile" data-theme="건설" style="left:67.3979%;top:83.5235%;width:14.9478%;height:8.2963%;background:hsl(5 72% 53%);color:#ffffff" title="건설 · 평균 +5.33% · 거래대금 603,252.0억"><strong>건설</strong><span>+5.33% · 603,252.0억</span></div><div class="map-tile" data-theme="스테이블코인" style="left:67.3979%;top:91.8198%;width:14.9478%;height:8.1802%;background:hsl(5 72% 53%);color:#ffffff" title="스테이블코인 · 평균 +7.55% · 거래대금 594,806.0억"><strong>스테이블코인</strong><span>+7.55% · 594,806.0억</span></div><div class="map-tile" data-theme="우주항공" style="left:82.3457%;top:75.1914%;width:8.9608%;height:11.5788%;background:hsl(5 72% 53%);color:#ffffff" title="우주항공 · 평균 +12.01% · 거래대금 504,714.0억"><strong>우주항공</strong><span>+12.01%</span></div><div class="map-tile" data-theme="원전" style="left:91.3065%;top:75.1914%;width:8.6935%;height:11.5788%;background:hsl(5 72% 53%);color:#ffffff" title="원전 · 평균 +13.32% · 거래대금 489,654.0억"><strong>원전</strong><span>+13.32%</span></div><div class="map-tile" data-theme="풍력" style="left:82.3457%;top:86.7701%;width:7.3468%;height:13.2299%;background:hsl(5 72% 53%);color:#ffffff" title="풍력 · 평균 +8.30% · 거래대금 472,810.0억"><strong>풍력</strong><span>+8.30%</span></div><div class="map-tile" data-theme="화장품" style="left:89.6925%;top:86.7701%;width:10.3075%;height:7.3271%;background:hsl(5 72% 75%);color:#172033" title="화장품 · 평균 +2.49% · 거래대금 367,386.0억"><strong>화장품</strong><span>+2.49%</span></div><div class="map-tile" data-theme="증권" style="left:89.6925%;top:94.0972%;width:10.3075%;height:5.9028%;background:hsl(5 72% 53%);color:#ffffff" title="증권 · 평균 +9.99% · 거래대금 295,968.0억"><strong>증권</strong><span>+9.99%</span></div></div></div></div>
+  </section>
+</main>
+</body>
+</html>

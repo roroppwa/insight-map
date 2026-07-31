@@ -1,4 +1,13 @@
-<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Insight Map</title><style>
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="insight-capture-width" content="980">
+<meta name="insight-capture-height" content="525">
+<title>테마 외국인·기관 순매수</title>
+<style>
 :root {
   color-scheme:light;
   --bg:#f4f6fa;
@@ -156,32 +165,47 @@ footer{padding-top:0;padding-bottom:30px;color:var(--muted);font-size:12px;text-
   body{background:var(--bg)}.site-header,header{background:rgba(23,29,40,.92)}.kpi,.index-card{background:linear-gradient(180deg,var(--surface),var(--surface-soft))}.donut-bg{stroke:#2a3444}.diverging-track{background:#2a3444}.zero-line{background:#59667b}.theme-map{background:#202938}.map-tile{border-color:#151b25}.index-kpi{background:var(--surface-strong)}
 }
 
-.router-box{max-width:760px;margin:0 auto;background:var(--surface);border:1px solid var(--line);border-radius:22px;padding:32px;box-shadow:var(--shadow)}
-.router-links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:16px}
-.router-links a{display:flex;align-items:center;justify-content:center;min-height:52px;border-radius:14px;border:1px solid var(--line);background:var(--surface-soft);color:var(--text);font-weight:800}
-.router-links a:hover{border-color:var(--phase);background:var(--phase-soft)}
-.router-note{margin-top:12px;color:var(--muted);font-size:13px}
-@media(max-width:720px){.router-box{padding:22px}.router-links{grid-template-columns:1fr 1fr}}
-</style>
-<script>
-function choosePhase(){
-  var parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Seoul',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
-  var values={};
-  parts.forEach(function(part){ values[part.type]=part.value; });
-  var minute=Number(values.hour||0)*60+Number(values.minute||0);
-  var weekend=values.weekday==='Sat'||values.weekday==='Sun';
-  if(weekend) return {key:'postclose',label:'장후',href:'postclose/postclose.html'};
-  if(minute<540) return {key:'preopen',label:'장전',href:'preopen/preopen.html'};
-  if(minute<930) return {key:'intraday',label:'장중',href:'intraday/intraday.html'};
-  return {key:'postclose',label:'장후',href:'postclose/postclose.html'};
+
+:root{
+  color-scheme:light!important;
+  --bg:#f4f6fa;--surface:#ffffff;--surface-soft:#f8f9fc;--surface-strong:#eef2f8;
+  --line:#e2e7f0;--line-strong:#cfd7e5;--text:#111827;--text-soft:#374151;
+  --muted:#6b7280;--up:#e0362f;--up-soft:#fff1f0;--down:#2563d9;
+  --down-soft:#eef4ff;--flat:#9aa3b2;--accent:#5267df;--accent-soft:#eef0ff;
+  --shadow:0 8px 30px rgba(33,43,72,.07);--shadow-soft:0 3px 14px rgba(33,43,72,.05)
 }
-document.addEventListener('DOMContentLoaded', function(){
-  var choice=choosePhase();
-  var target=document.getElementById('targetPhase');
-  var status=document.getElementById('routerStatus');
-  if(target) target.textContent=choice.label;
-  if(status) status.textContent='현재 시간에 맞는 화면으로 이동합니다.';
-  setTimeout(function(){ location.replace(choice.href); }, 250);
-});
-</script>
-</head><body class="phase-index"><header class="site-header"><div class="header-inner"><div class="header-row"><div class="title-block"><div class="title-line"><span class="phase-pill">AUTO</span><h1>Insight Map</h1></div><p class="subtitle">현재 시간에 맞는 장전·장중·장후 화면으로 연결</p></div><nav class="nav"><a class="active" href="index.html">자동</a><a class="" href="overview.html">요약</a><a class="" href="preopen/preopen.html">장전</a><a class="" href="intraday/intraday.html">장중</a><a class="" href="postclose/postclose.html">장후</a></nav></div></div></header><main><div class="router-box"><h2>자동 이동: <span id="targetPhase">-</span></h2><p class="router-note" id="routerStatus">화면을 준비하고 있습니다.</p><div class="router-links"><a href="preopen/preopen.html">장전</a><a href="intraday/intraday.html">장중</a><a href="postclose/postclose.html">장후</a><a href="overview.html">요약</a></div></div></main><footer>Insight Map</footer></body></html>
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}
+body{background:#fff;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR","Malgun Gothic",Arial,sans-serif}
+.capture-page{width:100%;height:100%;padding:0;background:#fff}
+.capture-section{width:100%;height:100%;margin:0;background:#fff;border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:none}
+.capture-head{height:57px;display:flex;align-items:center;padding:0 20px;border-bottom:1px solid var(--line);background:#fff}
+.capture-head h1{margin:0;font-size:18px;line-height:1.2;letter-spacing:-.45px}
+.capture-body{height:calc(100% - 57px);overflow:hidden;background:#fff}
+.capture-body .kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;height:100%;padding:0}
+.capture-body .kpi{min-height:0;height:100%;padding:16px 17px 14px;border-radius:13px}
+.capture-body.kpi-capture{padding:0}.capture-body.kpi-capture .kpi-grid{grid-template-rows:repeat(2,minmax(0,1fr))}
+.capture-body.visual-capture{padding:14px}.capture-body.visual-capture .visual-grid{display:block;padding:0;height:100%}
+.capture-body.visual-capture .visual-card{height:100%;padding:16px;background:var(--surface-soft)}
+.capture-body.visual-capture .breadth-wrap{min-height:0;height:calc(100% - 34px)}
+.capture-body.visual-capture .bar-list,.capture-body.visual-capture .flow-list{height:auto}
+.capture-body.theme-capture{padding:14px}.capture-body.theme-capture .top-table-wrap{padding:0;height:100%;overflow:hidden}
+.capture-body.theme-capture .top-table{height:100%}.capture-body.theme-capture .top-table th,.capture-body.theme-capture .top-table td{padding:11px 10px}
+.capture-body.map-capture{padding:14px}.capture-body.map-capture .map-wrap{height:100%;padding:0}.capture-body.map-capture .theme-map{height:100%;border-radius:12px}
+.capture-body.ranking-capture{padding:14px}.capture-body.ranking-capture .ranking-grid{display:block;padding:0;height:100%}
+.capture-body.ranking-capture .ranking-card{height:100%;max-width:none;margin:0;box-shadow:none}
+.capture-body.ranking-capture .ranking-card h3{display:none}
+.capture-body.ranking-capture .ranking-card ol{height:100%;display:grid;grid-template-rows:repeat(var(--rank-rows,5),minmax(0,1fr))}
+.capture-body.ranking-capture .ranking-card li{min-height:0;height:100%;padding-top:8px;padding-bottom:8px}
+.capture-body.ranking-capture .ranking-card .empty-row{grid-row:1/-1;align-items:center}
+@media(prefers-color-scheme:dark){html,body,.capture-page,.capture-section,.capture-head,.capture-body{background:#fff;color:#111827}}
+</style>
+</head>
+<body class="phase-postclose">
+<main class="capture-page">
+  <section class="capture-section">
+    <div class="capture-head"><h1>테마 외국인·기관 순매수</h1></div>
+    <div class="capture-body visual-capture" style="--rank-rows:5"><div class="visual-grid"><article class="visual-card"><h3>테마 외국인·기관 순매수</h3><div class="visual-note">외국인·기관 순매수 규모 비교</div><div class="flow-list"><div class="flow-row"><div class="flow-theme">반도체</div><div class="flow-sub"><span>외</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:50.00%"></span></div><strong class="up">+957.3만</strong></div><div class="flow-sub"><span>기</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:30.27%"></span></div><strong class="up">+579.7만</strong></div></div><div class="flow-row"><div class="flow-theme">전력인프라</div><div class="flow-sub"><span>외</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:18.36%"></span></div><strong class="up">+351.5만</strong></div><div class="flow-sub"><span>기</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:0.05%"></span></div><strong class="up">+9,025</strong></div></div><div class="flow-row"><div class="flow-theme">로봇</div><div class="flow-sub"><span>외</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:15.84%"></span></div><strong class="up">+303.2만</strong></div><div class="flow-sub"><span>기</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:1.59%"></span></div><strong class="up">+30.4만</strong></div></div><div class="flow-row"><div class="flow-theme">증권</div><div class="flow-sub"><span>외</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:18.47%"></span></div><strong class="up">+353.6만</strong></div><div class="flow-sub"><span>기</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill negative" style="width:2.28%"></span></div><strong class="down">-43.7만</strong></div></div><div class="flow-row"><div class="flow-theme">원전</div><div class="flow-sub"><span>외</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill positive" style="width:14.30%"></span></div><strong class="up">+273.8만</strong></div><div class="flow-sub"><span>기</span><div class="diverging-track"><span class="zero-line"></span><span class="diverging-fill negative" style="width:0.17%"></span></div><strong class="down">-3.3만</strong></div></div></div></article></div></div>
+  </section>
+</main>
+</body>
+</html>

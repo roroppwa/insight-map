@@ -1,11 +1,13 @@
 <!doctype html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Insight Map</title><script async src="https://www.googletagmanager.com/gtag/js?id=G-T99ZFKEC1G"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-T99ZFKEC1G');
-</script><style>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light only">
+<meta name="insight-capture-width" content="980">
+<meta name="insight-capture-height" content="302">
+<title>핵심 지표</title>
+<style>
 :root {
   color-scheme:light;
   --bg:#f4f6fa;
@@ -160,36 +162,48 @@ footer{padding-top:0;padding-bottom:30px;color:var(--muted);font-size:12px;text-
   :root{color-scheme:dark;--bg:#0f131c;--surface:#171d28;--surface-soft:#1c2431;--surface-strong:#242e3e;--line:#2b3546;--line-strong:#3b475b;--text:#f4f7fb;--text-soft:#d6dce6;--muted:#9aa6b8;--up:#ff6b63;--up-soft:#3b2023;--down:#69a0ff;--down-soft:#182a4b;--flat:#7f8ba0;--accent-soft:#262d56;--shadow:0 10px 32px rgba(0,0,0,.22);--shadow-soft:0 4px 16px rgba(0,0,0,.18)}
   body{background:var(--bg)}.site-header,header{background:rgba(23,29,40,.92)}.kpi,.index-card{background:linear-gradient(180deg,var(--surface),var(--surface-soft))}.donut-bg{stroke:#2a3444}.diverging-track{background:#2a3444}.zero-line{background:#59667b}.theme-map{background:#202938}.map-tile{border-color:#151b25}.index-kpi{background:var(--surface-strong)}
 }
-</style></head>
-<body class="phase-index"><header class="site-header"><div class="header-inner"><div class="header-row"><div class="title-block"><div class="title-line"><span class="phase-pill">MAP</span><h1>Insight Map 요약</h1></div><p class="subtitle">장전·장중·장후 핵심 흐름</p></div><nav class="nav"><a class="" href="index.html">자동</a><a class="active" href="overview.html">요약</a><a class="" href="preopen/preopen.html">장전</a><a class="" href="intraday/intraday.html">장중</a><a class="" href="postclose/postclose.html">장후</a></nav></div></div></header>
-<main><div class="index-grid">
-<a class="index-card phase-preopen" href="preopen/preopen.html">
-  <h2>장전 대시보드</h2>
-  <p>전일 추세, 거래 증가와 5일 수급</p>
-  <div class="index-kpis">
-    <div class="index-kpi"><span>시장 평균</span><strong class="down">-0.25%</strong></div>
-    <div class="index-kpi"><span>주도 테마</span><strong>2차전지</strong></div>
-    <div class="index-kpi"><span>상승 / 하락</span><strong>222 / 288</strong></div>
-    <div class="index-kpi"><span>거래대금</span><strong>23,011,873.0억</strong></div>
-  </div>
-</a>
-<a class="index-card phase-intraday" href="intraday/intraday.html">
-  <h2>장중 대시보드</h2>
-  <p>현재 강도, 거래 집중과 장중 수급</p>
-  <div class="index-kpis">
-    <div class="index-kpi"><span>시장 평균</span><strong class="up">+0.33%</strong></div>
-    <div class="index-kpi"><span>주도 테마</span><strong>2차전지</strong></div>
-    <div class="index-kpi"><span>상승 / 하락</span><strong>300 / 216</strong></div>
-    <div class="index-kpi"><span>거래대금</span><strong>22,007,221.0억</strong></div>
-  </div>
-</a>
-<a class="index-card phase-postclose" href="postclose/postclose.html">
-  <h2>장후 대시보드</h2>
-  <p>마감 강도, 종가 위치와 최종 수급</p>
-  <div class="index-kpis">
-    <div class="index-kpi"><span>시장 평균</span><strong class="up">+9.15%</strong></div>
-    <div class="index-kpi"><span>주도 테마</span><strong>반도체</strong></div>
-    <div class="index-kpi"><span>상승 / 하락</span><strong>491 / 32</strong></div>
-    <div class="index-kpi"><span>거래대금</span><strong>46,770,498.0억</strong></div>
-  </div>
-</a></div></main><footer>Insight Map</footer></body></html>
+
+
+:root{
+  color-scheme:light!important;
+  --bg:#f4f6fa;--surface:#ffffff;--surface-soft:#f8f9fc;--surface-strong:#eef2f8;
+  --line:#e2e7f0;--line-strong:#cfd7e5;--text:#111827;--text-soft:#374151;
+  --muted:#6b7280;--up:#e0362f;--up-soft:#fff1f0;--down:#2563d9;
+  --down-soft:#eef4ff;--flat:#9aa3b2;--accent:#5267df;--accent-soft:#eef0ff;
+  --shadow:0 8px 30px rgba(33,43,72,.07);--shadow-soft:0 3px 14px rgba(33,43,72,.05)
+}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff}
+body{background:#fff;color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans KR","Malgun Gothic",Arial,sans-serif}
+.capture-page{width:100%;height:100%;padding:0;background:#fff}
+.capture-section{width:100%;height:100%;margin:0;background:#fff;border:1px solid var(--line);border-radius:17px;overflow:hidden;box-shadow:none}
+.capture-head{height:57px;display:flex;align-items:center;padding:0 20px;border-bottom:1px solid var(--line);background:#fff}
+.capture-head h1{margin:0;font-size:18px;line-height:1.2;letter-spacing:-.45px}
+.capture-body{height:calc(100% - 57px);overflow:hidden;background:#fff}
+.capture-body .kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:0;height:100%;padding:0}
+.capture-body .kpi{min-height:0;height:100%;padding:16px 17px 14px;border-radius:13px}
+.capture-body.kpi-capture{padding:0}.capture-body.kpi-capture .kpi-grid{grid-template-rows:repeat(2,minmax(0,1fr))}
+.capture-body.visual-capture{padding:14px}.capture-body.visual-capture .visual-grid{display:block;padding:0;height:100%}
+.capture-body.visual-capture .visual-card{height:100%;padding:16px;background:var(--surface-soft)}
+.capture-body.visual-capture .breadth-wrap{min-height:0;height:calc(100% - 34px)}
+.capture-body.visual-capture .bar-list,.capture-body.visual-capture .flow-list{height:auto}
+.capture-body.theme-capture{padding:14px}.capture-body.theme-capture .top-table-wrap{padding:0;height:100%;overflow:hidden}
+.capture-body.theme-capture .top-table{height:100%}.capture-body.theme-capture .top-table th,.capture-body.theme-capture .top-table td{padding:11px 10px}
+.capture-body.map-capture{padding:14px}.capture-body.map-capture .map-wrap{height:100%;padding:0}.capture-body.map-capture .theme-map{height:100%;border-radius:12px}
+.capture-body.ranking-capture{padding:14px}.capture-body.ranking-capture .ranking-grid{display:block;padding:0;height:100%}
+.capture-body.ranking-capture .ranking-card{height:100%;max-width:none;margin:0;box-shadow:none}
+.capture-body.ranking-capture .ranking-card h3{display:none}
+.capture-body.ranking-capture .ranking-card ol{height:100%;display:grid;grid-template-rows:repeat(var(--rank-rows,5),minmax(0,1fr))}
+.capture-body.ranking-capture .ranking-card li{min-height:0;height:100%;padding-top:8px;padding-bottom:8px}
+.capture-body.ranking-capture .ranking-card .empty-row{grid-row:1/-1;align-items:center}
+@media(prefers-color-scheme:dark){html,body,.capture-page,.capture-section,.capture-head,.capture-body{background:#fff;color:#111827}}
+</style>
+</head>
+<body class="phase-preopen">
+<main class="capture-page">
+  <section class="capture-section">
+    <div class="capture-head"><h1>핵심 지표</h1></div>
+    <div class="capture-body kpi-capture" style="--rank-rows:5"><div class="kpi-grid"><div class="kpi"><span class="kpi-label">시장 평균</span><strong class="kpi-value down">-0.25%</strong><span class="kpi-sub">상승 222 · 하락 288</span></div><div class="kpi"><span class="kpi-label">상승 비중</span><strong class="kpi-value down">42%</strong><span class="kpi-sub">강세 테마 8개</span></div><div class="kpi"><span class="kpi-label">상승 거래 비중</span><strong class="kpi-value down">47%</strong><span class="kpi-sub">전체 거래대금 중 상승 종목</span></div><div class="kpi"><span class="kpi-label">거래 집중도</span><strong class="kpi-value ">60%</strong><span class="kpi-sub">상위 5종목 거래 비중</span></div><div class="kpi"><span class="kpi-label">외·기관 매수 비중</span><strong class="kpi-value up">60%</strong><span class="kpi-sub">최근 5일 외국인+기관 순매수</span></div><div class="kpi"><span class="kpi-label">장전 관심</span><strong class="kpi-value ">32개</strong><span class="kpi-sub">상승·거래 증가·최근 흐름</span></div></div></div>
+  </section>
+</main>
+</body>
+</html>

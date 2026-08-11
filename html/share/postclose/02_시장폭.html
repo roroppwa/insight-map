@@ -132,8 +132,6 @@ footer{padding-top:0;padding-bottom:30px;color:var(--muted);font-size:12px;text-
 .ranking-card ol{counter-reset:rank;list-style:none;margin:0;padding:0}.ranking-card li{counter-increment:rank;display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:10px;min-height:66px;padding:11px 13px 11px 42px;border-bottom:1px solid var(--line);position:relative}.ranking-card li::before{content:counter(rank);position:absolute;left:13px;top:50%;transform:translateY(-50%);display:flex;align-items:center;justify-content:center;width:21px;height:21px;border-radius:7px;background:var(--surface-strong);color:var(--muted);font-size:10px;font-weight:850}.ranking-card li:nth-child(-n+3)::before{background:var(--phase-soft);color:var(--phase)}.ranking-card li:last-child{border-bottom:0}.ranking-card li:hover{background:var(--phase-soft)}
 .rank-stock{min-width:0}.rank-stock strong,.rank-stock span,.rank-metric strong,.rank-metric span{display:block}.rank-stock strong{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.rank-stock span,.rank-metric span{margin-top:4px;color:var(--muted);font-size:10px}.rank-metric{text-align:right;flex:0 0 auto}.rank-metric strong{font-size:13px;font-weight:850}.empty-row{display:flex!important;justify-content:center!important;padding-left:13px!important;color:var(--muted)}.empty-row::before{display:none!important}
 .index-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.index-card{position:relative;display:block;min-width:0;padding:22px;color:inherit;text-decoration:none;background:linear-gradient(150deg,#fff,var(--surface-soft));border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform .17s ease,border-color .17s ease,box-shadow .17s ease}.index-card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--phase)}.index-card:hover{transform:translateY(-3px);border-color:var(--phase);box-shadow:0 14px 34px rgba(33,43,72,.11)}.index-card h2{margin:0;font-size:20px;letter-spacing:-.45px}.index-card p{margin:8px 0 0;min-height:44px;color:var(--muted);font-size:13px;line-height:1.55}.index-kpis{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:16px}.index-kpi{min-width:0;padding:11px;background:rgba(238,242,248,.8);border-radius:10px}.index-kpi span{display:block;color:var(--muted);font-size:10px}.index-kpi strong{display:block;margin-top:5px;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.capture-toolbar{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-bottom:12px}.capture-action{border:0;border-radius:12px;padding:11px 16px;background:var(--phase);color:#fff;font-weight:800;cursor:pointer;box-shadow:0 6px 16px color-mix(in srgb,var(--phase) 20%,transparent)}.capture-action:hover{filter:brightness(.97)}.capture-action:disabled{opacity:.55;cursor:wait}.capture-message{min-height:18px;color:var(--muted);font-size:12px}.capture-action:focus-visible{outline:3px solid color-mix(in srgb,var(--phase) 28%,transparent);outline-offset:3px}
-@media(max-width:760px){.capture-toolbar{position:sticky;top:8px;z-index:15;justify-content:space-between;padding:8px 9px;margin-bottom:10px;background:color-mix(in srgb,var(--surface) 92%,transparent);border:1px solid var(--line);border-radius:13px;backdrop-filter:blur(10px)}.capture-action{padding:10px 13px;font-size:12px}.capture-message{font-size:10px;text-align:right}}
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 @media(max-width:1180px){.kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.visual-grid{grid-template-columns:1fr 1fr}.visual-card:first-child{grid-row:span 2}.ranking-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:760px){
@@ -206,18 +204,18 @@ body{background:#fff;color:var(--text);font-family:-apple-system,BlinkMacSystemF
     <div class="capture-head"><h1>시장 폭</h1></div>
     <div class="capture-body visual-capture" style="--rank-rows:5"><div class="visual-grid"><article class="visual-card"><h3>상승·하락 종목 분포</h3><div class="visual-note">시장 전체 방향</div>
 <div class="breadth-wrap">
-  <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="상승 491개, 보합 8개, 하락 32개">
+  <svg class="donut" viewBox="0 0 120 120" role="img" aria-label="상승 280개, 보합 23개, 하락 228개">
     <circle class="donut-bg" cx="60" cy="60" r="42"></circle>
-    <circle class="donut-up" cx="60" cy="60" r="42" stroke-dasharray="244.015 19.879" stroke-dashoffset="0.000"></circle>
-    <circle class="donut-flat" cx="60" cy="60" r="42" stroke-dasharray="3.976 259.918" stroke-dashoffset="-244.015"></circle>
-    <circle class="donut-down" cx="60" cy="60" r="42" stroke-dasharray="15.903 247.991" stroke-dashoffset="-247.991"></circle>
-    <text x="60" y="57" text-anchor="middle" class="donut-number">92%</text>
+    <circle class="donut-up" cx="60" cy="60" r="42" stroke-dasharray="139.153 124.741" stroke-dashoffset="0.000"></circle>
+    <circle class="donut-flat" cx="60" cy="60" r="42" stroke-dasharray="11.430 252.464" stroke-dashoffset="-139.153"></circle>
+    <circle class="donut-down" cx="60" cy="60" r="42" stroke-dasharray="113.310 150.584" stroke-dashoffset="-150.584"></circle>
+    <text x="60" y="57" text-anchor="middle" class="donut-number">53%</text>
     <text x="60" y="73" text-anchor="middle" class="donut-caption">상승 비중</text>
   </svg>
   <div class="legend-list">
-    <div><span class="legend-dot legend-up"></span><span>상승</span><strong>491</strong></div>
-    <div><span class="legend-dot legend-flat"></span><span>보합</span><strong>8</strong></div>
-    <div><span class="legend-dot legend-down"></span><span>하락</span><strong>32</strong></div>
+    <div><span class="legend-dot legend-up"></span><span>상승</span><strong>280</strong></div>
+    <div><span class="legend-dot legend-flat"></span><span>보합</span><strong>23</strong></div>
+    <div><span class="legend-dot legend-down"></span><span>하락</span><strong>228</strong></div>
   </div>
 </div></article></div></div>
   </section>

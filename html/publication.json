@@ -1,0 +1,83 @@
+{
+  "schema_version": 2,
+  "build_id": "039988a4297b1c73868b539c",
+  "product": "MarketBriefing",
+  "source": "Kiwoom OpenAPI+",
+  "units": {
+    "turnover": "억원",
+    "amount_flow": "억원",
+    "quantity_flow": "주"
+  },
+  "phases": {
+    "preopen": {
+      "run_id": null,
+      "basis_date": null,
+      "finished_at": null,
+      "display_basis": "기준일 미기록",
+      "unique_stocks": 531
+    },
+    "intraday": {
+      "run_id": null,
+      "basis_date": null,
+      "finished_at": null,
+      "display_basis": "2026-10-29 12:45:48",
+      "unique_stocks": 531
+    },
+    "postclose": {
+      "run_id": null,
+      "basis_date": null,
+      "finished_at": null,
+      "display_basis": "2026-10-29",
+      "unique_stocks": 531
+    }
+  },
+  "files": {
+    "html/index.html": "3b9e33457d33e4e40499ef0d2daaed786b6f1e0f42123b157184cc0820480e0f",
+    "html/intraday/intraday.html": "043fee6730901db499c4b1341eaeed667740db9c2e5fac1b868d91f0844d44ef",
+    "html/overview.html": "20b3a4433430b60e02eebd2d5691189811c2aea85b085a53a39fd5f81cec5e68",
+    "html/postclose/postclose.html": "e897d302e261a0b2fa3dfe051f823a81c40bc92fbe0c7b770fb72c98948f81d5",
+    "html/postclose/postclose_overview.html": "7a132b0ac103ada6a80515e28666b7b38e9bdc7c28b14e1070f30949df562311",
+    "html/preopen/preopen.html": "a430b69648c5736eebf9fb511e3ec8db358eabf59ac0d46f357756497da6497c",
+    "html/preopen/preopen_overview.html": "b9c247379f715fb3ed75aba64148e40a06bb675eba4c9eda3ebe98347c04f4a2",
+    "html/share/index.html": "426b686c671bc151b089edd6944e6be1f8720acac8b417f66e7bef4fc97b4c14",
+    "html/share/intraday/01_핵심지표.html": "173f399c557a98adcbee4d7c21ede7f7648b8e1a203096688350fc4d32f32240",
+    "html/share/intraday/02_시장폭.html": "cf5db157f92c7d091b2b8bd4b3a3df7364356db2bf67f28584ede70dff87c7bf",
+    "html/share/intraday/03_강약테마_TOP5.html": "c5f348cd49a2986e721c97a0a227d65de7a1d412d73172b36bebee5d5cf7b8e0",
+    "html/share/intraday/04_테마_외기관순매수.html": "7ea4a4e0c78a4f7d47094ebc6773ba3371983d7f531cae8a91764d6dc9565653",
+    "html/share/intraday/05_주도테마_TOP3.html": "0ca86e423ddf695d21bca1b5956308e9ee5ea39076c96ffb87076c0a3fc54492",
+    "html/share/intraday/06_테마맵.html": "31b73932a8ce7439a8799e19a2679de1dae1de8e2a2fa6ba6c9e9d89ab9262c2",
+    "html/share/intraday/07_장중_강세_TOP_5.html": "cdaf06efb8cdd52d85b758bfff6f6a8f09e54b82c9605bf25c86d933635e71b9",
+    "html/share/intraday/08_거래대금_TOP_5.html": "9b7dec4e24233caaf54ffb3196d96f6e2273b2fe4d33b6d141dbaba06da97c41",
+    "html/share/intraday/09_외국인_기관_동반_순매수_TOP_5.html": "b2f4e122313fccd4726a040641ad660bf1f6b1ecb48b534da3ed0a36acf4df63",
+    "html/share/intraday/10_시가_대비_상승_TOP_5.html": "1a24f8ae781bf5df1c070840dbd084c96588e303db096ff73a1524363fbeb89a",
+    "html/share/intraday/11_장중_밀림_TOP_5.html": "bff83385f5af9d4b7d2711eea826b72426cdad6f66c2a2d1f8958f618f2f1a7d",
+    "html/share/intraday/12_52주_최고가_근접_TOP_5.html": "44a23f6cf2012b5b8194ab4f9f9b0a8cb040ae88820881f80d47c0ada2267c5e",
+    "html/share/postclose/01_핵심지표.html": "13643a4c1df0808317ec04d408a7c312b76723e2926f875a99413461e6baae05",
+    "html/share/postclose/02_시장폭.html": "ec2d93c30e78e1343f82d5a6fd37942a630c065f5ba97749588638b5f140ce58",
+    "html/share/postclose/03_강약테마_TOP5.html": "cea41a4327c76a42439003b313f259aa197a0fb6313d5ad6230f8c741f6e2a00",
+    "html/share/postclose/04_테마_외기관순매수.html": "fbca950299de52ecbb699f56ace93ef0dae0627cb201d49b3645cf78a11a0f44",
+    "html/share/postclose/05_주도테마_TOP3.html": "7521407e991d4919ed656697780cb028f1193b34c022fa099d0e23c082ebbaf8",
+    "html/share/postclose/06_테마맵.html": "e3217432443d9763b9ce3d565eff2aa16e999af5c8a074490262e035cd244c92",
+    "html/share/postclose/07_마감_강세_TOP_5.html": "8788a3d5690ace0e4b5e76ce792b4186147acab1a6b0256521410ed4320c7943",
+    "html/share/postclose/08_거래대금_TOP_5.html": "e5ba7d1f866e0697e46221f6df8c0b1dd43aa46371eb1952e7bb34bfb5ec4739",
+    "html/share/postclose/09_외국인_기관_동반_순매수_TOP_5.html": "47700327811c32b677841f295ac61c09ab0e9d5636126162d2fd853bd60a2266",
+    "html/share/postclose/10_고가권_마감_당일_순매수_TOP_5.html": "f7d2a135f964335e1209066c28493bb245f950e4f704824b587cfcd56342ac61",
+    "html/share/postclose/11_하락_중_순매수_TOP_5.html": "db4358eb500c4890f3e1be87f317162d53c4099acc8928e56de98c4b48df629b",
+    "html/share/postclose/12_거래_많은_하락_TOP_5.html": "bc8ffc99578e71754865605bcb9194888ddb4047bbdbf5b6c2e93e16f417f348",
+    "html/share/postclose/13_52주_최고가_근접_TOP_5.html": "3f601be06a8315b5019652b92ea0f55d67d99cc3a2b53c0dee10c0b37a97d5ca",
+    "html/share/postclose/14_52주_최저가_근접_TOP_5.html": "4857bd8a57e747aae708f87a806380c7a21fd378e13323e4a8a688b9ea4d324e",
+    "html/share/preopen/01_핵심지표.html": "e16c5a56cacd2a1550ffaf0581af4f732fb5b9b4f37a534df621f328fdc17431",
+    "html/share/preopen/02_시장폭.html": "570b602424c090a5d5fe05a091fd57a509c79e612dabf4be0286841a6b4f8853",
+    "html/share/preopen/03_강약테마_TOP5.html": "647e4bc13f9da4e665a0bd8ecba78b4610b4402e05c755a55af68164f07f241a",
+    "html/share/preopen/04_기간별_테마흐름.html": "1d450469a5498009ec8519b3defcf78a48c9aefb9cb2ed18b82d2e1e095d18a6",
+    "html/share/preopen/05_주도테마_TOP3.html": "90411ea459be15ee03c1589d47ae993439387a76d9af77a02992af1cf715514d",
+    "html/share/preopen/06_테마맵.html": "c172c0d41aba9db68f8c852b808430157ae39fce31c614ae9a7621fa44f6351f",
+    "html/share/preopen/07_장전_관심_TOP_5.html": "680bd243554bd0ae313064da4ae36be8628e566a73e31bf7d5f83b60ab64c162",
+    "html/share/preopen/08_평소_대비_거래대금_TOP_5.html": "81b672c852bf0078f2aa402a1378a3dfb4056cd986579b6caac26d5942f4f414",
+    "html/share/preopen/09_외_기관_5일_순매수_TOP_5.html": "1432df2653b02726ed721d8d2099ffe78d77bedbfb4184f7e9ea4f88794a321a",
+    "html/share/preopen/10_단기_반등_중기_약세_TOP_5.html": "f62fbfac25ccb755ac2da9901c3cd0b939fdfde2d4ce55ebb3b04c3d2fea3ab0",
+    "html/share/preopen/11_5일_상승_TOP_5.html": "39ea861c7f596aa67c80921dcc128c729ed4036fd16df2106dd54376797f0ea8",
+    "html/share/preopen/12_52주_최고가_근접_TOP_5.html": "b4867909a872b5dbe002974a7e3eb422a1cd14874b97b3bd6893dfc8b18074cc",
+    "index.html": "32dd26c916fe00cd544ccd707c880c433e9fd3db525dcfc60c740be2e616eff3"
+  }
+}

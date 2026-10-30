@@ -168,6 +168,7 @@ footer{padding-top:0;padding-bottom:30px;color:var(--muted);font-size:12px;text-
 @media(max-width:720px){.router-box{padding:22px}.router-links{grid-template-columns:1fr 1fr}}
 </style>
 <script>
+var available={"preopen": {"finished": "2026-10-30T10:23:19+09:00", "basis": "20261029", "label": "\uc7a5\uc804"}, "intraday": {"finished": null, "basis": null, "label": "\uc7a5\uc911"}, "postclose": {"finished": null, "basis": null, "label": "\uc7a5\ud6c4"}};
 function choosePhase(){
   var parts=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Seoul',weekday:'short',hour:'2-digit',minute:'2-digit',hourCycle:'h23'}).formatToParts(new Date());
   var values={};
@@ -181,11 +182,19 @@ function choosePhase(){
 }
 document.addEventListener('DOMContentLoaded', function(){
   var choice=choosePhase();
+  var date=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(new Date());
+  var desired=available[choice.key]||{};
+  var recent=Object.entries(available).filter(([key,info])=>info.finished).sort((a,b)=>(b[1].basis||'').localeCompare(a[1].basis||'')||b[1].finished.localeCompare(a[1].finished));
+  var fallback=false;
+  if((desired.finished||'').slice(0,10)!==date&&recent.length){
+    var best=recent.find(([key,info])=>info.finished.slice(0,10)===date)||recent[0];
+    if(best[0]!==choice.key){choice={key:best[0],label:best[1].label,href:best[0]+'/'+best[0]+'.html'};fallback=true;}
+  }
   var target=document.getElementById('targetPhase');
   var status=document.getElementById('routerStatus');
   if(target) target.textContent=choice.label;
-  if(status) status.textContent='현재 시간에 맞는 화면으로 이동합니다.';
+  if(status) status.textContent=fallback?'해당 장의 오늘 수집본이 없어 마지막으로 성공한 수집 화면으로 이동합니다.':'현재 시간에 맞는 화면으로 이동합니다.';
   setTimeout(function(){ location.replace(choice.href); }, 250);
 });
 </script>
-<meta name="marketbriefing-build" content="e5f2c4163d238510b5f2b282"></head><body class="phase-index"><header class="site-header"><div class="header-inner"><div class="header-row"><div class="title-block"><div class="title-line"><span class="phase-pill">AUTO</span><h1>MarketBriefing</h1></div><p class="subtitle">현재 시간에 맞는 장전·장중·장후 화면으로 연결</p></div><nav class="nav"><a class="active" href="index.html">자동</a><a class="" href="overview.html">요약</a><a class="" href="preopen/preopen.html">장전</a><a class="" href="intraday/intraday.html">장중</a><a class="" href="postclose/postclose.html">장후</a></nav></div></div></header><main><div class="router-box"><h2>자동 이동: <span id="targetPhase">-</span></h2><p class="router-note" id="routerStatus">화면을 준비하고 있습니다.</p><div class="router-links"><a href="preopen/preopen.html">장전</a><a href="intraday/intraday.html">장중</a><a href="postclose/postclose.html">장후</a><a href="overview.html">요약</a></div></div></main><footer>MarketBriefing</footer></body></html>
+<meta name="marketbriefing-build" content="279bcfc7b07df3f73bda9b54"></head><body class="phase-index"><header class="site-header"><div class="header-inner"><div class="header-row"><div class="title-block"><div class="title-line"><span class="phase-pill">AUTO</span><h1>MarketBriefing</h1></div><p class="subtitle">현재 시간에 맞는 장전·장중·장후 화면으로 연결</p></div><nav class="nav"><a class="active" href="index.html">자동</a><a class="" href="overview.html">요약</a><a class="" href="preopen/preopen.html">장전</a><a class="" href="intraday/intraday.html">장중</a><a class="" href="postclose/postclose.html">장후</a></nav></div></div></header><main><div class="router-box"><h2>자동 이동: <span id="targetPhase">-</span></h2><p class="router-note" id="routerStatus">화면을 준비하고 있습니다.</p><div class="router-links"><a href="preopen/preopen.html">장전</a><a href="intraday/intraday.html">장중</a><a href="postclose/postclose.html">장후</a><a href="overview.html">요약</a></div></div></main><footer>MarketBriefing</footer></body></html>

@@ -172,24 +172,27 @@ footer{padding-top:0;padding-bottom:30px;color:var(--muted);font-size:12px;text-
 .tool-pad button,#stock-detail button{font:inherit;padding:8px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--accent);cursor:pointer}
 .tool-table{overflow:auto}.tool-table table{width:100%;border-collapse:collapse;white-space:nowrap;font-size:13px}.tool-table th,.tool-table td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line)}.tool-table th:first-child,.tool-table td:first-child{text-align:left}.tool-table small{display:block;color:var(--muted)}
 .comparison-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px}#stock-detail{width:min(800px,94vw);max-height:90vh;overflow:auto;border:1px solid var(--line);border-radius:16px;padding:22px;background:var(--surface);color:var(--text)}#stock-detail::backdrop{background:#0008}#detail-close{float:right}.price-chart{display:block;width:100%;max-height:210px;background:var(--surface-soft);border-radius:8px}
-.snapshot-status{padding:16px 20px;margin:0 0 18px;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:12px;background:var(--surface);font-size:13px;line-height:1.7}.snapshot-status p{margin:5px 0}.snapshot-status a{color:var(--accent)}.index-quotes{display:flex;gap:15px;flex-wrap:wrap}.index-quotes b{font-size:18px}.snapshot-warning{color:#a94a10;font-weight:700}details.section>summary{cursor:pointer;padding:18px;font-weight:750}.rank-stock button{border:0;background:none;color:inherit;font:inherit;font-weight:800;cursor:pointer;padding:0;text-align:left}
+.snapshot-status{padding:16px 20px;margin:0 0 18px;border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:12px;background:var(--surface);font-size:13px;line-height:1.7}.snapshot-status p{margin:5px 0}.source-notes summary{cursor:pointer;color:var(--muted)}#stock-tools{scroll-margin-top:180px}.snapshot-status a{color:var(--accent)}.index-quotes{display:flex;gap:15px;flex-wrap:wrap}.index-quotes b{font-size:18px}.snapshot-warning{color:#a94a10;font-weight:700}details.section>summary{cursor:pointer;padding:18px;font-weight:750}.rank-stock button{border:0;background:none;color:inherit;font:inherit;font-weight:800;cursor:pointer;padding:0;text-align:left}
 @media(max-width:600px){.tool-pad{padding:12px}.tool-pad input{display:block;width:calc(100% - 12px)}.tool-pad label{font-size:13px}.snapshot-status{padding:12px}.index-quotes b{font-size:16px}}
 
 </style>
-<meta name="marketbriefing-build" content="e5f2c4163d238510b5f2b282"></head>
+<meta name="marketbriefing-build" content="279bcfc7b07df3f73bda9b54"></head>
 <body class="phase-intraday">
 <header class="site-header"><div class="header-inner"><div class="header-row"><div class="title-block"><div class="title-line"><span class="phase-pill">장중</span><h1>장중 대시보드</h1></div><p class="subtitle">현재 주도 흐름과 수급</p></div><nav class="nav"><a class="" href="../index.html">자동</a><a class="" href="../overview.html">요약</a><a class="" href="../preopen/preopen.html">장전</a><a class="active" href="../intraday/intraday.html">장중</a><a class="" href="../postclose/postclose.html">장후</a></nav></div><div class="data-line">기준 2026-10-29 12:45:48</div></div></header>
 <main>
   <aside class="snapshot-status" data-phase="intraday" data-finished="" data-basis="20261029" data-price-min="2026-10-29 12:35:10" data-stale="30">
 <div class="index-quotes"><span>KOSPI·KOSDAQ: 이 수집본에는 지수 미기록</span></div>
-<p><strong>장중 스냅샷 · KRX · 가격 기준일 20261029</strong> · 유효 531종목 / 거래 상태 제외 0종목</p>
-<p>가격 조회 범위(KST): 2026-10-29 12:35:10 ~ 2026-10-29 12:45:48 · 수집 완료: 구형 수집본 · 완료시각 미기록</p>
-<p>금액 수급 조회 범위(KST): 미기록 · 수급 조회가 가격 조회보다 늦을 수 있습니다.</p>
-<p class="snapshot-warning" id="freshness-note">실시간 시세가 아닙니다. 장중 조회는 종목별 시간이 다르며 수급은 잠정·정정될 수 있습니다.</p>
-<p>출처: Kiwoom OpenAPI+ · 거래대금/금액 수급: 억원 · 수량 수급: 주 · 거래배수는 기준일 포함 최근 20거래일 평균 대비 · 등록 종목 단순 평균(동일 비중) · 테마 중복 종목은 전체 집계에서 1회 반영</p>
-<p>거래대금 원자료: 백만원 → 화면: 억원 · 52주 고저가는 기본정보 조회 시점 기준이며 가격 기준일과 다를 수 있습니다.</p>
+<p><strong>장중 스냅샷 · KRX · 가격 기준일 2026-10-29</strong> · 유효 531종목 / 거래 상태 제외 0종목</p>
+<p>가격 조회(KST): 2026-10-29 12:35:10 ~ 12:45:48 · 완료: 구형 수집본 · 완료시각 미기록</p>
+<p class="snapshot-warning" id="freshness-note">실시간 시세가 아닙니다. 종목별 조회 시각이 다르며 수급은 잠정·정정될 수 있습니다.</p>
+<p>금액: 억원 · 수량: 주 · <a href="#stock-tools">종목 검색·금액 수급 보기 ↓</a></p>
 <p class="snapshot-warning"></p>
+<details class="source-notes"><summary>수급 조회시각·출처·제외 0종목·단위 검증</summary>
+<p>금액 수급 조회 범위(KST): 미기록 · 수급 조회가 가격 조회보다 늦을 수 있습니다.</p>
+<p>출처: Kiwoom OpenAPI+ · 거래배수는 기준일 포함 최근 20거래일 평균 대비 · 등록 종목 단순 평균(동일 비중) · 테마 중복 종목은 전체 집계에서 1회 반영</p>
+<p>거래대금 원자료: 백만원 → 화면: 억원 · 기본정보의 52주 고저가는 조회 시점 기준이며 가격 기준일과 다를 수 있습니다.</p>
 <p>제외 종목: 기록 없음 · <a href="../publication.json">게시 버전 확인</a></p>
+</details>
 </aside>
 <script>document.addEventListener('DOMContentLoaded',()=>{const s=document.querySelector('.snapshot-status');const e=document.getElementById('freshness-note');const now=new Date();const today=new Intl.DateTimeFormat('sv-SE',{timeZone:'Asia/Seoul',year:'numeric',month:'2-digit',day:'2-digit'}).format(now).replaceAll('-','');if(s.dataset.phase==='intraday'&&(!s.dataset.finished||now-new Date(s.dataset.priceMin||s.dataset.finished)>Number(s.dataset.stale)*60000))e.textContent='장중 스냅샷이 오래되었습니다. 최신 시세·수급을 별도로 확인하세요.';if(s.dataset.phase==='preopen'&&(!s.dataset.finished||s.dataset.finished.slice(0,10).replaceAll('-','')<today))e.textContent='과거 장전 수집본이거나 수집일이 미기록입니다. 최신 장전 자료인지 확인하세요.';if(s.dataset.phase!=='preopen'&&s.dataset.basis<today)e.textContent='과거 거래일 데이터입니다. 현재 장의 데이터가 아닙니다. 기준일을 확인하세요.';});</script>
   <div class="kpi-grid"><div class="kpi"><span class="kpi-label">등록 종목 평균</span><strong class="kpi-value down">-2.77%</strong><span class="kpi-sub">상승 69 · 하락 447</span></div><div class="kpi"><span class="kpi-label">상승 비중</span><strong class="kpi-value down">13%</strong><span class="kpi-sub">강세 테마 1개</span></div><div class="kpi"><span class="kpi-label">상승 거래 비중</span><strong class="kpi-value down">44%</strong><span class="kpi-sub">전체 거래대금 중 상승 종목</span></div><div class="kpi"><span class="kpi-label">거래 집중도</span><strong class="kpi-value ">67%</strong><span class="kpi-sub">상위 5종목 거래 비중</span></div><div class="kpi"><span class="kpi-label">외·기관 매수 비중</span><strong class="kpi-value ">29%</strong><span class="kpi-sub">당일 합산 수량(주)</span></div><div class="kpi"><span class="kpi-label">장중 강세</span><strong class="kpi-value ">17개</strong><span class="kpi-sub">상승·가격 유지·순매수</span></div></div>

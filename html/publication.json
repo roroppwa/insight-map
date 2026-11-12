@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "build_id": "64abb010f3df5fa346855771",
+  "build_id": "9b56867161007ad22f051d93",
   "product": "MarketBriefing",
   "source": "Kiwoom OpenAPI+",
   "units": {
@@ -10,10 +10,10 @@
   },
   "phases": {
     "preopen": {
-      "run_id": "20261112T072917-c683db5a",
-      "basis_date": "20261111",
-      "finished_at": "2026-11-12T07:29:17+09:00",
-      "display_basis": "2026-11-11",
+      "run_id": "20261113T082505-b5e0cc53",
+      "basis_date": "20261112",
+      "finished_at": "2026-11-13T08:25:05+09:00",
+      "display_basis": "2026-11-12",
       "registered_stocks": 531,
       "unique_stocks": 526
     },
@@ -35,26 +35,26 @@
     }
   },
   "files": {
-    "html/index.html": "b10c302efbdc321f8b2f484bb075a2ed57e3276657938ba06cc01149f6769c84",
-    "html/intraday/intraday.html": "1740d816ee5bf4ba843de7c65164f5d6c13e6b1d2d103ddedbdcc6d0b4d2fe19",
-    "html/overview.html": "0630064abc6bd1134e6463c2765004ba48364a85626bb857e51c8081f491ea71",
-    "html/postclose/postclose.html": "9cdfa5175e2d94ded3a077aeb5765d5ca4db42084df36908be780e6144a40632",
-    "html/postclose/postclose_overview.html": "032a0a26bd256226a78de57a5224a2e01556f9764e11d966a54c000a17eccbbd",
-    "html/preopen/preopen.html": "7a9baaad5794a9f3baf930c58d971fdd1b1cebe2a0cd166ea283e521bcae7e86",
-    "html/preopen/preopen_overview.html": "3a23af63cfc023255336e08c9d77ef8104563c5cd1fd309fb7ddf15d986d0085",
-    "html/share/index.html": "89790792530d8dc8053de86e7c920e7bd93f4cf3d74625a01e21b93a9eceab47",
-    "html/share/intraday/01_핵심요약.html": "05d29cb81658ad0114c039d21be52cda2c59cd2f31d7c1cb74c9d46790eb2466",
-    "html/share/intraday/02_테마흐름.html": "b679bff78be51458cc32349ff6349b50e4f70aa5a1047779e3f01328b940c3b6",
-    "html/share/intraday/03_주요종목.html": "8ba0fe5b410af6590913f210eb652b659baf34913c6f1b9edced8e9238e40a92",
-    "html/share/intraday/04_금액수급.html": "de622279d42d91446cd3e83b85d0ce281049653942945ec8b805691ed2bbc3cc",
-    "html/share/postclose/01_핵심요약.html": "15c29e9df8178affe45ad6b7808103abec4a48af018205675535bc4496ad8af7",
-    "html/share/postclose/02_테마흐름.html": "253cbe799abc9145dacbf1e60b50adf742287d9d1fffe52c65dff0a48af8f16f",
-    "html/share/postclose/03_주요종목.html": "362c12f6783fb58e8c408fba2d502c2665be6b38990184cf4d4c369a16c72f73",
-    "html/share/postclose/04_금액수급.html": "5e80844be1ebbabeac6877c1973bb33c4cb4617f612fd3d44bf33a2f5015e9a7",
-    "html/share/preopen/01_핵심요약.html": "4fcebe09f8fd9a04309667861cf564a9e5e5cfd3d56a32ef1b83be1547e5497b",
-    "html/share/preopen/02_테마흐름.html": "a2f129198f65f8971387b582f116c32a34086371310d49e94607b2b773d4f970",
-    "html/share/preopen/03_주요종목.html": "b4497082f1c4e837d8af4118858c5a2b533ef664d93862737104ab87ab79af88",
-    "html/share/preopen/04_금액수급.html": "316af1b2dc75c793af21a5d1dadde8aff2dbf7f0ccd00b8d2d1d37c8d2572db3",
-    "index.html": "6fd4a6059be70fdb80ffde184a8b4f193d484cf9416e0a1e8f9756905e88028d"
+    "html/index.html": "97372d84e55f67304b3f1a6a8c7eec118841f4a129c3cf607216c8956a42b741",
+    "html/intraday/intraday.html": "2430afbb147a842a56709e6a4ffcfdfff297327ae7d9d80baa27272efdadb687",
+    "html/overview.html": "40dddaa03e9eaded8619e562b1318de4647112878fdb7706f52c3b2bb133e54a",
+    "html/postclose/postclose.html": "260d07481dba7c0c0761df2cf7548091b98df56085b05bfa274d7ddb262a39f4",
+    "html/postclose/postclose_overview.html": "8f029b61d1bd6f110013aaba58547e18ffdaf2cbd1dc936410bebe314ccd2fa3",
+    "html/preopen/preopen.html": "87e40b9f926d374d0b5b49ad409195d74859fca22ebec46819b5a33e1d0c7354",
+    "html/preopen/preopen_overview.html": "e0b20502a96dfe3fb8c0892cd580da1f64c9e8053c06418db7111a9426cc2516",
+    "html/share/index.html": "fcd7943f9ed3c83c6bdbd741fd8dc54b32351247bb4c0240b5413771bacf36c2",
+    "html/share/intraday/01_핵심요약.html": "0c3c346cdb81cb6b90c5fcee1427232c724c3d1f328f128cce5add72e3b931e8",
+    "html/share/intraday/02_테마흐름.html": "261c4325c7399f5a3075c6b1f4df6db58a14073ef6a0120be6e87a32ef718f00",
+    "html/share/intraday/03_주요종목.html": "f0fd891612dc3ef986e24f195494c0e4ff914af515ce603d0d2c1c17f146a18d",
+    "html/share/intraday/04_금액수급.html": "2adc7b0e87d7017bab8df438cf6f4d43e4be5ad5b003ef7ee3b34efdce8991f7",
+    "html/share/postclose/01_핵심요약.html": "b8d289b7865f790ab9f58b8c99cc7162d12c7ae1c2706f829803a74e79c388f5",
+    "html/share/postclose/02_테마흐름.html": "689805dcaac82e1d1decaeec5219122f0fcef4275f1477698cb333cdf5f9023b",
+    "html/share/postclose/03_주요종목.html": "af3c4f2e641af00d4db16447483fd6a0951950ee9f0eee378667eb01c88faa4e",
+    "html/share/postclose/04_금액수급.html": "71f9828e2de9c0d1d7ab847067142f1e60acd9c11713f3c173f8786ee0a54a05",
+    "html/share/preopen/01_핵심요약.html": "c4c392b6ddcc8280afbc604687777ff2f8ee2b0e9bfae5f238c3e5fef6650127",
+    "html/share/preopen/02_테마흐름.html": "aba2232b6372fa2875007568e12f3da5e15fabd205fb9c648d384d43e843edad",
+    "html/share/preopen/03_주요종목.html": "c6738a546a6ed2685849fa4482e2753a3a0f703da5a959689665a0fb8516a19f",
+    "html/share/preopen/04_금액수급.html": "63533987a92489a6b8f465303475f324b0b15559ed357aa35429ef102afff62a",
+    "index.html": "86b5da211133f1a28b2c473550e73037d1d7e8867226d98b45516bd62e276a4d"
   }
 }
